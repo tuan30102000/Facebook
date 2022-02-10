@@ -39,15 +39,13 @@ class authController {
             try {
                 const salt = await bcrypt.genSalt(10);
                 const hashed = await bcrypt.hash(password, salt);
-                const userData = user.findOne({ username })
-                console.log(userData)
+                const userData =await user.findOne({ username })
                 if (userData) {
-                    // const objData=mongooseToObject.itemToObject(userData)
-                    // const newUserData = { ...objData }
-                    // delete newUserData.password
-                    // const JWTData = await JWT.sign({ id: newUserData._id }, 'tuan')
-                    // console.log(newUserData)
-                    //    res.send(userData)
+                    const objData=mongooseToObject.itemToObject(userData)
+                    const newUserData = { ...objData }
+                    delete newUserData.password
+                    const JWTData = await JWT.sign({ id: newUserData._id }, 'tuan')
+                    res.json({newUserData,JWTData})
                 }
 
             } catch (error) {
