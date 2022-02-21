@@ -1,13 +1,12 @@
 import Mongoose from "mongoose"
-import ENV from "../../../constan.js"
 
 const db = {
     async connect() {
         try {
-            await Mongoose.connect(ENV.DB_URL_CONNECT)
+            await Mongoose.connect(process.env.MONGODB_URL)
             console.log('connect sucessfully')
         } catch (error) {
-            console.log('connect fail')            
+            console.log('connect fail')
         }
     }
 }
