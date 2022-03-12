@@ -8,7 +8,7 @@ inputField.propTypes = {
     register: PropTypes.func.isRequired,
 };
 
-function inputField({ name, className = '', placeholder = '', type = 'text',register }) {
+function inputField({ name, className = '', placeholder = '', type = 'text', register }) {
     return (
 
         <div className="mb-4">

@@ -1,23 +1,27 @@
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from "cors";
+import dotenv from 'dotenv';
 import express from "express";
-import cors from "cors"
-import db from "./src/config/db/db.js";
 import morgan from "morgan";
+import db from "./src/config/db/db.js";
 import routes from "./src/routes/index.js";
-import dotenv from 'dotenv'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-)
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser())
 app.use(cookieParser())
 // app.use(cookieParser())
+// app.use(fileUpload({
+//     createParentPath: true
+// }));
+
+//
+app.use(express.static('public'));
+//
 db.connect()
 app.use(morgan('combined'))
 routes(app)

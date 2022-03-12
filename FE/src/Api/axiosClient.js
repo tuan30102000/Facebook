@@ -5,6 +5,7 @@ import ApiUrl from "../Constan/ApiUrl";
 
 const axiosClient = axios.create({
   baseURL: ApiUrl.baseURL,
+  withCredentials: true,
   headers: {
     'content-Type': 'application/json',
     // 'content-type': 'application/x-www-form-urlencoded'

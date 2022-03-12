@@ -6,5 +6,6 @@ const authRouter = Router()
 authRouter.post('/register', authController.register)
 authRouter.post('/login', authController.login)
 authRouter.post('/refresh', authController.refreshToken)
+authRouter.get('/delete', authController.deleteUser)
 
 export default authRouter

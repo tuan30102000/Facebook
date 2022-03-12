@@ -1,4 +1,5 @@
 import authRouter from "./authRouter.js";
+import postRouter from "./postRouter.js";
 
 export default function (app) {
     console.log('run router')
@@ -8,4 +9,6 @@ export default function (app) {
     //     authRouter()
     // });
     app.use('/auth', authRouter)
+    app.use('/post', postRouter)
+
 }

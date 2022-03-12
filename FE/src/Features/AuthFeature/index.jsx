@@ -1,17 +1,27 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import FormLogin from './component/FormLogin';
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet } from 'react-router-dom';
 
 AuthFeature.propTypes = {
 
 };
 
 function AuthFeature(props) {
+    const user = useSelector(state => state.user)
 
     return (
-        <div>
-            <FormLogin />
-        </div>
+        <>
+            {!user.login &&
+                <div className="flex w-full justify-center items-center h-screen bg-bg-all">
+                    <div className='w-full max-w-sm bg-white shadow-md rounded px-12 pt-4 pb-8 mb-4'>
+                        <Outlet />
+                    </div>
+                </div>
+            }
+            {
+                user.login && <Navigate to='/' />
+            }
+        </>
     );
 }
 
