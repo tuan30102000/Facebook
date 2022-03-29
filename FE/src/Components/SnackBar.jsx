@@ -27,7 +27,7 @@ function SnackBar({ message = 'Xin chao' }) {
     }, [])
     return (
         <>
-            <div className='flex border-l-4 px-4 items-center shadow min-w-400px max-w-450px border-solid border-l-green-600 py-5 fixed top-4 right-4 animate-toast-show' >
+            <div className='flex bg-white border-l-4 px-4 items-center shadow min-w-400px max-w-450px border-solid border-l-green-600 py-5 fixed top-4 right-4 animate-toast-show' >
                 <BsCheckCircle className='' />
                 <div className="flex-1 px-4">
                     <p className="">

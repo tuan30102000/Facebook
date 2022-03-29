@@ -47,7 +47,7 @@ function PostForm() {
         }
     }
     return (
-        <>
+        <div className='max-h-350 w-500'>
             <p className='flex items-center justify-center font-bold bg-white border-solid border-b border-gray-400 h-14' >Tao bai viet</p>
             <div className='w-full h-full bg-white pl-4 pr-3 pt-5'>
                 <UserInfoMini avartUrl={user.current.data.avatarUrl} displayName={user.current.data.displayName} />
@@ -70,8 +70,6 @@ function PostForm() {
                     Đăng
                 </button>
             </div>
-        </>
+        </div>
     );
 }
-
-export default PostForm;

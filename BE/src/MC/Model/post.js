@@ -1,7 +1,7 @@
 import Mongoose from "mongoose"
 
 const postSchema = new Mongoose.Schema({
-    ownerId:{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
+    ownerId: { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
     imgUrl: {
         type: Array,
         default: []
@@ -10,8 +10,9 @@ const postSchema = new Mongoose.Schema({
         type: String,
         default: '',
     },
-    like:[{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }]
-})
+    like: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }]
+},
+    { timestamps: true })
 
 
 

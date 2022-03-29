@@ -7,7 +7,7 @@ const db = {
             await Mongoose.connect(process.env.MONGODB_URL)
             console.log('connect sucessfully')
         } catch (error) {
-            console.log('connect fail',error)
+            console.log('connect fail', error)
         }
     }
 }

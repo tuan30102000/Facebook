@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../../../../Components/Modal';
-import PostForm from './PostForm';
 import UserInfoMini from '../../../../Components/UserInfoMini';
 import { useSelector } from 'react-redux';
 
-PostLayout.propTypes = {
+import CreatePostForm from './CreatePostForm';
+
+CreatePostLayout.propTypes = {
 
 };
-function PostLayout(props) {
+function CreatePostLayout({ addToStartPost }) {
     const openModalRef = useRef({})
     const user = useSelector(state => state.user)
     useEffect(() => {
@@ -27,9 +28,9 @@ function PostLayout(props) {
                     </div>
                 </div>
             </div>
-            <Modal ref={openModalRef} Component={PostForm} />
+            <Modal ref={openModalRef} Component={CreatePostForm} componentProps={{ addToStartPost }} />
         </>
     );
 }
 
-export default PostLayout;
+export default CreatePostLayout;

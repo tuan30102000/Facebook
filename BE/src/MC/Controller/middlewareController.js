@@ -10,7 +10,6 @@ class middlewareController {
         try {
             const user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
             req.user = user.data
-            console.log(req.user)
             next()
         } catch (error) {
             console.log(error)

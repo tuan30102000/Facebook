@@ -21,7 +21,6 @@ const schema = yup.object().shape({
         .required('Vui long dien ten dang nhap')
         .matches(regexUsername, 'Không sử dụng kí tự đặc biệt'),
     email: yup.string()
-
         .required('Vui long điên email')
         .email('Trường này phải là email'),
     password: yup.string()

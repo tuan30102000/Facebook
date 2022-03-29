@@ -11,6 +11,7 @@ class postController {
         const pathFileList = fileList[0] ? fileList.map(item => cloudinary.uploader.upload(item.path, { resource_type: 'image', folder: 'FacebookCollection/postCollections' })) : []
         try {
             const resultClould = await Promise.all(pathFileList)
+            console.log(resultClould)
             const listUrl = resultClould.map(item => item.url)
             const newPost = new post({
                 ownerId: req.user._id,
@@ -20,7 +21,7 @@ class postController {
             const newPostAfter = await newPost.save()
             // const result = await cloudinary.uploader.unsigned_upload(pathFileList, { resource_type: 'image', public_id: 'FacebookCollection/postCollection' })
             // console.log(result)
-            res.status(200).json(newPostAfter)
+            res.status(200).json({ ...req.user, ...newPostAfter._doc })
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: 'something wrong' })
@@ -28,6 +29,8 @@ class postController {
     }
     async deletePost(req, res) {
         try {
+            const postData = await post.findById(req.params.postId)
+            // const dinaryDestroyPromise = postData.imgUrl.map(item => cloudinary.uploader.destroy(public_id))
             await post.deleteOne({ _id: req.params.postId })
             res.status(201).json({ message: 'delete successfully' })
         } catch (error) {
@@ -35,12 +38,14 @@ class postController {
         }
     }
     async updatePost(req, res) {
-        const { content, photos } = req.body
+        let { content, photos } = req.body
+        photos = photos ? photos.split(',') : []
         try {
             //nothasnewFile
             if (!req.files[0]) {
-                const postAfterEdit = await post.updateOne({ _id: req.params }, { content, imgUrl: photos })
-                return res.status(200).json({ postData: postAfterEdit })
+                await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
+                const postAfterEdit = await post.findById(req.params.postId)
+                return res.status(200).json({ ...req.user, ...postAfterEdit._doc })
             }
             //hasnewFile
             //check file limit
@@ -49,8 +54,9 @@ class postController {
             const promiseClouldList = req.files.map(item => cloudinary.uploader.upload(item.path, { resource_type: 'image', folder: 'FacebookCollection/postCollections' }))
             const listCloudUrl = (await Promise.all(promiseClouldList)).map(item => item.url)
             photos = [...photos, ...listCloudUrl]
-            const postAfterEdit = await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
-            return res.status(200).json({ postData: postAfterEdit })
+            await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
+            const postAfterEdit = await post.findById(req.params.postId)
+            return res.status(200).json({ ...req.user, ...postAfterEdit._doc })
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: 'something wrong' })

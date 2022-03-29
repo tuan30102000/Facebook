@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import UserInfoMini from '../../../../Components/UserInfoMini';
 import { useSelector } from 'react-redux';
-import { BsThreeDots } from 'react-icons/bs';
-import Option from '../../../../Components/Option';
+import Option from '../../../Components/Option';
+import UserInfoMini from '../../../Components/UserInfoMini';
+import OptionPost from './editPost/OptionPost';
+
 Post.propTypes = {
 
 };
 
-function Post({ content = '', urlList = [], avatarUrl, displayName, postId, ownerId }) {
+function Post({ content = '', urlList = [], avatarUrl, displayName, postId, ownerId, deletePost, updatePost }) {
     const user = useSelector(state => state.user)
     const isOwnerPost = user.current.data._id == ownerId
     return (
@@ -22,7 +22,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, postId, owne
                     </div>
                 ))}
             </div>
-            {isOwnerPost && <Option />}
+            {isOwnerPost && <Option Component={OptionPost} componentProp={{ postId, urlList, content, deletePost, updatePost }} />}
         </div>
     );
 }
