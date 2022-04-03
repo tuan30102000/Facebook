@@ -78,6 +78,10 @@ const userSchema = new Mongoose.Schema(
             type: Array,
             default: []
         },
+        coverAvr:{
+            type:String,
+            default:'https://res.cloudinary.com/dmrx3zaby/image/upload/v1646299624/FacebookCollection/avatarCollection/131056830_1031736600641748_7803183549451959873_n_zbvgsn.jpg',
+        }
     },
     { timestamps: true }
 );
