@@ -17,7 +17,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, postId, owne
             <div className="">{content}</div>
             <div className="flex w-full">
                 {urlList.map((item, key) => (
-                    <div className='flex-1 h-[150px]' key={key} >
+                    <div className='flex-1 h-[650px]' key={key} >
                         <img src={item} className='w-full h-full object-cover' alt="" />
                     </div>
                 ))}

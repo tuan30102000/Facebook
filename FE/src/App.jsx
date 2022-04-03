@@ -1,16 +1,18 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import SnackBar from './Components/SnackBar';
+import ControlPage from './Components/ControlPage';
 import AuthFeature from "./Features/AuthFeature";
 import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
-import ControlPage from './Features/PostFeature';
+import HomePage from './Features/PostFeature/page/HomePage';
+import ListToast from './Features/ToastFeature/ListToast';
+import UserControl from './Features/User';
+import UserPage from './Features/User/page/UserPage';
 function App() {
   const user = useSelector(state => state.user)
   return (
     <div className="app w-screen h-screen bg-[#F0F2F5]">
-      {user.showSnack && <SnackBar message={user.snackMessage} />}
-
+      <ListToast />
       <Routes>
         <Route path='/auth' element={<AuthFeature />} >
           <Route path='login' element={<LoginPage />} />
@@ -18,7 +20,15 @@ function App() {
           <Route index element={<Navigate to='login' push />} />
           <Route />
         </Route>
-        <Route path='/*' element={<ControlPage />} >
+        <Route>
+          <Route path='/profile' element={<ControlPage Component={UserControl} />} >
+            <Route path=':userId' element={<UserPage />} />
+            <Route index element={<Navigate to={user?.current?.data?._id} push />} />
+          </Route>
+        </Route>
+
+
+        <Route path='/*' element={<ControlPage Component={HomePage} />} >
 
         </Route>
       </Routes>

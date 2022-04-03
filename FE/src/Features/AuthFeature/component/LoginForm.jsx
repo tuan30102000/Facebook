@@ -4,6 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from "yup";
+import useToast from '../../ToastFeature/Hook';
 import { login } from '../userSlice';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
@@ -24,7 +25,7 @@ const schema = yup.object().shape({
 
 function LoginForm() {
     const dispath = useDispatch()
-
+    const addToast = useToast()
     ///form handle
     const form = useForm({
         defaultValues: {
@@ -45,7 +46,7 @@ function LoginForm() {
             //dispath store
             const action = await login(data)
             const resultAction = dispath(action)
-            const userData = unwrapResult(resultAction)
+            addToast('Đăng Nhập thành công')
             //
         } catch (error) {
             console.log('form', error)
@@ -53,19 +54,19 @@ function LoginForm() {
     }
 
     return (
-      
-            <form 
-            onSubmit={handleSubmit(onSubmit)} 
-            // className='bg-white shadow-md rounded px-12 pt-4 pb-8 mb-4'
-            >
-                <p className='capitalize text-center relative text-sm font-bold pb-3 mb-2'>Đăng nhập</p>
-                <TextField errors={errors} register={register} name="username" placeholder='Username' />
-                <PasswordField errors={errors} register={register} name='password' placeholder='Password' />
-                {/*sex  */}
-                <button className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline'>Đăng nhập</button>
-            </form>
 
-      
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+        // className='bg-white shadow-md rounded px-12 pt-4 pb-8 mb-4'
+        >
+            <p className='capitalize text-center relative text-sm font-bold pb-3 mb-2'>Đăng nhập</p>
+            <TextField errors={errors} register={register} name="username" placeholder='Username' />
+            <PasswordField errors={errors} register={register} name='password' placeholder='Password' />
+            {/*sex  */}
+            <button className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline'>Đăng nhập</button>
+        </form>
+
+
     );
 }
 

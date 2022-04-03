@@ -16,11 +16,9 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         current: {},
-        showSnack: false,
         login: false,
         loginPending: false,
         loginError: false,
-        snackMessage: '',
         setting: {}
     }
     ,
@@ -30,9 +28,6 @@ const userSlice = createSlice({
             state.current = null
         }
         ,
-        hiddenSnack(state) {
-            state.showSnack = false
-        }
 
     },
     extraReducers: {
@@ -59,9 +54,7 @@ const userSlice = createSlice({
         [login.fulfilled]: (state, action) => {
             method.setToken(action.payload.accessToken, action.payload.refreshToken)
             state.loginPending = false
-            state.showSnack = true
             state.login = true
-            state.snackMessage = 'Dang nhap thanh cong'
             state.current = { ...action.payload, refreshToken: undefined }
         },
         [login.rejected]: (state,) => {
@@ -76,5 +69,5 @@ const userSlice = createSlice({
 
 
 const { reducer, actions } = userSlice
-export const { logout, hiddenSnack, } = actions
+export const { logout, } = actions
 export default reducer

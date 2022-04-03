@@ -1,14 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import HomePage from './page/HomePage';
-
+import { Navigate, Outlet } from 'react-router-dom';
 
 ControlPage.propTypes = {
 
 };
 
-function ControlPage() {
+function ControlPage({ Component }) {
     const user = useSelector(state => state.user)
     return (
         <>
@@ -16,10 +14,10 @@ function ControlPage() {
                 !user.login && <Navigate to='/auth/login' />
             }
             {
-                user.login && <HomePage />
+                user.login && <Component Outlet={Outlet} />
             }
         </>
     );
 }
 
-// export default ControlPage;
+export default ControlPage;

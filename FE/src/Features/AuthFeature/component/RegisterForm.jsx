@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from "yup";
 import method from '../../../Constan/method';
+import useToast from '../../ToastFeature/Hook';
 import { registerThunk } from '../userSlice';
 import PasswordField from './PasswordField';
 import RadioField from './RadioField';
@@ -49,7 +50,7 @@ const schema = yup.object().shape({
 
 function RegisterForm() {
     const dispath = useDispatch()
-
+    const addToast = useToast()
     ///form handle
     const form = useForm({
         defaultValues: {
@@ -92,6 +93,7 @@ function RegisterForm() {
             const action = await registerThunk(newData)
             const resultAction = dispath(action)
             const userData = unwrapResult(resultAction)
+            addToast('Đăng kí thành công')
             //
             console.log(userData)
         } catch (error) {
