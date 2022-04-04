@@ -7,7 +7,7 @@ function LoginPage(props) {
     return (
         <>
             <LoginForm />
-            <Link className='mt-2 block cursor-pointer text-center text-purple-700' to='register' >
+            <Link className='mt-2 block cursor-pointer text-center text-purple-700' to='/auth/register' >
                 Bạn chưa có tài khoản? Đăng kí tại đây
             </Link>
         </>

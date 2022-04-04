@@ -12,6 +12,10 @@ export const login = createAsyncThunk('user/login', async (data) => {
     return result
 })
 
+export const loginWithRefeshToken = createAsyncThunk('user/logintoken', async () => {
+    const token = await userApi.refresh()
+    return token
+})
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -34,8 +38,6 @@ const userSlice = createSlice({
         [registerThunk.fulfilled]: (state, action) => {
             method.setToken(action.payload.accessToken, action.payload.refreshToken)
             state.loginPending = false
-            state.showSnack = true
-            state.snackMessage = 'Dang ki thanh cong'
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
         },
@@ -63,6 +65,16 @@ const userSlice = createSlice({
         },
         [login.pending]: (state,) => {
             state.loginPending = true
+        },
+        [loginWithRefeshToken.fulfilled]: (state, action) => {
+            method.setAccessToken(action.payload.accessToken)
+            state.loginPending = false
+            state.login = true
+            state.current = { ...action.payload, refreshToken: undefined }
+        },
+        [loginWithRefeshToken.rejected]: (state) => {
+            state.loginPending = false
+            state.login = false
         }
     }
 })
@@ -71,3 +83,9 @@ const userSlice = createSlice({
 const { reducer, actions } = userSlice
 export const { logout, } = actions
 export default reducer
+// function login(state, action) {
+//     method.setToken(action.payload.accessToken, action.payload.refreshToken)
+//     state.loginPending = false
+//     state.login = true
+//     state.current = { ...action.payload, refreshToken: undefined }
+// }

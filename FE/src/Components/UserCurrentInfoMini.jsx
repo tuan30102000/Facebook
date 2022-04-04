@@ -4,10 +4,10 @@ import UserInfoMini from './UserInfoMini';
 
 
 function UserCurrentInfoMini() {
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user.current.data)
     return (
         <>
-            <UserInfoMini avartUrl={user.current.data.avatarUrl} displayName={user.current.data.displayName} />
+            <UserInfoMini avartUrl={user.avatarUrl} userId={user._id} displayName={user.displayName} />
         </>
     );
 }

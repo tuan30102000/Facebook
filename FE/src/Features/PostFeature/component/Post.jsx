@@ -13,7 +13,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, postId, owne
     const isOwnerPost = user.current.data._id == ownerId
     return (
         <div className='relative w-[500px]'>
-            <UserInfoMini avartUrl={avatarUrl} displayName={displayName} />
+            <UserInfoMini avartUrl={avatarUrl} userId={ownerId} displayName={displayName} />
             <div className="">{content}</div>
             <div className="flex w-full">
                 {urlList.map((item, key) => (

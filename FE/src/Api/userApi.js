@@ -11,7 +11,7 @@ const userApi = {
         const url = '/auth/login'
         return axiosClient.post(url, data)
     },
-    async refresh() {
+    refresh() {
         const url = '/auth/refresh'
         const refreshToken = method.getRefreshToken()
         return axiosClient.post(url, { refreshToken },)

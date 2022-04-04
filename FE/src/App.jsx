@@ -1,24 +1,34 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ControlPage from './Components/ControlPage';
 import AuthFeature from "./Features/AuthFeature";
 import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
+import { loginWithRefeshToken } from './Features/AuthFeature/userSlice';
 import HomePage from './Features/PostFeature/page/HomePage';
 import ListToast from './Features/ToastFeature/ListToast';
 import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    (async () => {
+      const action = loginWithRefeshToken()
+      dispatch(action)
+    })()
+    return () => {
+    }
+  }, [])
   const user = useSelector(state => state.user)
   return (
-    <div className="app w-screen h-screen bg-[#F0F2F5]">
+    <div className="app w-screen min-h-screen h-max bg-[#F0F2F5]">
       <ListToast />
       <Routes>
         <Route path='/auth' element={<AuthFeature />} >
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route index element={<Navigate to='login' push />} />
-          <Route />
         </Route>
         <Route>
           <Route path='/profile' element={<ControlPage Component={UserControl} />} >

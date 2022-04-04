@@ -52,9 +52,8 @@ class authController {
         const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
         if (!userData) return res.status(403).json({ message: 'token not valid' })
 
-        const newRefreshToken = generateRefreshToken(userData)
         const newAccessToken = generateAccessToken(userData)
-        res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken })
+        res.status(200).json({ accessToken: newAccessToken, data: userData.data })
     }
     async login(req, res) {
         const { username, password, } = req.body

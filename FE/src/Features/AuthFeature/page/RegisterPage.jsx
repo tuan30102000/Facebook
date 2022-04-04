@@ -8,7 +8,7 @@ function RegisterPage(props) {
     return (
         <>
             <RegisterForm />
-            <Link className='mt-2 block cursor-pointer text-center text-purple-700' to='login' >
+            <Link className='mt-2 block cursor-pointer text-center text-purple-700' to='/auth/login' >
                 Bạn đã có tài khoản? Đăng nhập tại đây
             </Link>
         </>

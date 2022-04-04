@@ -78,9 +78,9 @@ const userSchema = new Mongoose.Schema(
             type: Array,
             default: []
         },
-        coverAvr:{
+        coverAvatar:{
             type:String,
-            default:'https://res.cloudinary.com/dmrx3zaby/image/upload/v1646299624/FacebookCollection/avatarCollection/131056830_1031736600641748_7803183549451959873_n_zbvgsn.jpg',
+            default:'https://res.cloudinary.com/dmrx3zaby/image/upload/v1648960994/FacebookCollection/coverCollection/274812010_1131778247362268_6936635690129899680_n_yw7amk.jpg',
         }
     },
     { timestamps: true }
