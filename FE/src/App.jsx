@@ -36,8 +36,6 @@ function App() {
             <Route index element={<Navigate to={user?.current?.data?._id} push />} />
           </Route>
         </Route>
-
-
         <Route path='/*' element={<ControlPage Component={HomePage} />} >
 
         </Route>

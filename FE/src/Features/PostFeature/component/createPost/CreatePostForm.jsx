@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import postApi from '../../../../Api/postApi';
-import { addToStartGlobalPost } from '../../postSlice';
 import PostForm from '../PostForm';
 CreatePostForm.propTypes = {
 
@@ -10,7 +8,6 @@ function CreatePostForm({ closeModal, addToStartPost }) {
     const [imgPreview, setimgPreview] = useState([])
     const [file, setfile] = useState([])
     const [textValue, settextValue] = useState('')
-    const dispatch = useDispatch()
     useEffect(() => {
         const listUrl = file.map(item => URL.createObjectURL(item))
         setimgPreview(listUrl)

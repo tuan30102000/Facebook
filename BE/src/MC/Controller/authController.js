@@ -51,9 +51,9 @@ class authController {
         if (!refreshToken) return res.status(401).json({ message: 'You\'re not authenticated', })
         const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
         if (!userData) return res.status(403).json({ message: 'token not valid' })
-
-        const newAccessToken = generateAccessToken(userData)
-        res.status(200).json({ accessToken: newAccessToken, data: userData.data })
+        const newAccessToken = generateAccessToken(userData.data)
+        const userDataCurrent = await user.findById(userData.data._id)
+        res.status(200).json({ accessToken: newAccessToken, data: userDataCurrent })
     }
     async login(req, res) {
         const { username, password, } = req.body

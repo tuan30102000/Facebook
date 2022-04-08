@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import OwnerProfile from '../component/OwnerProfile';
+import CurrentProfile from '../component/CurrentProfile';
 
 UserPage.propTypes = {
 
@@ -14,7 +14,7 @@ function UserPage() {
     const isOwner = userId === user.current.data._id
     return (
         <>
-            {isOwner && <OwnerProfile />}
+            {isOwner && <CurrentProfile />}
         </>
     );
 }

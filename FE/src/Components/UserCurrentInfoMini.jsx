@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import UserInfoMini from './UserInfoMini';
 
 
-function UserCurrentInfoMini() {
+function UserCurrentInfoMini({ isShowName = true }) {
     const user = useSelector(state => state.user.current.data)
     return (
         <>
-            <UserInfoMini avartUrl={user.avatarUrl} userId={user._id} displayName={user.displayName} />
+            <UserInfoMini avartUrl={user.avatarUrl} userId={user._id} displayName={isShowName ? user.displayName : ''} />
         </>
     );
 }
