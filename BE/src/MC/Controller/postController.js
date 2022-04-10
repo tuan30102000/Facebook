@@ -1,6 +1,6 @@
 import cloudinary from "../../cloudinary/cloudinary.js"
+import method from "../../constan/method.js"
 import post from "../Model/post.js"
-import users from "../Model/users.js"
 class postController {
     async createPost(req, res) {
         const fileList = req.files
@@ -14,7 +14,7 @@ class postController {
             console.log(resultClould)
             const listUrl = resultClould.map(item => item.url)
             const newPost = new post({
-                ownerId: req.user._id,
+                owner: req.user._id,
                 content,
                 imgUrl: listUrl
             })
@@ -29,8 +29,10 @@ class postController {
     }
     async deletePost(req, res) {
         try {
-            const postData = await post.findById(req.params.postId)
-            // const dinaryDestroyPromise = postData.imgUrl.map(item => cloudinary.uploader.destroy(public_id))
+            const listUrlPost = req.postCurrent.imgUrl
+            const listPublicId = listUrlPost.imgUrl.map(item => method.getClouldDinary(item))
+            const listPromiseDetroyImgClouldDinary = listPublicId.map(item => cloudinary.uploader.destroy(item))
+            await Promise.all(listPromiseDetroyImgClouldDinary)
             await post.deleteOne({ _id: req.params.postId })
             res.status(201).json({ message: 'delete successfully' })
         } catch (error) {
@@ -40,8 +42,12 @@ class postController {
     async updatePost(req, res) {
         let { content, photos } = req.body
         photos = photos ? photos.split(',') : []
+        const listUrlPost = req.postCurrent.imgUrl
+        const listDetroyUrl = listUrlPost.filter(item => !photos.includes(item))
+        const listPromiseDetroyImgClouldDinary = listDetroyUrl.map(item => cloudinary.uploader.destroy(method.getClouldDinary(item)))
         try {
             //nothasnewFile
+            await Promise.all(listPromiseDetroyImgClouldDinary)
             if (!req.files[0]) {
                 await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
                 const postAfterEdit = await post.findById(req.params.postId)
@@ -64,24 +70,17 @@ class postController {
     }
     async getPost(req, res) {
         try {
-            const postData = await post.findById(req.params.postId)
-            const ownerPost = await users.findById(postData.ownerId)
-            res.status(200).json({
-                ...postData, avatar: ownerPost.avatarUrl, name: ownerPost.displayName
-            })
+            const postData = await post.findById(req.params.postId).populate({ path: 'owner', select: 'displayName avatarUrl' })
+            res.status(200).json(postData)
         } catch (error) {
             res.status(403).json({ message: 'something wrong' })
         }
     }
     async getAllPost(req, res) {
         try {
-            const allPost = await post.find({})
-            const listOwnerId = allPost.map(item => item.ownerId)
-            const listOwnerReal = new Set(listOwnerId)
-            const listUserPromise = Array.from(listOwnerReal).map(item => users.findById(item))
-            const userData = await Promise.all(listUserPromise)
-            const postData = allPost.map(post => ({ ... (userData.find(user => user._id.toString() == post.ownerId)).toObject(), ...post._doc }),)
-            res.status(200).json(postData)
+            const allPost = await post.find({}).populate({ path: 'owner', select: 'displayName avatarUrl' }).exec()
+
+            res.status(200).json(allPost)
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: 'something wrong' })
@@ -90,7 +89,7 @@ class postController {
     }
     async getPostUser(req, res) {
         try {
-            const postOfUser = await post.find({ ownerId: req.params.userId })
+            const postOfUser = await post.find({ owner: req.params.userId }).populate({ path: 'owner', select: 'displayName avatarUrl' })
             res.status(200).json(postOfUser)
         } catch (error) {
             console.log(error)

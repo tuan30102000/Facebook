@@ -1,7 +1,7 @@
 import Mongoose from "mongoose"
 
 const postSchema = new Mongoose.Schema({
-    ownerId: { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
+    owner: { type: Mongoose.Schema.Types.ObjectId, ref: 'user' },
     imgUrl: {
         type: Array,
         default: []
