@@ -19,10 +19,10 @@ class middlewareController {
     }
 
     async verifyPost(req, res, next) {
-        const { postId } = req.params
         try {
             const postCurrent = await post.findById(req.params.postId)
-            if (req.user._id != postCurrent.ownerId) return res.status(403).json({ message: 'not enough jurisdiction' })
+            if (req.user._id != postCurrent.owner) return res.status(403).json({ message: 'not enough jurisdiction' })
+            req.postCurrent = postCurrent
             next()
         } catch (error) {
             console.log(error)

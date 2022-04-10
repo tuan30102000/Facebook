@@ -1,9 +1,12 @@
 import multer from 'multer'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
             //C:\\Users\\ADMIN\\Desktop\\Facebook\\BE\\image
-            cb(null, process.env.DIRECTORY)
+            cb(null, __dirname + '\\image')
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)

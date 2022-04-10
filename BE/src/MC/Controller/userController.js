@@ -34,7 +34,14 @@ class userController {
         }
 
     }
+    // async getUserAll(req, res) {
+    //     try {
+    //         const user = await users.find({}).select('_id username email')
+    //         res.json(user)
+    //     } catch (error) {
 
+    //     }
+    // }
     async friendRequest(req, res) {
         const requestId = req.user._id
         const friendId = req.params.friendId

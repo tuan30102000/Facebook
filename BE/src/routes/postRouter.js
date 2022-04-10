@@ -7,6 +7,7 @@ postRouter.post('/create', upload.any(), middlewareController.verifyToken, postC
 postRouter.patch('/update/:postId', upload.any(), middlewareController.verifyToken, middlewareController.verifyPost, postController.updatePost)
 postRouter.delete('/delete/:postId', middlewareController.verifyToken, middlewareController.verifyPost, postController.deletePost)
 postRouter.get('/get/:postId', postController.getPost)
+postRouter.get('/getpostuser/:userId', postController.getPostUser)
 postRouter.get('/getall', postController.getAllPost)
 
 
