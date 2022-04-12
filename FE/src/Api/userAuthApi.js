@@ -10,6 +10,14 @@ const userAuth = {
     editInfor(data) {
         const url = 'user/infor'
         return axiosJwt.patch(url, data)
+    },
+    getAllUser() {
+        const url = 'user/getall'
+        return axiosJwt.get(url)
+    },
+    addFriend(friendId) {
+        const url = 'user/friend/request'
+        return axiosJwt.patch(url, { friendId })
     }
 }
 export default userAuth

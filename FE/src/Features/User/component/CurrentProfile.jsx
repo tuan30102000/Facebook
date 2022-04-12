@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiCamera } from 'react-icons/bi';
@@ -8,6 +8,7 @@ import userAuth from '../../../Api/userAuthApi';
 import { useForm } from 'react-hook-form';
 import InputField from '../../../Components/InputField'
 import { AiOutlineEdit } from 'react-icons/ai'
+import MakeFriendList from '../../../Components/MakeFriendBox';
 CurrentProfile.propTypes = {
 
 };
@@ -136,8 +137,21 @@ function EditAboutBox({ aboutInit }) {
 function CurrentProfile() {
     const user = useSelector(state => state.user.current.data)
     const userAge = new Date().getFullYear() - new Date(user.birthDay).getFullYear()
+    const [userDataList, setuserDataList] = useState([])
+    useEffect(() => {
+        (async () => {
+            const data = await userAuth.getAllUser()
+            setuserDataList(data)
+        })()
+
+        return () => {
+
+        }
+    }, [])
+
     return (
         <div>
+            <MakeFriendList listDataUser={userDataList} />
             <CurrentCoverAvatar coverAvatar={user.coverAvatar} />
             <CurrentAvatar avatarUrl={user.avatarUrl} />
             <p>{user.sex == 'male' ? 'Nam' : 'Nữ'}</p>

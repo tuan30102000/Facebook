@@ -36,7 +36,7 @@ class userController {
     }
     async getUserAll(req, res) {
         try {
-            const user = await users.find({ _id: { $ne: req.user._id } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
+            const user = await users.find({ _id: { $ne: req.user._id } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).select('avatarUrl displayName')
             res.json(user)
         } catch (error) {
 
@@ -45,8 +45,13 @@ class userController {
     async friendRequest(req, res) {
         const requestId = req.user._id
         const friendId = req.body.friendId
+        if (friendId == requestId) return res.status(400).json({ message: 'can add yourself' })
         try {
-            await user.updateOne({ _id: friendId, }, { $push: { friendRequest: requestId } })
+            const friend = await users.findById(friendId)
+            if (!friend) return res.status(403).json({ message: 'user not Exist' })
+            if (friend.friendRequest.includes(requestId)) return res.status(400).json({ message: 'request is Exist' })
+            if (friend.friend.includes(requestId)) return res.status(400).json({ message: 'have made friends' })
+            await users.updateOne({ _id: friendId, }, { $push: { friendRequest: requestId } })
             return res.status(200).json({ message: 'add req thanh cong' })
         } catch (error) {
             console.log(error)

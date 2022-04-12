@@ -51,7 +51,9 @@ class authController {
         const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
         if (!userData) return res.status(403).json({ message: 'token not valid' })
         const newAccessToken = generateAccessToken(userData)
-        const userDataCurrent = await user.findById(userData._id).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).populate({ path: 'friend', select: 'avatarUrl displayName' })
+        const userDataCurrent = await user.findById(userData._id)
+            .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
+            .populate({ path: 'friend', select: 'avatarUrl displayName' })
         res.status(200).json({ accessToken: newAccessToken, data: userDataCurrent })
     }
     // async login(req, res) {
