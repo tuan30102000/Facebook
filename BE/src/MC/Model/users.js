@@ -62,14 +62,8 @@ const userSchema = new Mongoose.Schema(
             type: Number,
             default: 0,
         },
-        friend: {
-            type: Array,
-            default: [],
-        },
-        friendRequest: {
-            type: Array,
-            default: []
-        },
+        friend: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }],
+        friendRequest: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }],
         coverAvatar: {
             type: String,
             default: 'https://res.cloudinary.com/dmrx3zaby/image/upload/v1648960994/FacebookCollection/coverCollection/274812010_1131778247362268_6936635690129899680_n_yw7amk.jpg',

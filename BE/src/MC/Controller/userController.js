@@ -34,21 +34,23 @@ class userController {
         }
 
     }
-    // async getUserAll(req, res) {
-    //     try {
-    //         const user = await users.find({}).select('_id username email')
-    //         res.json(user)
-    //     } catch (error) {
-
-    //     }
-    // }
-    async friendRequest(req, res) {
-        const requestId = req.user._id
-        const friendId = req.params.friendId
+    async getUserAll(req, res) {
         try {
-
+            const user = await users.find({ _id: { $ne: req.user._id } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
+            res.json(user)
         } catch (error) {
 
+        }
+    }
+    async friendRequest(req, res) {
+        const requestId = req.user._id
+        const friendId = req.body.friendId
+        try {
+            await user.updateOne({ _id: friendId, }, { $push: { friendRequest: requestId } })
+            return res.status(200).json({ message: 'add req thanh cong' })
+        } catch (error) {
+            console.log(error)
+            res.status(403).json({ message: ' something wrong' })
         }
     }
 }

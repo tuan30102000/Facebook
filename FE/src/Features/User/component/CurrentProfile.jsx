@@ -22,7 +22,7 @@ function CurrentAvatar({ avatarUrl }) {
     const handleModal = useRef({})
 
     return (
-        <div className="rounded-crical w-[168px] h-[168px] relative cursor-pointer">
+        <div className="rounded-crical w-[168px] h-[168px] relative cursor-pointers">
             <img src={avatarUrl} className='rounded-crical w-full h-full object-cover' alt="" />
             <BiCamera onClick={() => {
                 handleModal.current.openModal()
@@ -62,15 +62,13 @@ function CurrentDisplayName({ displayName }) {
     const handleModalRef = useRef()
     return (
 
-        <div className="">
-            <div className="">
-                {displayName}
-                <AiOutlineEdit onClick={() => handleModalRef.current.openModal()} />
-            </div>
+        <div className="flex">
+            <p> {displayName}</p>
+            <AiOutlineEdit onClick={() => handleModalRef.current.openModal()} />
             <Modal ref={handleModalRef} Component={EditDisplayNameBox} componentProps={{
                 displayNameInit: displayName
-            }} />
-        </div>
+            }} /></div>
+
     )
 }
 function EditDisplayNameBox({ displayNameInit }) {
@@ -100,7 +98,7 @@ function CurrentAbout({ about }) {
     const handleModalRef = useRef()
 
     return (
-        <div className="">
+        <div className="flex justify-between">
             <p>{aboutToArray}</p>
             <AiOutlineEdit onClick={() => handleModalRef.current.openModal()} />
             <Modal ref={handleModalRef} Component={EditAboutBox} componentProps={{
@@ -146,6 +144,7 @@ function CurrentProfile() {
             <CurrentDisplayName displayName={user.displayName} />
             <CurrentAbout about={user.about} />
             <p>{userAge}</p>
+            <p>{user.friend.length} friend</p>
             <Link to={'/'} >
                 HOME
             </Link>

@@ -9,7 +9,7 @@ class middlewareController {
         //token is not valid
         try {
             const user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
-            req.user = user.data
+            req.user = user
             next()
         } catch (error) {
             console.log(error)

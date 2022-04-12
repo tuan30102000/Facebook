@@ -29,7 +29,7 @@ class authController {
                     username, email, password: hashed, sex, birthDay
                 })
                 const useAfterCreate = await newUser.save()
-                const userData = await user.findOne({ username })
+                const userData = await user.findOne({ username }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).populate({ path: 'friend', select: 'avatarUrl displayName' })
                 const accessToken = generateAccessToken(userData)
                 const refreshToken = generateRefreshToken(userData)
                 res.status(200).json({ data: userData, accessToken, refreshToken })
@@ -51,7 +51,7 @@ class authController {
         const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
         if (!userData) return res.status(403).json({ message: 'token not valid' })
         const newAccessToken = generateAccessToken(userData)
-        const userDataCurrent = await user.findById(userData._id)
+        const userDataCurrent = await user.findById(userData._id).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).populate({ path: 'friend', select: 'avatarUrl displayName' })
         res.status(200).json({ accessToken: newAccessToken, data: userDataCurrent })
     }
     // async login(req, res) {
@@ -97,7 +97,7 @@ class authController {
         if (!username) return res.status(403).json({ message: 'not have username' })
         if (!password) return res.status(403).json({ message: 'not have password' })
         try {
-            const userData = await user.findOne({ username }).select('+password')
+            const userData = await user.findOne({ username }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).populate({ path: 'friend', select: 'avatarUrl displayName' }).select('+password')
             //
             if (!userData) return res.status(403).json({ message: 'user not Exist' })
             //

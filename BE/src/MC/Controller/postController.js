@@ -50,8 +50,8 @@ class postController {
             await Promise.all(listPromiseDetroyImgClouldDinary)
             if (!req.files[0]) {
                 await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
-                const postAfterEdit = await post.findById(req.params.postId)
-                return res.status(200).json({ ...req.user, ...postAfterEdit._doc })
+                const postAfterEdit = await post.findById(req.params.postId).populate({ path: 'owner', select: 'displayName avatarUrl' })
+                return res.status(200).json({ ...postAfterEdit._doc })
             }
             //hasnewFile
             //check file limit
@@ -61,8 +61,8 @@ class postController {
             const listCloudUrl = (await Promise.all(promiseClouldList)).map(item => item.url)
             photos = [...photos, ...listCloudUrl]
             await post.updateOne({ _id: req.params.postId }, { imgUrl: photos, content })
-            const postAfterEdit = await post.findById(req.params.postId)
-            return res.status(200).json({ ...req.user, ...postAfterEdit._doc })
+            const postAfterEdit = await post.findById(req.params.postId).populate({ path: 'owner', select: 'displayName avatarUrl' })
+            return res.status(200).json({ ...postAfterEdit._doc })
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: 'something wrong' })
@@ -79,7 +79,6 @@ class postController {
     async getAllPost(req, res) {
         try {
             const allPost = await post.find({}).populate({ path: 'owner', select: 'displayName avatarUrl' }).exec()
-
             res.status(200).json(allPost)
         } catch (error) {
             console.log(error)
