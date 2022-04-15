@@ -18,6 +18,18 @@ const userAuth = {
     addFriend(friendId) {
         const url = 'user/friend/request'
         return axiosJwt.patch(url, { friendId })
-    }
+    },
+    rejectFriend(friendId) {
+        const url = 'user/friend/reject'
+        return axiosJwt.patch(url, { friendId })
+    },
+    acceptFriend(friendId) {
+        const url = 'user/friend/accept'
+        return axiosJwt.patch(url, { friendId })
+    },
+    removeFriend(friendId) {
+        const url = 'user/friend/remove'
+        return axiosJwt.patch(url, { friendId })
+    },
 }
 export default userAuth

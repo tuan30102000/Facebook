@@ -8,7 +8,8 @@ import userAuth from '../../../Api/userAuthApi';
 import { useForm } from 'react-hook-form';
 import InputField from '../../../Components/InputField'
 import { AiOutlineEdit } from 'react-icons/ai'
-import MakeFriendList from '../../../Components/MakeFriendBox';
+import MakeFriendList from '../../FriendFeature/component/MakeFriendList';
+import RequetFriendList from '../../FriendFeature/component/RequetFriendList';
 CurrentProfile.propTypes = {
 
 };
@@ -151,6 +152,7 @@ function CurrentProfile() {
 
     return (
         <div>
+            <RequetFriendList listFriend={user.friendRequest} />
             <MakeFriendList listDataUser={userDataList} />
             <CurrentCoverAvatar coverAvatar={user.coverAvatar} />
             <CurrentAvatar avatarUrl={user.avatarUrl} />

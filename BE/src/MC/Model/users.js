@@ -1,5 +1,5 @@
 import Mongoose from "mongoose";
-import validator from 'validator'
+import validator from 'validator';
 import listDefalult from "../../constan/listDefault.js";
 const { isEmail } = validator
 const random = (range) => {
@@ -62,8 +62,9 @@ const userSchema = new Mongoose.Schema(
             type: Number,
             default: 0,
         },
-        friend: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }],
-        friendRequest: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'user' }],
+        friendRequest: { type: Array, default: [], ref: 'user' }
+        ,
+        friend: { type: Array, default: [], ref: 'user' },
         coverAvatar: {
             type: String,
             default: 'https://res.cloudinary.com/dmrx3zaby/image/upload/v1648960994/FacebookCollection/coverCollection/274812010_1131778247362268_6936635690129899680_n_yw7amk.jpg',
@@ -71,5 +72,6 @@ const userSchema = new Mongoose.Schema(
     },
     { timestamps: true }
 );
+
 
 export default Mongoose.model('user', userSchema)

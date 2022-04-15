@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken"
 import post from "../Model/post.js";
+import users from "../Model/users.js";
 class middlewareController {
-    verifyToken(req, res, next) {
+    async verifyToken(req, res, next) {
         const token = req.headers.accesstoken;
         if (!token) return res.status(401).json("You're not authenticated");
 
@@ -9,11 +10,13 @@ class middlewareController {
         //token is not valid
         try {
             const user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
-            req.user = user
+            const userData = await users.findById(user._id)
+            if (!userData) return res.status(403).json({ message: 'token is not valid' })
+            req.user = userData
             next()
         } catch (error) {
             console.log(error)
-            return res.status(403).json({ message: 'token is not valid' })
+            return res.status(403).json({ message: 'something wrong' })
         }
         //token valid
     }
@@ -27,6 +30,19 @@ class middlewareController {
         } catch (error) {
             console.log(error)
             return res.status(403).json({ message: 'can connect Db' })
+        }
+    }
+    async checkFrienExist(req, res, next) {
+        const requestId = req.user._id
+        const friendId = req.body.friendId
+        if (friendId == requestId) return res.status(400).json({ message: 'can add yourself' })
+        try {
+            const friend = await users.findById(friendId)
+            if (!friend) return res.status(403).json({ message: 'user not Exist' })
+            req.friend = friend
+            next()
+        } catch (error) {
+
         }
     }
 }

@@ -54,6 +54,7 @@ class authController {
         const userDataCurrent = await user.findById(userData._id)
             .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
             .populate({ path: 'friend', select: 'avatarUrl displayName' })
+        if (!userDataCurrent) return res.status(403).json({ message: 'user not exists' })
         res.status(200).json({ accessToken: newAccessToken, data: userDataCurrent })
     }
     // async login(req, res) {
