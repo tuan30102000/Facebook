@@ -67,10 +67,11 @@ function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, 
                 onTextChange={onTextChange}
                 onFileChange={onFileChange}
                 deleteFile={deleteFile}
-                title='Tạo bài viết'
+                title='Sửa bài viết'
                 btnText='UP'
                 isDisableBtn={isDisableBtn}
                 textValue={textValue}
+                closeModal={closeModal}
             />
         </>
     );

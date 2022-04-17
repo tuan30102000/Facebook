@@ -15,7 +15,7 @@ function Option({ Component, componentProp }) {
     }
 
     return (
-        <div className='absolute top-0 right-0 w-max h-max'>
+        <div className='relative w-max h-max'>
             <BsThreeDots onClick={open} className='' />
             <div className="absolute top-full left-[100%] py-2">
                 <Component {...componentProp} isShowOption={isShowOption} onClose={close} />

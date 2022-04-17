@@ -53,6 +53,7 @@ function CreatePostForm({ closeModal, addToStartPost }) {
                 btnText='Đăng'
                 isDisableBtn={!((file[0] || textValue) && (file.length <= 3))}
                 textValue={textValue}
+                closeModal={closeModal}
             />
         </>
     );

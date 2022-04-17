@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { BsCardImage } from 'react-icons/bs'
 import UserCurrentInfoMini from '../../../Components/UserCurrentInfoMini';
 import { FaTimesCircle } from 'react-icons/fa'
-
+import { GrClose } from 'react-icons/gr'
 PostForm.propTypes = {
     imgPreview: PropTypes.array.isRequired,
     textValue: PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ PostForm.propTypes = {
     deleteFile: PropTypes.func.isRequired,
 };
 
-function PostForm({ imgPreview, textValue, onUpload, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
+function PostForm({ imgPreview, textValue, onUpload, closeModal, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
     const fileRef = useRef({})
     const textRef = useRef({})
     useEffect(() => {
@@ -28,7 +28,12 @@ function PostForm({ imgPreview, textValue, onUpload, title = '', btnText = 'UP',
 
     return (
         <div className='max-h-350 w-500'>
-            <p className='flex items-center justify-center font-bold bg-white border-solid border-b border-gray-400 h-14' >{title}</p>
+            <div className="bg-white border-solid border-b border-[#f3f3f4] relative justify-center items-center">
+                <p className='flex text-[20px] items-center justify-center font-bold text-[#050505]  h-14' >{title}</p>
+                <div onClick={closeModal} className="absolute right-2 top-[50%] translate-y-[-50%] flex justify-center items-center w-[36px] h-[36px] rounded-crical bg-[#e4e6eb] cursor-pointer">
+                    <GrClose />
+                </div>
+            </div>
             <div className='w-full h-full bg-white pl-4 pr-3 pt-5'>
                 <UserCurrentInfoMini />
                 <div className="mt-5">

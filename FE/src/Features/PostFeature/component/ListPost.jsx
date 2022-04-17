@@ -21,7 +21,7 @@ function ListPost({ listPost = [], setPostData }) {
     }
     return (
         <div>
-            {listPost.map((item) => <Post key={item._id} {...{ deletePost, updatePost }} avatarUrl={item.owner.avatarUrl} content={item.content} urlList={item.imgUrl} displayName={item.owner.displayName} postId={item._id} ownerId={item.owner._id} />)}
+            {listPost.map((item) => <Post key={item._id} likeList={item.like} {...{ deletePost, updatePost }} avatarUrl={item.owner.avatarUrl} content={item.content} urlList={item.imgUrl} displayName={item.owner.displayName} postId={item._id} ownerId={item.owner._id} />)}
         </div>
     );
 }

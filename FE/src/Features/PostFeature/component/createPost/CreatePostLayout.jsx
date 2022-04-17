@@ -26,7 +26,7 @@ function CreatePostLayout({ addToStartPost }) {
                     </div>
                 </div>
             </div>
-            <Modal ref={openModalRef} Component={CreatePostForm} componentProps={{ addToStartPost }} />
+            <Modal ref={openModalRef} isHaveCloseBtn={false} Component={CreatePostForm} componentProps={{ addToStartPost }} />
         </>
     );
 }
