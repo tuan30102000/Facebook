@@ -16,20 +16,24 @@ const userAuth = {
         return axiosJwt.get(url)
     },
     addFriend(friendId) {
-        const url = 'user/friend/request'
-        return axiosJwt.patch(url, { friendId })
+        const url = 'user/friend/'
+        const action = 'request'
+        return axiosJwt.patch(url, { friendId, action })
     },
     rejectFriend(friendId) {
-        const url = 'user/friend/reject'
-        return axiosJwt.patch(url, { friendId })
+        const url = 'user/friend/'
+        const action = 'reject'
+        return axiosJwt.patch(url, { friendId, action })
     },
     acceptFriend(friendId) {
-        const url = 'user/friend/accept'
-        return axiosJwt.patch(url, { friendId })
+        const url = 'user/friend/'
+        const action = 'accept'
+        return axiosJwt.patch(url, { friendId, action })
     },
     removeFriend(friendId) {
-        const url = 'user/friend/remove'
-        return axiosJwt.patch(url, { friendId })
+        const url = 'user/friend/'
+        const action = 'remove'
+        return axiosJwt.patch(url, { friendId, action })
     },
 }
 export default userAuth
