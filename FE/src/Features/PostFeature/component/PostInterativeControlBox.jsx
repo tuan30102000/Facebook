@@ -18,7 +18,6 @@ function PostInterativeControlBox({ postId }) {
     return (
         <div>
             <div className="flex">
-
             </div>
         </div>
     );

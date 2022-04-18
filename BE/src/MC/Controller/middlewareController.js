@@ -35,7 +35,9 @@ class middlewareController {
     }
     async checkFrienExist(req, res, next) {
         const requestId = req.user._id
-        const friendId = req.body.friendId
+        const { friendId, action } = req.body
+        const actionList = ['request', 'accept', 'reject', 'remove']
+        if (!actionList.includes(action)) return res.status(403).json({ message: 'action not found' })
         if (friendId == requestId) return res.status(400).json({ message: 'can add yourself' })
         try {
             const friend = await users.findById(friendId)
