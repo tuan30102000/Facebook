@@ -35,5 +35,6 @@ const userAuth = {
         const action = 'remove'
         return axiosJwt.patch(url, { friendId, action })
     },
+   
 }
 export default userAuth

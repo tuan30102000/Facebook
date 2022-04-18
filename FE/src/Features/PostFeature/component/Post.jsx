@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Option from '../../../Components/Option';
 import UserInfoMini from '../../../Components/UserInfoMini';
 import OptionPost from './editPost/OptionPost';
+import PostInterativeControlBox from './PostInterativeControlBox';
 
 Post.propTypes = {
     content: PropTypes.string,
@@ -16,12 +17,37 @@ Post.propTypes = {
     updatePost: PropTypes.func.isRequired,
 };
 
-function Post({ content = '', urlList = [], avatarUrl, displayName, likeList, postId, ownerId, deletePost, updatePost }) {
+function Post({ content = '', urlList = [], avatarUrl, displayName, likeList = [], postId, ownerId, deletePost, updatePost }) {
     const user = useSelector(state => state.user.current.data)
-    console.log(likeList)
+    const [likeListState, setLikeListState] = useState(likeList);
     const isOwnerPost = user._id == ownerId
     const arrayOfContent = content.split('\n')
+    // const addLikeList = () => {
+    //     const likeListCLone = likeListState
+    //     const newLikeList = [...likeListCLone, user._id]
+    //     setLikeListState(newLikeList)
+    // }
+    // const removeLikeList = () => {
+    //     const likeListCLone = likeListState
+    //     const newLikeList = likeListCLone.filter(item => !item != user._id)
+    //     setLikeListState(newLikeList)
+    // }
+
+    const handleReact = (action) => {
+        if (action == 'like') {
+            const likeListCLone = likeListState
+            const newLikeList = [...likeListCLone, user._id]
+            return setLikeListState(newLikeList)
+        }
+
+        if (action == 'unlike') {
+            const likeListCLone = likeListState
+            const newLikeList = likeListCLone.filter(item => item != user._id)
+            return setLikeListState(newLikeList)
+        }
+    }
     return (
+
         <div className='w-[500px] bg-white rounded-[5px] shadow mb-3'>
             <div className="px-4 pt-3">
                 <div className="flex justify-between mb-3">
@@ -38,6 +64,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, likeList, po
                         </div>
                     ))}
                 </div>}
+            <PostInterativeControlBox isLikePost={likeListState.includes(user._id)} postId={postId} handleReact={handleReact} />
         </div>
     );
 }
