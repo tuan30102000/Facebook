@@ -1,7 +1,14 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    // fontFamily: {
+    //   'roboto': ['roboto', 'sans-serif',],
+
+    // },
     extend: {
+      boxShadow: {
+        '3xl': '0 4px 10px -15px rgba(0, 0, 0, 0.3)',
+      },
       keyframes: {
         toastIn: {
           '0%': {
@@ -37,6 +44,7 @@ module.exports = {
       },
       borderRadius: {
         'crical': '50%',
+        'cover': 'max(0px, min(8px, calc((100vw - 4px - 100%) * 9999))) / 8px'
       }
 
     },

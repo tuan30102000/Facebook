@@ -18,8 +18,8 @@ function CreatePostLayout({ addToStartPost }) {
 
     return (
         <>
-            <div className='w-full'>
-                <div className="flex bg-white shadow items-center mx-auto w-[500px] px-4 py-3 gap-3 rounded-[8px]">
+            <div className='mb-4'>
+                <div className="flex bg-white shadow items-center mx-auto w-[600px] px-4 py-3 gap-3 rounded-[8px]">
                     <UserCurrentInfoMini isShowName={false} />
                     <div className="flex-1 flex justify-center bg-[#F0F2F5] ga cursor-pointer py-2 text-[15px] font-bold rounded-[20px] hover:bg-[#E4E6EB]" onClick={openModalRef.current.openModal}>
                         + Thêm bài viết

@@ -17,7 +17,7 @@ function UserInfoMini({ avartUrl, displayName, userId = '', avtSize = '' }) {
                 <div className={clsx("w-7 h-7 rounded-cr border-[#f3f3f4]", avtSize)}>
                     <img src={avartUrl} className='w-full h-full rounded-crical' alt="" />
                 </div>}
-            {displayName && <p className='ml-2 text-[#050505] font-bold'>{displayName}</p>}
+            {displayName && <p className='ml-2 text-[#050505] font-bold hover:underline'>{displayName}</p>}
         </Link>
     );
 }

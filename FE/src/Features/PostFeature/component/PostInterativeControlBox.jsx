@@ -32,14 +32,14 @@ function PostInterativeControlBox({ postId, isLikePost, handleReact }) {
         }
     }
     return (
-        <div className="px-4 py-1">
-            <div className='flex border-solid border-t border-b border-[#00000026] h-[44px]' >
+        <div className="px-4">
+            <div className='flex border-solid border-t border-[#00000026] h-[44px]' >
                 <div onClick={onLikeClick} className={clsx(parrentStyle)}>
                     <BiLike className={clsx('text-[18px]', { [likeColor]: isLikePost })} />
                     <span className={clsx(spanStyle, { [likeColor]: isLikePost })}>Thích</span>
                 </div>
                 <div className={clsx(parrentStyle)}>
-                    <BiComment />
+                    <BiComment className='text-[18px]' />
                     <span className={spanStyle} >Bình Luận</span>
                 </div>
             </div>

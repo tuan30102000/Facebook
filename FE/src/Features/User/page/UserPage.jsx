@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import CurrentProfile from '../component/CurrentProfile';
 
 UserPage.propTypes = {

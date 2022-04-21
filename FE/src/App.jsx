@@ -14,6 +14,7 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     (async () => {
+      console.log(window.innerWidth)
       const action = loginWithRefeshToken()
       dispatch(action)
     })()
@@ -22,7 +23,7 @@ function App() {
   }, [])
   const user = useSelector(state => state.user)
   return (
-    <div className="app w-screen min-h-screen h-max bg-[#F0F2F5]">
+    <div className="app w-full min-h-screen h-max bg-[#F0F2F5] pt-[62px]">
       <ListToast />
       <Routes>
         <Route path='/auth' element={<AuthFeature />} >
@@ -37,7 +38,6 @@ function App() {
           </Route>
         </Route>
         <Route path='/*' element={<ControlPage Component={HomePage} />} >
-
         </Route>
       </Routes>
 

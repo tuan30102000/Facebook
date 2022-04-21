@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AiOutlineEdit } from 'react-icons/ai';
+import { BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { BiCamera } from 'react-icons/bi';
-import Modal from '../../../Components/Modal';
-import useImgFile from '../../hook/useImgFIle';
 import userAuth from '../../../Api/userAuthApi';
-import { useForm } from 'react-hook-form';
-import InputField from '../../../Components/InputField'
-import { AiOutlineEdit } from 'react-icons/ai'
-import MakeFriendList from '../../FriendFeature/component/MakeFriendList';
-import RequetFriendList from '../../FriendFeature/component/RequetFriendList';
+import CurrentFriendMini from '../../../Components/CurrentFriendMini';
+import FriendListMini from '../../../Components/FriendListMini';
+import InputField from '../../../Components/InputField';
+import Modal from '../../../Components/Modal';
+import instance from '../../../Constan/instance';
+import useImgFile from '../../../hook/useImgFIle';
 CurrentProfile.propTypes = {
 
 };
 function CurrentCoverAvatar({ coverAvatar }) {
     return (
-        <div className="">
-            <img src={coverAvatar} alt="" />
+        <div className="rounded-cover rounded-t-[0px]  overflow-hidden">
+            <img src={coverAvatar} alt="" className='w-full h-full' />
         </div>
     )
 }
@@ -24,7 +25,7 @@ function CurrentAvatar({ avatarUrl }) {
     const handleModal = useRef({})
 
     return (
-        <div className="rounded-crical w-[168px] h-[168px] relative cursor-pointers">
+        <div className="rounded-crical left-0 w-[168px] h-[168px] absolute top-[-34px] border-4 border-[#1c1e21] cursor-pointers">
             <img src={avatarUrl} className='rounded-crical w-full h-full object-cover' alt="" />
             <BiCamera onClick={() => {
                 handleModal.current.openModal()
@@ -64,9 +65,9 @@ function CurrentDisplayName({ displayName }) {
     const handleModalRef = useRef()
     return (
 
-        <div className="flex">
-            <p> {displayName}</p>
-            <AiOutlineEdit onClick={() => handleModalRef.current.openModal()} />
+        <div className="flex items-center">
+            <p className='text-[#1c1e21] text-[32px] font-[700] leading-[32px]' > {displayName}</p>
+            <AiOutlineEdit onClick={() => handleModalRef.current.openModal()} className='cursor-pointer ml-2 text-[20px] mt-1' />
             <Modal ref={handleModalRef} Component={EditDisplayNameBox} componentProps={{
                 displayNameInit: displayName
             }} /></div>
@@ -151,20 +152,18 @@ function CurrentProfile() {
     }, [])
 
     return (
-        <div>
-            <RequetFriendList listFriend={user.friendRequest} />
-            <MakeFriendList listDataUser={userDataList} />
-            <CurrentCoverAvatar coverAvatar={user.coverAvatar} />
-            <CurrentAvatar avatarUrl={user.avatarUrl} />
-            <p>{user.sex == 'male' ? 'Nam' : 'Nữ'}</p>
-            <CurrentDisplayName displayName={user.displayName} />
-            <CurrentAbout about={user.about} />
-            <p>{userAge}</p>
-            <p>{user.friend.length} friend</p>
-            <Link to={'/'} >
-                HOME
-            </Link>
-
+        <div className='flex justify-center bg-white'>
+            <div className="basis-[1024px]">
+                <CurrentCoverAvatar coverAvatar={user.coverAvatar} />
+                <div className="relative flex mx-10  pt-8 pb-8  border-solid border-b border-[#ccced2]">
+                    <CurrentAvatar avatarUrl={user.avatarUrl} />
+                    <div className="self-center ml-[180px]">
+                        <CurrentDisplayName displayName={user.displayName} />
+                        <p className='text-[#65676B] pt-[10px] '>{user.friend.length} Friends</p>
+                        <CurrentFriendMini />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

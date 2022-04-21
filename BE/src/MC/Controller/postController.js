@@ -97,10 +97,23 @@ class postController {
             res.status(403).json({ message: 'something wrong' })
         }
     }
-    async likePost(req, res) {
-        if (req.post.like.includes(req.user._id)) return res.status(403).json({ message: 'you liked' })
+    async reactPost(req, res) {
+        const { action } = req.body
+        const { postId } = req.params
+        const actionList = ['like', 'unlike']
+        if (!actionList.includes(action)) return res.status(403).json({ message: 'action not found' })
         try {
-            await post.updateOne({ _id: req.post._id }, { $push: { like: ObjectId(req.user._id) } })
+            if (action == 'like') {
+                if (req.postCurrent.like.includes(postId)) return res.status(403).json({ message: 'you liked' })
+                await post.updateOne({ _id: postId }, { $addToSet: { like: ObjectId(req.user._id) } })
+                return res.status(200).json({ message: 'like done' })
+            }
+            if (action == 'unlike') {
+                if (!req.postCurrent.like.includes(req.user._id)) return res.status(403).json({ message: 'you don\'t like it' })
+                await post.updateOne({ _id: postId }, { $pull: { like: ObjectId(req.user._id) } })
+                return res.status(200).json({ message: 'unlike done' })
+            }
+
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: 'something wrong' })

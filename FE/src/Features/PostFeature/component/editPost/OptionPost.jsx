@@ -8,7 +8,7 @@ OptionPost.propTypes = {
 };
 function ButtonOption({ text = '', onClick = () => undefined }) {
     return (
-        <button onClick={onClick} className="py-1 px-2">{text}</button>
+        <button onClick={onClick} className="py-1 px-2 w-full text-left hover:bg-[#0000000d]">{text}</button>
     )
 }
 
@@ -38,9 +38,9 @@ function OptionBtn({ onClose, openDeleteModal, openEditModal, }) {
         }
     }, []);
     return (
-        <div className='' >
-            <ButtonOption onClick={openDelete} text='Delete' />
-            <ButtonOption onClick={openEdit} text='Edit' />
+        <div className='bg-white rounded-[4px] w-[200px] shadow py-2' >
+            <ButtonOption onClick={openDelete} text='Xóa bài viết' />
+            <ButtonOption onClick={openEdit} text='Chỉnh sửa bài viết' />
         </div>
     );
 }
