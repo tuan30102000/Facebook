@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /Not-Reddit
+/multer/image
 # testing
 /coverage
 
