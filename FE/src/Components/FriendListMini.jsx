@@ -9,7 +9,7 @@ FriendListMini.propTypes = {
 
 function FriendListMini({ friendList = [] }) {
     const nineFriendFirst = friendList.slice(0, 9)
-    const [indexShowName, setindexShowName] = useState(0)
+    const [indexShowName, setindexShowName] = useState(-1)
     const onHover = (i) => {
         setindexShowName(i)
     }
