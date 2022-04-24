@@ -21,7 +21,7 @@ const method = {
     }, setToken(access, refresh) {
         this.setAccessToken(access)
         this.setRefreshToken(refresh)
-    }
+    },
 }
 
 export default method

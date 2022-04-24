@@ -1,3 +1,4 @@
+import axiosClient from "./axiosClient"
 import axiosJwt from "./axiosJwt"
 
 const userAuth = {
@@ -35,6 +36,9 @@ const userAuth = {
         const action = 'remove'
         return axiosJwt.patch(url, { friendId, action })
     },
-   
+    getUserById(userId) {
+        const url = 'user/get/' + userId
+        return axiosClient.get(url)
+    }
 }
 export default userAuth

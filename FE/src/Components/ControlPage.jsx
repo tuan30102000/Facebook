@@ -8,6 +8,7 @@ ControlPage.propTypes = {
 
 function ControlPage({ Component }) {
     const user = useSelector(state => state.user)
+
     return (
         <>
             {

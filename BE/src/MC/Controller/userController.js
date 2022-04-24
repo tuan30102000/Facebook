@@ -44,6 +44,15 @@ class userController {
 
         }
     }
+    async getUserById(req, res) {
+        const { userId } = req.params
+        try {
+            const user = await users.findById({ _id: userId }).populate({ path: 'friend', select: 'avatarUrl displayName' })
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(500).json('user not found')
+        }
+    }
     async handleFriend(req, res) {
         const { friendId, action } = req.body
         const friend = req.friend
