@@ -30,7 +30,7 @@ function Header() {
     const user = useSelector(state => state.user.current.data)
     const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
     return (
-        <header className='fixed h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
+        <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
             <div className="flex h-max">
                 <Link className='w-max h-max mr-2' to={'/'}>
                     <FaFacebook className='text-[#0b84ee] text-[40px]' />

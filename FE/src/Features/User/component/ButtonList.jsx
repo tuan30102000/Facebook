@@ -13,16 +13,7 @@ function activeNavLink(query, currentQuerry) {
 }
 
 const data = [{ title: 'Bài viết', search: '', }, { title: 'Giới thiệu', search: 'about', }, { title: 'Friends', search: 'friends', }]
-function ButtonList({ searchParams }) {
-    const navigate = useNavigate()
-    const onClick = (params) => {
-
-        params
-            ? navigate({
-                search: `?${createSearchParams({ sk: params })}`,
-            })
-            : navigate({})
-    }
+function ButtonList({ searchParams, onClick }) {
     return (
         <div className='flex mx-8'>
             {data.map(item => <div

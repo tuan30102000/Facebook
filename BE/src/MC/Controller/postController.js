@@ -91,6 +91,7 @@ class postController {
     async getPostUser(req, res) {
         try {
             const postOfUser = await post.find({ owner: req.params.userId }).populate(populateData)
+            console.log(Array.isArray(postOfUser))
             res.status(200).json(postOfUser)
         } catch (error) {
             console.log(error)

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Outlet, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import userAuth from '../../../Api/userAuthApi';
-import CurrentProfile from '../component/CurrentProfile';
 import UserProfile from '../component/UserProfile';
 
 UserPage.propTypes = {
@@ -18,18 +17,20 @@ function UserPage() {
     useEffect(() => {
         (async () => {
             if (isOwner) {
-                setisExistUser(true)
                 setuser(userCurrent)
-                return
+                setisExistUser(true)
             }
-            try {
-                const userData = await userAuth.getUserById(userId)
-                console.log(userData)
-                setuser(userData)
-            } catch (error) {
-                console.log(error)
-                setisExistUser(false)
+            if (!isOwner) {
+                try {
+                    const userData = await userAuth.getUserById(userId)
+                    console.log(userData)
+                    setuser(userData)
+                } catch (error) {
+                    console.log(error)
+                    setisExistUser(false)
+                }
             }
+            setisExistUser(true)
 
         })()
 

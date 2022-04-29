@@ -27,17 +27,13 @@ function HomePage() {
             // 
         }
     }, []);
-    const addToStartPost = (post) => {
-        const clonePost = [...postData]
-        const newPostData = [post, ...clonePost]
-        setpostData(newPostData)
-    }
+  
     return (
         <>
             <Header />
             <div className='flex justify-center'>
                 <div className="basis-[1024px]">
-                    <CreatePostLayout addToStartPost={addToStartPost} />
+                    <CreatePostLayout setPosts={setpostData} />
                     <ListPost listPost={postData} setPostData={setpostData} />
                 </div>
             </div>

@@ -6,9 +6,9 @@ import CreatePostForm from './CreatePostForm';
 
 
 CreatePostLayout.propTypes = {
-    addToStartPost: PropTypes.func.isRequired,
+    setPosts: PropTypes.func.isRequired,
 };
-function CreatePostLayout({ addToStartPost }) {
+function CreatePostLayout({ setPosts }) {
     const openModalRef = useRef({})
     useEffect(() => {
         return () => {
@@ -16,10 +16,19 @@ function CreatePostLayout({ addToStartPost }) {
         }
     }, [])
 
+    const addToStartPost = (post) => {
+        // const clonePost = [...postData]
+        // const newPostData = [post, ...clonePost]
+        setPosts(state => {
+            const clonePost = [...state]
+            const newPostData = [post, ...clonePost]
+            return newPostData
+        })
+    }
     return (
         <>
             <div className='mb-4'>
-                <div className="flex bg-white shadow items-center mx-auto w-[600px] px-4 py-3 gap-3 rounded-[8px]">
+                <div className="flex bg-white shadow items-center mx-auto w-[550px] px-4 py-3 gap-3 rounded-[8px]">
                     <UserCurrentInfoMini isShowName={false} />
                     <div className="flex-1 flex justify-center bg-[#F0F2F5] ga cursor-pointer py-2 text-[15px] font-bold rounded-[20px] hover:bg-[#E4E6EB]" onClick={openModalRef.current.openModal}>
                         + Thêm bài viết

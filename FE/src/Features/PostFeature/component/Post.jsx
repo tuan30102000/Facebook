@@ -48,7 +48,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, likeList = [
     }
     return (
 
-        <div className='w-[600px] bg-white rounded-[5px] shadow mb-3 mx-auto'>
+        <div className='w-[550px] bg-white rounded-[5px] shadow mb-3 mx-auto'>
             <div className="px-4 pt-3">
                 <div className="flex justify-between mb-3">
                     <UserInfoMini avartUrl={avatarUrl} userId={ownerId} displayName={displayName} />

@@ -27,6 +27,10 @@ const postApi = {
     getAllPost() {
         return axiosClient.get('/post/getall')
     },
+    getPostUser(userId) {
+        const url = 'post/getpostuser/' + userId
+        return axiosClient.get(url)
+    },
     reactPost(action, postId) {
         const url = 'post/react/' + postId
         return axiosJwt.patch(url, { action })
