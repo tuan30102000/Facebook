@@ -8,9 +8,10 @@ import CreatePostLayout from '../../PostFeature/component/createPost/CreatePostL
 UserPostsTab.propTypes = {
     posts: PropTypes.array,
     friends: PropTypes.array,
+    setPosts:PropTypes.func.isRequired,
 };
 
-function FriendsInPostTab({ friends = [], setPosts }) {
+function FriendsInPostTab({ friends = [] }) {
     // const sliceFriend = friends.slice(0, 9)
     const sliceFriend = [...friends, ...friends, ...friends, ...friends, ...friends, ...friends, ...friends, ...friends, ...friends]
     return (
@@ -26,9 +27,9 @@ function FriendsInPostTab({ friends = [], setPosts }) {
             {friends.length &&
                 <div className="flex flex-wrap justify-between h-max">
                     {sliceFriend.map((item, i) =>
-                        <Link key={item._id} to={'/profile/' + item._id} className="flex-[0_0_31.5%]  pb-[30px]">
+                        <Link key={item._id+i} to={'/profile/' + item._id} className="flex-[0_0_30%]  pb-[30px]">
                             <div className="w-full"> <img src={item.avatarUrl} className='w-full h-full rounded-lg' /></div>
-                            <p className='text-[13px] text-[#050505] hover:underline leading-4 mt-[6px]'>{item.displayName} </p>
+                            <p className='text-[13px] font-[600] text-[#050505] hover:underline leading-4 mt-[6px]'>{item.displayName} </p>
                         </Link>)}
                 </div>}
             {!friends.length &&

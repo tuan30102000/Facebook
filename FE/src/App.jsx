@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ControlPage from './Components/ControlPage';
@@ -12,7 +12,7 @@ import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
 function App() {
   const dispatch = useDispatch()
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       console.log(window.innerWidth)
       const action = loginWithRefeshToken()

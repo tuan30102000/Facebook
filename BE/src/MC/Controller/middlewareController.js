@@ -24,14 +24,19 @@ class middlewareController {
     async verifyPost(req, res, next) {
         try {
             const postCurrent = await post.findById(req.params.postId)
-
-            if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
+            if (!postCurrent) return res.status(403).json({ message: 'post not found' })
             req.postCurrent = postCurrent
             next()
+            // if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
         } catch (error) {
             console.log(error)
             return res.status(403).json({ message: 'can connect Db' })
         }
+    }
+    async isOwmerPost(req, res, next) {
+        const { postCurrent } = req
+        if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
+        next()
     }
     async checkFrienExist(req, res, next) {
         const requestId = req.user._id
