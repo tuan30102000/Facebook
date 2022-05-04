@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userApi from "../../Api/userApi";
 import method from "../../Constan/method";
-import StorageKey from "../../Constan/StorageKey";
 export const registerThunk = createAsyncThunk('user/register', async (data) => {
     const result = await userApi.register(data)
     return result
@@ -71,6 +70,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
+            // createToast('Dang nhap thanh cong')
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false

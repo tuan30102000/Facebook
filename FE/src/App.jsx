@@ -14,7 +14,6 @@ function App() {
   const dispatch = useDispatch()
   useLayoutEffect(() => {
     (async () => {
-      console.log(window.innerWidth)
       const action = loginWithRefeshToken()
       dispatch(action)
     })()

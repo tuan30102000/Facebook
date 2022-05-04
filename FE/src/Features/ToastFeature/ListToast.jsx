@@ -18,7 +18,7 @@ function Toast({ message, time, type, id }) {
     }
     useEffect(() => {
 
-        const timeOutToRemove = setTimeout(handleRemoveToast, time)
+        // const timeOutToRemove = setTimeout(handleRemoveToast, time)
         // 
         return () => {
             // 
