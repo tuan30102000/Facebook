@@ -7,6 +7,7 @@ import { RiMessengerFill } from 'react-icons/ri'
 import { IoMdNotifications } from 'react-icons/io'
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
+import createToast from '../../Features/ToastFeature/createToast';
 Header.propTypes = {
 
 };
@@ -44,9 +45,9 @@ function Header() {
                     </div>
                     <span className='text-[15px] text-[#050505] font-bold'>{displayNameLink}</span>
                 </Link>
-                <IconBox count={user.friendRequest.length} IconComponent={FaUserFriends} />
+                <IconBox onClick={()=>{createToast('done','warning')}}  count={user.friendRequest.length} IconComponent={FaUserFriends} />
                 <IconBox IconComponent={RiMessengerFill} />
-                <IconBox IconComponent={IoMdNotifications} />
+                <IconBox  IconComponent={IoMdNotifications} />
             </div>
         </header>
     );
