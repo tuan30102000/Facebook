@@ -1,11 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { unwrapResult } from '@reduxjs/toolkit';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from "yup";
-import createToast from '../../ToastFeature/createToast';
-import useToast from '../../ToastFeature/Hook';
 import { login } from '../userSlice';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
@@ -26,7 +23,6 @@ const schema = yup.object().shape({
 
 function LoginForm() {
     const dispath = useDispatch()
-    const addToast = useToast()
     ///form handle
     const form = useForm({
         defaultValues: {
@@ -47,7 +43,6 @@ function LoginForm() {
             //dispath store
             const action = await login(data)
             const resultAction = dispath(action)
-            addToast('Đăng Nhập thành công')
             //
         } catch (error) {
             console.log('form', error)

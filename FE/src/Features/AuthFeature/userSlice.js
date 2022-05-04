@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userApi from "../../Api/userApi";
 import method from "../../Constan/method";
+import createToast from "../ToastFeature/createToast";
 export const registerThunk = createAsyncThunk('user/register', async (data) => {
     const result = await userApi.register(data)
     return result
@@ -39,6 +40,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
+            createToast('Đăng kí thành công')
         },
         [registerThunk.pending]: (state) => {
             state.loginPending = true
@@ -48,6 +50,7 @@ const userSlice = createSlice({
             state.loginError = true
             state.loginPending = false
             console.log('Error ở extraReducer.reject:', action)
+            createToast('Đăng nhập thất bại', 'error')
             // throw new Error('Required')
         }
         ,
@@ -57,10 +60,13 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
+            createToast('Đăng nhập thành công')
         },
         [login.rejected]: (state,) => {
             state.loginError = true
             state.loginPending = false
+            createToast('Đăng nhập thất bại', 'error')
+
         },
         [login.pending]: (state,) => {
             state.loginPending = true
@@ -70,11 +76,12 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
-            // createToast('Dang nhap thanh cong')
+            createToast('Dang nhap thanh cong')
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false
             state.login = false
+            createToast('Đăng nhập thất bại', 'error')
         }
     }
 })

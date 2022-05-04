@@ -7,7 +7,6 @@ import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
 import { loginWithRefeshToken } from './Features/AuthFeature/userSlice';
 import HomePage from './Features/PostFeature/page/HomePage';
-import ListToast from './Features/ToastFeature/ListToast';
 import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
 function App() {
@@ -23,7 +22,6 @@ function App() {
   const user = useSelector(state => state.user)
   return (
     <div className="app w-full min-h-screen h-max bg-[#F0F2F5] pt-[62px]">
-      <ListToast />
       <Routes>
         <Route path='/auth' element={<AuthFeature />} >
           <Route path='login' element={<LoginPage />} />

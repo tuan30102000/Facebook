@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import postApi from '../../../Api/postApi';
 import Header from '../../../Components/Header/Header';
-import useToast from '../../ToastFeature/Hook';
 import CreatePostLayout from '../component/createPost/CreatePostLayout';
 import ListPost from '../component/ListPost';
 HomePage.propTypes = {

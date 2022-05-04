@@ -69,7 +69,7 @@ class authController {
             const refreshToken = generateRefreshToken(userData)
             return res.status(200).json({ data: userData, accessToken, refreshToken })
         } catch (error) {
-
+            res.status(403).json(error)
         }
     }
 
