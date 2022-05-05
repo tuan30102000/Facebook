@@ -16,20 +16,24 @@ export const loginWithRefeshToken = createAsyncThunk('user/logintoken', async ()
     const token = await userApi.refresh()
     return token
 })
+
+const initialState = {
+    current: {},
+    login: false,
+    loginPending: false,
+    loginError: false,
+    setting: {}
+}
+
 const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        current: {},
-        login: false,
-        loginPending: false,
-        loginError: false,
-        setting: {}
-    }
+    initialState: initialState
     ,
     reducers: {
         logout(state) {
-            state.login = false
-            state.current = null
+            state = initialState
+            localStorage.clear()
+            return state
         }
         ,
 

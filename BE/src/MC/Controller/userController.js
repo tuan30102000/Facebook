@@ -38,7 +38,7 @@ class userController {
     }
     async getUserAll(req, res) {
         try {
-            const user = await users.find({ _id: { $ne: req.user._id } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).select('avatarUrl displayName')
+            const user = await users.find({ _id: { $nin: [...req.user.friend, req.user._id, ...req.user.friendRequest] } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).select('avatarUrl displayName')
             res.json(user)
         } catch (error) {
 
@@ -93,7 +93,34 @@ class userController {
             return res.status(403).json({ message: 'something wrong' })
         }
     }
+    async suggestionsUser(req, res) {
+        // try {
+        //     const newArr = [...req.user.following, req.user._id]
 
+        //     const num = req.query.num || 10
+
+        //     const users = await Users.aggregate([
+        //         { $match: { _id: { $nin: newArr } } },
+        //         { $sample: { size: Number(num) } },
+        //         { $lookup: { from: 'users', localField: 'followers', foreignField: '_id', as: 'followers' } },
+        //         { $lookup: { from: 'users', localField: 'following', foreignField: '_id', as: 'following' } },
+        //     ]).project("password")
+
+        //     return res.json({
+        //         users,
+        //         result: users.length
+        //     })
+
+        // } catch (err) {
+        //     return res.status(500).json({ msg: err.message })
+        // }
+
+        try {
+
+        } catch (error) {
+
+        }
+    }
 }
 
 export default new userController()

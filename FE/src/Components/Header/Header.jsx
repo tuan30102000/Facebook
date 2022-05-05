@@ -1,13 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import SearchBox from './SearchBox';
-import { Link } from 'react-router-dom';
-import { FaFacebook, FaUserFriends } from 'react-icons/fa'
-import { RiMessengerFill } from 'react-icons/ri'
-import { IoMdNotifications } from 'react-icons/io'
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
+import { BsFillCaretDownFill } from 'react-icons/bs';
+import { FaFacebook, FaUserFriends } from 'react-icons/fa';
+import { IoMdNotifications } from 'react-icons/io';
+import { RiMessengerFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
-import createToast from '../../Features/ToastFeature/createToast';
+import { Link } from 'react-router-dom';
+import FriendBox from '../../Features/FriendFeature/component/FriendBox';
+import Dialog from '../Dialog';
+import SettingBox from '../SettingBox';
+import SearchBox from './SearchBox';
 Header.propTypes = {
 
 };
@@ -30,6 +33,8 @@ function IconBox({ onClick = () => { }, IconComponent, count = 0 }) {
 function Header() {
     const user = useSelector(state => state.user.current.data)
     const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
+    const handleFriendDialogRef = useRef({})
+    const handleSettingDialogRef = useRef({})
     return (
         <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
             <div className="flex h-max">
@@ -45,10 +50,13 @@ function Header() {
                     </div>
                     <span className='text-[15px] text-[#050505] font-bold'>{displayNameLink}</span>
                 </Link>
-                <IconBox onClick={()=>{createToast('done','warning')}}  count={user.friendRequest.length} IconComponent={FaUserFriends} />
+                <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
                 <IconBox IconComponent={RiMessengerFill} />
-                <IconBox  IconComponent={IoMdNotifications} />
+                <IconBox IconComponent={IoMdNotifications} />
+                <IconBox onClick={handleSettingDialogRef.current.openModal} IconComponent={BsFillCaretDownFill} />
             </div>
+            <Dialog Component={FriendBox} componentProps={{ listFriendRequest: user.friendRequest }} ref={handleFriendDialogRef} />
+            <Dialog Component={SettingBox} ref={handleSettingDialogRef} />
         </header>
     );
 }
