@@ -4,11 +4,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import postApi from '../../../Api/postApi';
 import FriendListMini from '../../../Components/FriendListMini';
-import ListPost from '../../PostFeature/component/ListPost';
 import Avatar from './Avatar';
 import ButtonList from './ButtonList';
 import CoverAvatar from './CoverAvatar';
 import DisplayName from './DisplayName';
+import UserFriendTab from './UserFriendTab';
 import UserPostsTab from './UserPostsTab';
 
 UserProfile.propTypes = {
@@ -27,6 +27,7 @@ function UserProfile({ isOwner = false, user }) {
         const param = {
             ...seach,
         }
+        console.log(location.search)
         return param
     }, [location.search])
 
@@ -64,7 +65,12 @@ function UserProfile({ isOwner = false, user }) {
                     <ButtonList onClick={changeQuerryParams} searchParams={searchParams} />
                 </div>
             </div>
-            <UserPostsTab setPosts={setPosts} posts={posts} friends={user.friend} />
+            {!queryString.parse(location.search).sk &&
+                <UserPostsTab setPosts={setPosts} posts={posts} friends={user.friend} />
+            }
+            {queryString.parse(location.search).sk == 'friends' &&
+                <UserFriendTab friendList={user.friend} isOwner={isOwner} />
+            }
         </>
     );
 }

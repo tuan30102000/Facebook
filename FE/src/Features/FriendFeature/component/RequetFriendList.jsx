@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import userAuth from '../../../Api/userAuthApi';
-import { Link } from 'react-router-dom';
+import ButtonHandleFriend from './ButtonHandleFriend';
+import LinkToFriend from './LinkToFriend';
 
 RequetFriendList.propTypes = {
 
 };
-function RequetFriendBox({ friendId, avatarUrl, displayName }) {
-    const acceptFriend = async () => {
+function RequetFriendItem({ friendId, avatarUrl, displayName }) {
+    const acceptFriend = async (e) => {
+        e.stopPropagation()
         try {
             const result = await userAuth.acceptFriend(friendId)
             console.log(result)
@@ -15,7 +16,8 @@ function RequetFriendBox({ friendId, avatarUrl, displayName }) {
             console.log(error)
         }
     }
-    const rejectFriend = async () => {
+    const rejectFriend = async (e) => {
+        e.stopPropagation()
         try {
             const result = await userAuth.rejectFriend(friendId)
             console.log(result)
@@ -24,23 +26,23 @@ function RequetFriendBox({ friendId, avatarUrl, displayName }) {
         }
     }
     return (
-        <div className="">
-            <Link className='flex' to={'/profile/' + friendId} >
-                <div className="w-10 h-10">
-                    <img src={avatarUrl} className='w-full h-full' alt="" />
-                </div>
-                <p>{displayName}</p>
-            </Link>
-            <button onClick={acceptFriend} >Đồng Ý</button>
-            <button onClick={rejectFriend} >Từ chối</button>
+        <div className="flex px-5 py-2 justify-between">
+            <LinkToFriend {...{ avatarUrl, friendId, displayName }} />
+            <div className="flex gap-2">
+                <ButtonHandleFriend text='Đồng ý' onClick={acceptFriend} />
+                <ButtonHandleFriend text='Từ chối' onClick={rejectFriend} />
+            </div>
         </div>
     )
 }
 
-function RequetFriendList({ listFriend = [] }) {
+function RequetFriendList({ listFriendRequest = [] }) {
     return (
-        <div>
-            {listFriend.map(item => <RequetFriendBox key={item._id} friendId={item._id} avatarUrl={item.avatarUrl} displayName={item.displayName} />)}
+        <div className='mb-4' >
+            <p className="text-[24px] font-[700] mb-3 px-5">
+                Lời mời kết bạn
+            </p>
+            {listFriendRequest.map(item => <RequetFriendItem key={item._id} friendId={item._id} avatarUrl={item.avatarUrl} displayName={item.displayName} />)}
         </div>
     );
 }
