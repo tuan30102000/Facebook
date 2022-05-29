@@ -9,7 +9,7 @@ const axiosClient = axios.create({
   headers: {
     'content-Type': 'application/json',
     // 'content-type': 'application/x-www-form-urlencoded'
-    'Access-Control-Allow-Origin': 'http://localhost:3000/'
+    'Access-Control-Allow-Origin': 'http://localhost:8000/'
 
   }
 })

@@ -21,7 +21,6 @@ function PostForm({ imgPreview, textValue, onUpload, closeModal, title = '', btn
     const textRef = useRef({})
     useEffect(() => {
         textRef.current.focus()
-
         return () => {
         }
     }, [])

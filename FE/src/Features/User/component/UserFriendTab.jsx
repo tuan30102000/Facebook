@@ -13,7 +13,7 @@ function FriendCard({ friendId, displayName, avatarUrl }) {
     const userCurrent = useSelector(state => state.user.current.data)
     const isOwner = userId === userCurrent._id
     return (
-        <div className="flex flex-1 justify-between items-center p-4 rounded-lg shadow-[0px_0px_10px_1px_rgba(0,0,0,0.1)]">
+        <div className="flex flex-[0_0_50%] justify-between items-center p-4 rounded-lg shadow-[0px_0px_10px_1px_rgba(0,0,0,0.1)]">
             <Link className='flex' to={'/profile/' + friendId} >
                 <div className="w-[80px] h-[80px]">
                     <img src={avatarUrl} className='w-full h-full rounded-lg' alt="" />
@@ -35,7 +35,7 @@ function UserFriendTab({ friendList = [] }) {
             <div className="basis-[1024px] px-8 justify-between gap-4">
                 <div className="p-4 rounded-lg bg-white shadow">
                     <p className='text-[#050505] font-[600] text-[20px] mb-8' >Bạn bè</p>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap">
                         {friendList.map(item => <FriendCard {...item} key={item._id} />)}
                     </div>
                 </div>

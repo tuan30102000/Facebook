@@ -36,6 +36,11 @@ const userAuth = {
         const action = 'remove'
         return axiosJwt.patch(url, { friendId, action })
     },
+    cancelRequest(friendId) {
+        const url = 'user/friend/'
+        const action = 'cancel'
+        return axiosJwt.patch(url, { friendId, action })
+    },
     getUserById(userId) {
         const url = 'user/get/' + userId
         return axiosClient.get(url)

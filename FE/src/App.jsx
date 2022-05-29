@@ -1,7 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import userAuth from './Api/userAuthApi';
 import ControlPage from './Components/ControlPage';
 import AuthFeature from "./Features/AuthFeature";
 import LoginPage from './Features/AuthFeature/page/LoginPage';

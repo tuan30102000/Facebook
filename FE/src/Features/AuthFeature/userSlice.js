@@ -35,7 +35,9 @@ const userSlice = createSlice({
             localStorage.clear()
             return state
         }
-        ,
+        , updateUser(state, action) {
+            state.current.data = action.payload
+        }
 
     },
     extraReducers: {
@@ -92,7 +94,7 @@ const userSlice = createSlice({
 
 
 const { reducer, actions } = userSlice
-export const { logout, } = actions
+export const { logout, updateUser } = actions
 export default reducer
 // function login(state, action) {
 //     method.setToken(action.payload.accessToken, action.payload.refreshToken)
