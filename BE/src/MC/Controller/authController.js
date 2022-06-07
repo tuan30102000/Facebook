@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import JWT from "jsonwebtoken"
+import listDefalult from '../../constan/listDefault.js'
 import user from "../Model/users.js"
 function generateAccessToken(data = {}, time = '1h') {
     return JWT.sign({ _id: data._id, isAdmin: data.isAdmin }, process.env.SECRET_ACCESS_KEY, { expiresIn: time })
@@ -7,6 +8,9 @@ function generateAccessToken(data = {}, time = '1h') {
 function generateRefreshToken(data = {}, time = '365d') {
     return JWT.sign({ _id: data._id, isAdmin: data.isAdmin }, process.env.SECRET_REFRESH_KEY, { expiresIn: time })
 
+}
+const random = (range) => {
+    return Math.floor(Math.random() * range)
 }
 class authController {
 
@@ -20,10 +24,8 @@ class authController {
 
         try {
             const dataFindByUsername = await user.findOne({ username })
-            console.log(dataFindByUsername)
             if (dataFindByUsername) return res.status(403).json({ message: 'Username already exists' })
             const dataFindByEmail = await user.findOne({ email })
-            console.log(dataFindByEmail)
             if (dataFindByEmail) return res.status(403).json({ message: 'Email already exists' })
             //hash pass
             const salt = await bcrypt.genSalt(10);
@@ -67,7 +69,7 @@ class authController {
             if (!isCorrectPassword) return res.status(403).json({ message: 'wrong password' })
             const accessToken = generateAccessToken(userData)
             const refreshToken = generateRefreshToken(userData)
-            return res.status(200).json({ data: userData, accessToken, refreshToken })
+            return res.status(200).cookie('refreshToken', refreshToken, { maxAge: 900000, httpOnly: true }).json({ data: userData, accessToken, refreshToken })
         } catch (error) {
             res.status(403).json(error)
         }
@@ -80,6 +82,29 @@ class authController {
     async deleteUser(req, res) {
         await user.deleteMany({})
         res.send('delete success')
+    }
+    async fakeUsers(req, res) {
+        const arr = []
+        try {
+            for (let i = 0; i < 50; i++) {
+                const email = `tuanpham+test${i}@gmail.com`
+                const username = 'tuanpham' + ('0' + i).slice(-2)
+                const displayName = 'user ' + ('0' + i).slice(-2)
+                const about = 'hi i am ' + displayName
+                const passwordString = 'tuan3010543'
+                const salt = await bcrypt.genSalt(10);
+                const password = await bcrypt.hash(passwordString, salt);
+                const avatarUrl = listDefalult.listUrlAvtDefault[random(5)]
+                arr.push(new user({ email, username, password, displayName, about, avatarUrl }))
+                // arr.push(username)
+            }
+            await user.insertMany(arr)
+            // await user.deleteMany({ username: { $in: arr } })
+            const data = await user.find({})
+            res.json(data)
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

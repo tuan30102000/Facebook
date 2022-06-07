@@ -4,6 +4,7 @@ import method from "../../constan/method.js"
 import users from "../Model/users.js"
 import Mongoose from "mongoose"
 const { ObjectId } = Mongoose.Types
+const populateUser = { path: 'friend', select: 'avatarUrl displayName' }
 class userController {
     async updateUserInfor(req, res) {
         if (!req.body) return res.status(403).json({ message: 'displayName is emty' })
@@ -38,7 +39,7 @@ class userController {
     }
     async getUserAll(req, res) {
         try {
-            const user = await users.find({ _id: { $nin: [...req.user.friend, req.user._id, ...req.user.friendRequest] } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).select('avatarUrl displayName')
+            const user = await users.find({ _id: { $nin: [...req.user.friend, req.user._id, ...req.user.friendRequest, ...req.user.myRequestFriends] } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).limit(9).select('avatarUrl displayName')
             res.json(user)
         } catch (error) {
 
@@ -47,7 +48,7 @@ class userController {
     async getUserById(req, res) {
         const { userId } = req.params
         try {
-            const user = await users.findById({ _id: userId }).populate({ path: 'friend', select: 'avatarUrl displayName' })
+            const user = await users.findById({ _id: userId }).populate(populateUser)
             res.status(200).json(user)
         } catch (error) {
             res.status(500).json('user not found')
@@ -63,30 +64,43 @@ class userController {
                 if (friend.friend.includes(requestId)) return res.status(400).json({ message: 'have made friends' })
                 if (req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'Please accept friend' })
                 await users.updateOne({ _id: friendId, }, { $addToSet: { friendRequest: ObjectId(requestId) } })
-                return res.status(200).json({ message: 'add req thanh cong' })
+                const userNewest = await users.findByIdAndUpdate({ _id: requestId, }, { $addToSet: { myRequestFriends: ObjectId(friendId) } }, { new: true }).populate(populateUser)
+                return res.status(200).json(userNewest)
             }
 
             if (action == 'accept') {
                 if (!req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'not friend request' })
-                await users.updateOne({ _id: requestId }, {
+                const userNewest = await users.findByIdAndUpdate({ _id: requestId }, {
                     $pull: { friendRequest: ObjectId(friendId), },
                     $addToSet: { friend: ObjectId(friendId) }
+                }, { new: true }).populate(populateUser)
+                await users.updateOne({ _id: friendId }, {
+                    $addToSet: { friend: ObjectId(requestId,) },
+                    $pull: { myRequestFriends: ObjectId(requestId) }
                 })
-                await users.updateOne({ _id: friendId }, { $addToSet: { friend: ObjectId(requestId) } })
-                return res.status(200).json({ message: 'accept successfully' })
+                return res.status(200).json(userNewest)
             }
 
             if (action == 'reject') {
                 if (!req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'friendRequest it no longer exists' })
-                await users.updateOne({ _id: requestId }, { $pull: { friendRequest: ObjectId(friendId) } })
-                return res.status(200).json({ message: 'rejectFriend successfully' })
+                const userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { friendRequest: ObjectId(friendId) } }, { new: true }).populate(populateUser)
+                await users.updateOne({ _id: friendId }, {
+                    $pull: { myRequestFriends: ObjectId(requestId) }
+                })
+                return res.status(200).json(userNewest)
             }
 
             if (action == 'remove') {
                 if (!req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'friend it no longer exists' })
-                await users.updateOne({ _id: requestId }, { $pull: { friend: ObjectId(friendId) } })
+                const userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { friend: ObjectId(friendId) }, }, { new: true }).populate(populateUser)
                 await users.updateOne({ _id: friendId }, { $pull: { friend: ObjectId(requestId) } })
-                return res.status(200).json({ message: 'removeFriend successfully' })
+                return res.status(200).json(userNewest)
+            }
+            if (action == 'cancel') {
+                if (!req.user.myRequestFriends.includes(friendId)) return res.status(400).json({ message: 'friend it no longer exists' })
+                const userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { myRequestFriends: ObjectId(friendId) } }, { new: true }).populate(populateUser)
+                await users.updateOne({ _id: friendId }, { $pull: { friendRequest: ObjectId(requestId) } })
+                return res.status(200).json(userNewest)
             }
         } catch (error) {
             console.log(error)
@@ -121,6 +135,7 @@ class userController {
 
         }
     }
+
 }
 
 export default new userController()

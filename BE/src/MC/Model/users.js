@@ -13,18 +13,23 @@ const userSchema = new Mongoose.Schema(
             minlength: [6, "Must be at least 6 characters"],
             maxlength: [20, "Must be less than 20 characters"],
             unique: true,
+            trim: true,
         },
         displayName: {
             type: String,
             default: "New User",
+            maxlength: [20, "Must be less than 20 characters"],
+            trim: true,
         },
         about: {
             type: String,
+            maxlength: [100, "Must be 50 characters or less"],
             default: "I'm a new user",
+            trim: true,
         },
         birthDay: {
             type: Date,
-            required: true,
+            default: new Date()
         }
         ,
         sex: {
@@ -65,6 +70,8 @@ const userSchema = new Mongoose.Schema(
         friendRequest: { type: Array, default: [], ref: 'user' }
         ,
         friend: { type: Array, default: [], ref: 'user' },
+        myRequestFriends: { type: Array, default: [], ref: 'user' }
+        ,
         coverAvatar: {
             type: String,
             default: 'https://res.cloudinary.com/dmrx3zaby/image/upload/v1648960994/FacebookCollection/coverCollection/274812010_1131778247362268_6936635690129899680_n_yw7amk.jpg',

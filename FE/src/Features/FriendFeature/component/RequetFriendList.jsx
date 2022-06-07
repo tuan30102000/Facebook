@@ -1,5 +1,7 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import userAuth from '../../../Api/userAuthApi';
+import { updateUser } from '../../AuthFeature/userSlice';
 import ButtonHandleFriend from './ButtonHandleFriend';
 import LinkToFriend from './LinkToFriend';
 
@@ -7,11 +9,13 @@ RequetFriendList.propTypes = {
 
 };
 function RequetFriendItem({ friendId, avatarUrl, displayName }) {
+    const dispatch = useDispatch()
     const acceptFriend = async (e) => {
         e.stopPropagation()
         try {
-            const result = await userAuth.acceptFriend(friendId)
-            console.log(result)
+            const userNewest = await userAuth.acceptFriend(friendId)
+            const action = updateUser(userNewest)
+            dispatch(action)
         } catch (error) {
             console.log(error)
         }
@@ -19,8 +23,9 @@ function RequetFriendItem({ friendId, avatarUrl, displayName }) {
     const rejectFriend = async (e) => {
         e.stopPropagation()
         try {
-            const result = await userAuth.rejectFriend(friendId)
-            console.log(result)
+            const userNewest = await userAuth.rejectFriend(friendId)
+            const action = updateUser(userNewest)
+            dispatch(action)
         } catch (error) {
             console.log(error)
         }
