@@ -5,11 +5,21 @@
 @layer base {
     * {
         user-select: none;
-    
+
     }
 }
 
-*{
+* {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
+}
+
+@layer components {
+    .btn-blue {
+        @apply bg-[#1b74e4] text-white;
+    }
+
+    .btn-white {
+        @apply bg-[#F0F2F5] text-black hover:bg-[#E4E6EB];
+    }
 }

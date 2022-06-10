@@ -5,7 +5,7 @@ Option.propTypes = {
 };
 
 
-function Option({ Component, componentProp }) {
+function Option({ Component, componentProp, BtnComponent = null, btnComponentProp }) {
     const [isShowOption, setisShowOption] = useState(false)
     const open = () => {
         setisShowOption(true)
@@ -13,10 +13,11 @@ function Option({ Component, componentProp }) {
     const close = () => {
         setisShowOption(false)
     }
-
     return (
         <div className='relative w-max h-max'>
-            <BsThreeDots onClick={open} className='cursor-pointer' />
+            {
+                BtnComponent ? <BtnComponent {...btnComponentProp} onClick={open} /> : <BsThreeDots onClick={open} className='cursor-pointer' />
+            }
             <div className="absolute top-full left-[100%] py-2">
                 {Component && <Component {...componentProp} isShowOption={isShowOption} onClose={close} />}
             </div>

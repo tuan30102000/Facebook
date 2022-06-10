@@ -35,6 +35,9 @@ function Header() {
     const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
     const handleFriendDialogRef = useRef({})
     const handleSettingDialogRef = useRef({})
+    const openSettingDialog = () => {
+        handleSettingDialogRef.current.openModal()
+    }
     return (
         <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
             <div className="flex h-max">
@@ -53,7 +56,7 @@ function Header() {
                 <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
                 <IconBox IconComponent={RiMessengerFill} />
                 <IconBox IconComponent={IoMdNotifications} />
-                <IconBox onClick={handleSettingDialogRef.current.openModal} IconComponent={BsFillCaretDownFill} />
+                <IconBox onClick={openSettingDialog} IconComponent={BsFillCaretDownFill} />
             </div>
             <Dialog Component={FriendBox} componentProps={{ listFriendRequest: user.friendRequest }} ref={handleFriendDialogRef} />
             <Dialog Component={SettingBox} ref={handleSettingDialogRef} />

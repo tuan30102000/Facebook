@@ -104,7 +104,7 @@ class authController {
             res.json(data)
         } catch (error) {
             console.log(error)
-        }
+        }   
     }
 }
 

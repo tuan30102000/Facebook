@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "newft": "cd src && cd features && mkdir ft && cd ft && touch index.jsx && mkdir page component && cd .. && mv ft",
     "port": "start chrome http://localhost:3000/",
-	"dev2":"vite"
+    "dev2": "vite"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
@@ -32,6 +32,8 @@
     "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.6",
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.11",
     "tailwindcss": "^3.0.23",
     "vite": "^2.8.0"
   }

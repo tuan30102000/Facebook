@@ -1,42 +1,29 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import Option from '../../../Components/Option';
+import { useParams } from 'react-router-dom';
+import method from '../../../Constan/method';
+import FriendCard from '../../FriendFeature/component/FriendCard';
 
 UserFriendTab.propTypes = {
 
 };
 
 
-function FriendCard({ friendId, displayName, avatarUrl }) {
-    const { userId } = useParams()
-    const userCurrent = useSelector(state => state.user.current.data)
-    const isOwner = userId === userCurrent._id
-    return (
-        <div className="flex flex-[0_0_50%] justify-between items-center p-4 rounded-lg shadow-[0px_0px_10px_1px_rgba(0,0,0,0.1)]">
-            <Link className='flex' to={'/profile/' + friendId} >
-                <div className="w-[80px] h-[80px]">
-                    <img src={avatarUrl} className='w-full h-full rounded-lg' alt="" />
-                </div>
-                <p className='self-center text-[#050505] font-[600]'>{displayName}</p>
-            </Link>
-            {isOwner &&
-                <Option />
-            }
-        </div>
-    )
-}
+
 
 function UserFriendTab({ friendList = [] }) {
-
-
+    const user = useSelector(state => state.user.current.data)
+    const { userId } = useParams()
+    const friendSet = method.createSet(user.friend, '_id')
+    const friendRequestSet = method.createSet(user.friendRequest, '_id')
+    const myFriendRequestSet = method.createSet(user.myRequestFriends)
     return (
         <div className='flex justify-center h-max mt-4' >
             <div className="basis-[1024px] px-8 justify-between gap-4">
                 <div className="p-4 rounded-lg bg-white shadow">
                     <p className='text-[#050505] font-[600] text-[20px] mb-8' >Bạn bè</p>
                     <div className="flex flex-wrap">
-                        {friendList.map(item => <FriendCard {...item} key={item._id} />)}
+                        {friendList.map(item => <FriendCard friendSet={friendSet} friendRequestSet={friendRequestSet} myRequestFriendSet={myFriendRequestSet} {...item} ownerId={user._id} key={item._id} />)}
                     </div>
                 </div>
             </div>

@@ -22,6 +22,14 @@ const method = {
         this.setAccessToken(access)
         this.setRefreshToken(refresh)
     },
+    createSet(arr = [], key) {
+        const set = new Set()
+        if (!key) {
+            return new Set(arr)
+        }
+        arr.forEach(item => set.add(item[key]))
+        return set
+    }
 }
 
 export default method

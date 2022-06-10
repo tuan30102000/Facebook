@@ -96,9 +96,3 @@ const userSlice = createSlice({
 const { reducer, actions } = userSlice
 export const { logout, updateUser } = actions
 export default reducer
-// function login(state, action) {
-//     method.setToken(action.payload.accessToken, action.payload.refreshToken)
-//     state.loginPending = false
-//     state.login = true
-//     state.current = { ...action.payload, refreshToken: undefined }
-// }
