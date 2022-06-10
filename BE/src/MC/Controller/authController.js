@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import JWT from "jsonwebtoken"
 import listDefalult from '../../constan/listDefault.js'
 import user from "../Model/users.js"
-function generateAccessToken(data = {}, time = '1h') {
+function generateAccessToken(data = {}, time = '30s') {
     return JWT.sign({ _id: data._id, isAdmin: data.isAdmin }, process.env.SECRET_ACCESS_KEY, { expiresIn: time })
 }
 function generateRefreshToken(data = {}, time = '365d') {
@@ -44,7 +44,7 @@ class authController {
 
     }
     async refreshToken(req, res) {
-        const { refreshToken } = req.body
+        const { refreshToken } = req.cookies
         //not Exist rft
         if (!refreshToken) return res.status(401).json({ message: 'You\'re not authenticated', })
         const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
@@ -69,7 +69,7 @@ class authController {
             if (!isCorrectPassword) return res.status(403).json({ message: 'wrong password' })
             const accessToken = generateAccessToken(userData)
             const refreshToken = generateRefreshToken(userData)
-            return res.status(200).cookie('refreshToken', refreshToken, { maxAge: 900000, httpOnly: true }).json({ data: userData, accessToken, refreshToken })
+            return res.status(200).cookie('refreshToken', refreshToken, { maxAge: 900000, httpOnly: true }).json({ data: userData, accessToken, })
         } catch (error) {
             res.status(403).json(error)
         }

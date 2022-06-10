@@ -1,5 +1,3 @@
-import method from "../Constan/method";
-import StorageKey from "../Constan/StorageKey";
 import axiosClient from "./axiosClient";
 
 const userApi = {
@@ -13,10 +11,9 @@ const userApi = {
     },
     refresh() {
         const url = '/auth/refresh'
-        const refreshToken = method.getRefreshToken()
-        return axiosClient.post(url, { refreshToken },)
+        return axiosClient.post(url,)
     },
-   
+
 
 }
 
