@@ -42,10 +42,10 @@ const userSlice = createSlice({
     },
     extraReducers: {
         [registerThunk.fulfilled]: (state, action) => {
-            method.setToken(action.payload.accessToken, action.payload.refreshToken)
+            method.setAccessToken(action.payload.accessToken)
             state.loginPending = false
             state.login = true
-            state.current = { ...action.payload, refreshToken: undefined }
+            state.current = { ...action.payload, }
             createToast('Đăng kí thành công')
         },
         [registerThunk.pending]: (state) => {
@@ -62,10 +62,10 @@ const userSlice = createSlice({
         ,
 
         [login.fulfilled]: (state, action) => {
-            method.setToken(action.payload.accessToken, action.payload.refreshToken)
+            method.setAccessToken(action.payload.accessToken)
             state.loginPending = false
             state.login = true
-            state.current = { ...action.payload, refreshToken: undefined }
+            state.current = { ...action.payload, }
             createToast('Đăng nhập thành công')
         },
         [login.rejected]: (state,) => {
