@@ -8,6 +8,7 @@ import Avatar from './Avatar';
 import ButtonList from './ButtonList';
 import CoverAvatar from './CoverAvatar';
 import DisplayName from './DisplayName';
+import UserAboutTab from './UserAboutTab';
 import UserFriendTab from './UserFriendTab';
 import UserPostsTab from './UserPostsTab';
 
@@ -67,6 +68,9 @@ function UserProfile({ isOwner = false, user }) {
             </div>
             {!queryString.parse(location.search).sk &&
                 <UserPostsTab setPosts={setPosts} posts={posts} friends={user.friend} />
+            }
+            {queryString.parse(location.search).sk == 'about' &&
+                <UserAboutTab about={user.about} />
             }
             {queryString.parse(location.search).sk == 'friends' &&
                 <UserFriendTab friendList={user.friend} isOwner={isOwner} />

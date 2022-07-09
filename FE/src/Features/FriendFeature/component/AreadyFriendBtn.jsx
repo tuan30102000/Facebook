@@ -11,7 +11,11 @@ AreadyFriendBtn.propTypes = {
 
 function AreadyFriendBtn({ friendId }) {
     const removeFriend = async () => {
-        await userAuth.removeFriend(friendId)
+        try {
+            await userAuth.removeFriend(friendId)
+        } catch (error) {
+
+        }
     }
 
     const btnData = [{

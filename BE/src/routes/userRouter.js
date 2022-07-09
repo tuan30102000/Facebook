@@ -9,6 +9,9 @@ userRouter.patch('/infor', middlewareController.verifyToken, userController.upda
 userRouter.patch('/friend', middlewareController.verifyToken, middlewareController.checkFrienExist, userController.handleFriend)
 userRouter.get('/getall', middlewareController.verifyToken, userController.getUserAll)
 userRouter.get('/get/:userId', userController.getUserById)
+userRouter.get('/suggest', userController.suggestionsUserAutocomplete)
 // userRouter.get('/', userController.getUserAll)
+
+
 
 export default userRouter

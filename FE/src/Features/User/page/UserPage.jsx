@@ -41,7 +41,7 @@ function UserPage() {
     return (
         <>
             {(isExistUser && user._id) && <UserProfile {...{ user, isOwner }} />}
-            {!isExistUser && <div className="">user not found</div>}
+            {!isExistUser && <div className="">User not found</div>}
         </>
     );
 }

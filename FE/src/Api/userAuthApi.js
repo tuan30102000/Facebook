@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient"
 import axiosJwt from "./axiosJwt"
-
+import queryString from 'query-string'
 const userAuth = {
     editAvatar(file) {
         const url = 'user/avatar'
@@ -44,6 +44,10 @@ const userAuth = {
     getUserById(userId) {
         const url = 'user/get/' + userId
         return axiosClient.get(url)
+    },
+    searchSuggest(suggest) {
+        const url = 'user/suggest?' + queryString.stringify({ suggest })
+        return axiosJwt.get(url)
     }
 }
 export default userAuth

@@ -69,7 +69,7 @@ class authController {
             if (!isCorrectPassword) return res.status(403).json({ message: 'wrong password' })
             const accessToken = generateAccessToken(userData)
             const refreshToken = generateRefreshToken(userData)
-            return res.status(200).cookie('refreshToken', refreshToken, { maxAge: 900000, httpOnly: true }).json({ data: userData, accessToken, })
+            return res.status(200).cookie('refreshToken', refreshToken, { httpOnly: true }).json({ data: userData, accessToken, })
         } catch (error) {
             res.status(403).json(error)
         }
@@ -104,7 +104,7 @@ class authController {
             res.json(data)
         } catch (error) {
             console.log(error)
-        }   
+        }
     }
 }
 

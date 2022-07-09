@@ -11,7 +11,7 @@ const useInput = (callback) => {
         }
         setvalue(e.target.value)
     }
-    return { value, onChange }
+    return { value, onChange, setvalue }
 }
 
 export default useInput

@@ -1,0 +1,28 @@
+    // useEffect(() => {
+    //     const handleCurrentChoiceSuggest = (e) => {
+    //         const { keyCode } = e
+    //         if (keyCode == 38) {
+    //             const currentIndex = indexTarget > 0 ? indexTarget - 1 : suggestList.length - 1
+    //             setindexTarget(currentIndex)
+    //             setvalue(setsuggestList[currentIndex])
+    //             console.log(currentIndex)
+    //             return
+    //         }
+    //         if (keyCode == 40) {
+    //             const currentIndex = indexTarget < suggestList.length - 1 ? indexTarget + 1 : 0
+    //             setindexTarget(currentIndex)
+    //             setvalue(setsuggestList[currentIndex])
+    //             console.log(currentIndex)
+    //         }
+    //     }
+
+    //     document.addEventListener('keyup', handleCurrentChoiceSuggest)
+    //     return () => {
+    //         document.removeEventListener('keyup', handleCurrentChoiceSuggest)
+    //     }
+    // }, [suggestList, indexTarget])
+    // useEffect(() => {
+    //     setvalue(suggestList[indexTarget] ? suggestList[indexTarget] : '')
+    //     return () => {
+    //     }
+    // }, [indexTarget, suggestList])

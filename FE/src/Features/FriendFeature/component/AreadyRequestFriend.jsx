@@ -26,7 +26,7 @@ function AreadyRequestFriend({ friendId }) {
         ,
     ]
     return (
-        <Option Component={OptionBtn} BtnComponent={ButtonHandleFriend} componentProp={{ btnData }} btnComponentProp={{ text: 'Bạn bè' }} />
+        <Option Component={OptionBtn} BtnComponent={ButtonHandleFriend} componentProp={{ btnData }} btnComponentProp={{ text: 'Đã gửi lời mời kết bạn' }} />
     );
 }
 

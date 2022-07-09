@@ -13,7 +13,6 @@ UserFriendTab.propTypes = {
 
 function UserFriendTab({ friendList = [] }) {
     const user = useSelector(state => state.user.current.data)
-    const { userId } = useParams()
     const friendSet = method.createSet(user.friend, '_id')
     const friendRequestSet = method.createSet(user.friendRequest, '_id')
     const myFriendRequestSet = method.createSet(user.myRequestFriends)

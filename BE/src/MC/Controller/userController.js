@@ -23,10 +23,9 @@ class userController {
 
     async updateAvt(req, res) {
         const file = req.file
-        if (!file) return res.status(403).json({ message: 'displayName is emty' })
-        console.log(req.user)
+        if (!file) return res.status(403).json({ message: 'file is emty' })
         try {
-            const user = await users.findById(req.user._id)
+            const user = req.user
             if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
             const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/avatarCollection' })
             await users.updateOne({ _id: req.user._id }, { avatarUrl: resultClould.url })
@@ -35,7 +34,21 @@ class userController {
             console.log(error)
             res.status(403).json({ message: ' something wrong' })
         }
+    }
 
+    async updateCoverAvt(req, res) {
+        const file = req.file
+        if (!file) return res.status(403).json({ message: 'file is emty' })
+        try {
+            const user = req.user
+            // if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
+            const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/avatarCollection' })
+            await users.updateOne({ _id: req.user._id }, { avatarUrl: resultClould.url })
+            res.status(200).json({ avatarUrl: resultClould.url })
+        } catch (error) {
+            console.log(error)
+            res.status(403).json({ message: ' something wrong' })
+        }
     }
     async getUserAll(req, res) {
         try {
@@ -133,6 +146,26 @@ class userController {
 
         } catch (error) {
 
+        }
+    }
+    updateSelfIntroduce(req, res) {
+
+    }
+    async suggestionsUserAutocomplete(req, res) {
+        let q = req.query.suggest ? req.query.suggest : '';
+        if (!q) return res.status(200).json([])
+        let query = {
+            "displayName": { "$regex": q, "$options": "i" },
+            
+        };
+        const user = await users.find(query).limit(6)
+        const displayNameSuggestions = user.map(item => item.displayName)
+        const setSuggest = new Set(displayNameSuggestions)
+        res.status(200).json([...setSuggest])
+        try {
+        } catch (error) {
+            res.status(500).json(error)
+            console.log(error)
         }
     }
 
