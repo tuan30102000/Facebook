@@ -7,7 +7,7 @@ const useInput = (callback) => {
             const change = () => {
                 setvalue(e.target.value)
             }
-            return callback(change)
+            return callback(change,value)
         }
         setvalue(e.target.value)
     }
