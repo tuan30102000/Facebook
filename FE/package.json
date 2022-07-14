@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "newft": "cd src && cd features && mkdir ft && cd ft && touch index.jsx && mkdir page component && cd .. && mv ft",
     "port": "start chrome http://localhost:3000/",
-    "dev2": "vite"
+    "dev2": "vite",
+    "be": "cd ../BE && npm run dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",

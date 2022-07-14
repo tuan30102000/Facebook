@@ -12,8 +12,8 @@ function SearchBox() {
         throtleSuggest()
         fn()
     }
-    const [indexTarget, setindexTarget] = useState(0)
-    const [suggestList, setsuggestList] = useState([''])
+    const [indexTarget, setindexTarget] = useState(-1)
+    var [suggestList, setsuggestList] = useState([])
     const { onChange, value, setvalue } = useInput(callBack)
     const [isShowSuggetion, setisShowSuggetion] = useState(false);
 
@@ -37,25 +37,34 @@ function SearchBox() {
         }
     }, [suggestList.length])
 
-    // useEffect(() => {
-    //     console.log(value)
-    //     setvalue(suggestList[indexTarget])
+    useEffect(() => {
+        if (suggestList.length > 0) {
+            console.log(value)
+            setvalue(suggestList[indexTarget])
+        }
 
-    // }, [indexTarget, suggestList])
+    }, [indexTarget])
+
+    useEffect(() => {
+        if (!value) setsuggestList([])
 
 
+    }, [value,suggestList.length])
+
+    useEffect(() => {
+        console.log('ssg',suggestList)
+    }, [suggestList])
     const handleSuggets = () => {
         // console.log(value)
         if (value) {
+            console.log(value)
             ; (async () => {
                 const data = await userAuth.searchSuggest(value)
-                const set = new Set([value, ...data])
+                const set = new Set([ ...data])
                 setsuggestList([...set])
             })()
         }
-        if (!value) {
-            setsuggestList([])
-        }
+
     }
     var throtleSuggest = useThrotle(handleSuggets, 400)
 
