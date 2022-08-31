@@ -9,7 +9,7 @@
     "newft": "cd src && cd features && mkdir ft && cd ft && touch index.jsx && mkdir page component && cd .. && mv ft",
     "port": "start chrome http://localhost:3000/",
     "dev2": "vite",
-    "be": "cd ../BE && npm run dev"
+    "be": "cd ../BE && npm run start"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
@@ -17,6 +17,7 @@
     "axios": "^0.26.0",
     "clsx": "^1.1.1",
     "jwt-decode": "^3.1.2",
+    "lodash.throttle": "^4.1.1",
     "prop-types": "^15.8.1",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
