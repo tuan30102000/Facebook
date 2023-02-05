@@ -20,10 +20,22 @@ module.exports = {
             opacity: '1'
           },
 
+
+        },
+        show: {
+          '0%': {
+            opacity: '0'
+          },
+          '100%': {
+            opacity: '1'
+          },
+
+
         }
       },
       animation: {
         'toast-show': 'toastIn 1s linear',
+        'show-opacity': 'show 0.5s linear'
       },
       minWidth: {
         '400px': '400px',

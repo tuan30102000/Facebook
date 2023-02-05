@@ -40,7 +40,7 @@ function Header() {
     }
     return (
         <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
-            <div className="flex h-max">
+            <div className="flex h-full items-center">
                 <Link className='w-max h-max mr-2' to={'/'}>
                     <FaFacebook className='text-[#0b84ee] text-[40px]' />
                 </Link>
