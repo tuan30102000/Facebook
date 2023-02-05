@@ -9,7 +9,7 @@ import routes from "./src/routes/index.js";
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
+app.use(cors({ credentials: true, origin: /* " */['http://127.0.0.1:5173', 'http://localhost:3000'] }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser())
