@@ -1,6 +1,6 @@
 import cloudinary from "../../cloudinary/cloudinary.js"
 import method from "../../constan/method.js"
-import post from "../Model/post.js"
+import post from "../Model/posts.js"
 import Mongoose from "mongoose"
 const { ObjectId } = Mongoose.Types
 const populateData = { path: 'owner', select: 'displayName avatarUrl' }

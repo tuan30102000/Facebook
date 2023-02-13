@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
-import post from "../Model/post.js";
+import post from "../Model/posts.js";
 import users from "../Model/users.js";
+import comment from "../Model/comments.js"
 class middlewareController {
     async verifyToken(req, res, next) {
         const token = req.headers.accesstoken;
@@ -33,15 +34,39 @@ class middlewareController {
             return res.status(403).json({ message: 'can connect Db' })
         }
     }
+    async verifyComment(req, res, next) {
+        try {
+            const commentCurrent = await comment.findOne({ _id: req.params.commentId, active: true })
+            console.log(commentCurrent.post.toString(), req.postCurrent._id.toString())
+            if (!commentCurrent) return res.status(400).json({ message: 'comment not found' })
+            if (commentCurrent.post.toString() != req.postCurrent._id.toString()) return res.status(403).json({ message: 'comment not in this post' })
+            req.commentCurrent = commentCurrent
+            next()
+            // if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
+        } catch (error) {
+            return res.status(403).json(error)
+        }
+    }
     async isOwmerPost(req, res, next) {
         const { postCurrent } = req
         if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
         next()
     }
+    verifyRoleDeleteComment(req, res, next) {
+      
+        if (req.user._id.toString() == req.commentCurrent.owner.toString()) return next() //owner cmt
+        if (req.user._id.toString() == req.postCurrent.owner.toString()) return next() // post
+        return res.status(400).json({ message: 'not role delete' })
+    }
+    verifyRoleEditComment(req, res, next) {
+      
+        if (req.user._id.toString() == req.commentCurrent.owner.toString()) return next()
+        return res.status(400).json({ message: 'not role delete' })
+    }
     async checkFrienExist(req, res, next) {
         const requestId = req.user._id
         const { friendId, action } = req.body
-        const actionList = ['request', 'accept', 'reject', 'remove','cancel']
+        const actionList = ['request', 'accept', 'reject', 'remove', 'cancel']
         if (!actionList.includes(action)) return res.status(403).json({ message: 'action not found' })
         if (friendId == requestId) return res.status(400).json({ message: 'can add yourself' })
         try {
@@ -52,6 +77,13 @@ class middlewareController {
         } catch (error) {
 
         }
+    }
+    async socketMiddleware(socket, next) {
+        const header = socket.handshake.headers
+        const accessToken = header.accesstoken
+        if (!accessToken) return next(new Error('No login'))
+        socket.user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
+        next()
     }
 }
 

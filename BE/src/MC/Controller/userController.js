@@ -72,7 +72,7 @@ class userController {
         const friend = req.friend
         const requestId = req.user._id
         try {
-            if (action == 'request') {
+            if (action == 'request') {  
                 if (friend.friendRequest.includes(requestId)) return res.status(400).json({ message: 'request is Exist' })
                 if (friend.friend.includes(requestId)) return res.status(400).json({ message: 'have made friends' })
                 if (req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'Please accept friend' })
@@ -156,19 +156,38 @@ class userController {
         if (!q) return res.status(200).json([])
         let query = {
             "displayName": { "$regex": q, "$options": "i" },
-            
+
         };
-        const user = await users.find(query).limit(6)
-        const displayNameSuggestions = user.map(item => item.displayName)
-        const setSuggest = new Set(displayNameSuggestions)
-        res.status(200).json([...setSuggest])
+
         try {
+            const user = await users.find(query).limit(6)
+            const displayNameSuggestions = user.map(item => item.displayName)
+            const setSuggest = new Set(displayNameSuggestions)
+            res.status(200).json([...setSuggest])
         } catch (error) {
             res.status(500).json(error)
             console.log(error)
         }
     }
 
+    async searchUser(req, res) {
+        let q = req.query.q ? req.query.q : '';
+        console.log(q)
+        if (!q) return res.status(200).json([])
+        let query = {
+            "displayName": { "$regex": q, "$options": "i" },
+            _id: { $ne: req.user._id }
+
+        };
+
+        try {
+            const user = await users.find(query)
+            res.status(200).json([...user])
+        } catch (error) {
+            res.status(500).json(error)
+            console.log(error)
+        }
+    }
 }
 
 export default new userController()

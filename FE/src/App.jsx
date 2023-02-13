@@ -7,11 +7,15 @@ import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
 import { loginWithRefeshToken } from './Features/AuthFeature/userSlice';
 import HomePage from './Features/PostFeature/page/HomePage';
+import SearchPage from './Features/SearchFeature/SearchPage';
 import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
 function App() {
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+  const socket=user.socket
   useLayoutEffect(() => {
+    
     (async () => {
       const action = loginWithRefeshToken()
       dispatch(action)
@@ -19,7 +23,9 @@ function App() {
     return () => {
     }
   }, [])
-  const user = useSelector(state => state.user)
+
+
+
   return (
     <div className="app w-full min-h-screen h-max bg-[#F0F2F5] pt-[62px]">
       <Routes>
@@ -28,6 +34,7 @@ function App() {
           <Route path='register' element={<RegisterPage />} />
           <Route index element={<Navigate to='login' push />} />
         </Route>
+        <Route path='/search' element={<ControlPage Component={SearchPage} />} />
         <Route>
           <Route path='/profile' element={<ControlPage Component={UserControl} />} >
             <Route path=':userId' element={<UserPage />} />

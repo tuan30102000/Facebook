@@ -48,6 +48,10 @@ const userAuth = {
     searchSuggest(suggest) {
         const url = 'user/suggest?' + queryString.stringify({ suggest })
         return axiosJwt.get(url)
+    },
+    search(query) {
+        const url = 'user/search' + query
+        return axiosJwt.get(url)
     }
 }
 export default userAuth

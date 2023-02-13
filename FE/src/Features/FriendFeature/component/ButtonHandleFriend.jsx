@@ -10,7 +10,7 @@ ButtonHandleFriend.propTypes = {
 
 function ButtonHandleFriend({ text, onClick, primaryBg = true }) {
     return (
-        <button onClick={onClick} className={clsx('rounded-[6px] px-3 cursor-pointer min-h-[40px]',
+        <button onClick={onClick} className={clsx('rounded-[6px] px-3 cursor-pointer h-[40px]',
             {
                 ['btn-blue']: primaryBg,
                 ['btn-white']: !primaryBg,

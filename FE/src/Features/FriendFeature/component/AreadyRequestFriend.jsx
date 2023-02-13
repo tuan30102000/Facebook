@@ -4,15 +4,21 @@ import Option from '../../../Components/Option';
 import OptionBtn from '../../../Components/OptionBtn';
 import ButtonHandleFriend from './ButtonHandleFriend';
 import userAuth from '../../../Api/userAuthApi';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../../AuthFeature/userSlice';
 
 AreadyRequestFriend.propTypes = {
 
 };
 
 function AreadyRequestFriend({ friendId }) {
-    const cancelRequest = async () => {
+    const dispatch = useDispatch()
+    const cancelRequest = async (e) => {
+        e.stopPropagation()
         try {
-            await userAuth.cancelRequest(friendId)
+            const userNewest = await userAuth.cancelRequest(friendId)
+            const action = updateUser(userNewest)
+            dispatch(action)
         } catch (error) {
 
         }

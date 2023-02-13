@@ -35,6 +35,18 @@ const postApi = {
         const url = 'post/react/' + postId
         return axiosJwt.patch(url, { action })
 
+    },
+    createComment(postId, comment) {
+        const url = `post/${postId}/comment/create`
+        return axiosJwt.post(url, { comment })
+    },
+    getCommentInPost(postId) {
+        const url = `post/${postId}/comment`
+        return axiosJwt.get(url)
+    },
+    removeComment(postId, commentId) {
+        const url=`post/${postId}/comment/delete/${commentId}`
+        return axiosJwt.delete(url)
     }
 }
 
