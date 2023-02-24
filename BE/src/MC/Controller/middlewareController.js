@@ -2,7 +2,9 @@ import jwt from "jsonwebtoken"
 import post from "../Model/posts.js";
 import users from "../Model/users.js";
 import comment from "../Model/comments.js"
+import conversations from "../Model/conversations.js";
 class middlewareController {
+    //authToken
     async verifyToken(req, res, next) {
         const token = req.headers.accesstoken;
         if (!token) return res.status(401).json("You're not authenticated");
@@ -21,7 +23,7 @@ class middlewareController {
         }
         //token valid
     }
-
+    //post
     async verifyPost(req, res, next) {
         try {
             const postCurrent = await post.findById(req.params.postId)
@@ -34,6 +36,7 @@ class middlewareController {
             return res.status(403).json({ message: 'can connect Db' })
         }
     }
+
     async verifyComment(req, res, next) {
         try {
             const commentCurrent = await comment.findOne({ _id: req.params.commentId, active: true })
@@ -53,15 +56,15 @@ class middlewareController {
         next()
     }
     verifyRoleDeleteComment(req, res, next) {
-      
+
         if (req.user._id.toString() == req.commentCurrent.owner.toString()) return next() //owner cmt
         if (req.user._id.toString() == req.postCurrent.owner.toString()) return next() // post
         return res.status(400).json({ message: 'not role delete' })
     }
     verifyRoleEditComment(req, res, next) {
-      
+
         if (req.user._id.toString() == req.commentCurrent.owner.toString()) return next()
-        return res.status(400).json({ message: 'not role delete' })
+        return res.status(400).json({ message: 'not role editComment' })
     }
     async checkFrienExist(req, res, next) {
         const requestId = req.user._id
@@ -78,13 +81,50 @@ class middlewareController {
 
         }
     }
+    //post
+    //socket
     async socketMiddleware(socket, next) {
-        const header = socket.handshake.headers
-        const accessToken = header.accesstoken
-        if (!accessToken) return next(new Error('No login'))
-        socket.user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
-        next()
+        try {
+            const header = socket.handshake.headers
+            const accessToken = header.accesstoken
+            if (!accessToken) return next(new Error('No login'))
+            socket.user = jwt.verify(accessToken, process.env.SECRET_ACCESS_KEY)
+            next()
+        } catch (error) {
+            console.log(error)
+            next(new Error('token expires'))
+        }
     }
+    //socket
+    //conversation
+    async verifyConversation(req, res, next) {
+        try {
+            // console.log(req.params)
+            // res.status(200)
+            const currentConversation = await conversations.findOne({ members: { $all: req.user._id, }, _id: req.params.conversationId, active: true })
+            if (!currentConversation) return res.status(400)
+            req.currentConversation=currentConversation
+            next()
+        } catch (error) {
+            console.log(error)
+            res.status(400).json(error)
+        }
+    }
+    async verifyMember(req, res, next) {
+        const memberId = req.body.memberId ? req.body.memberId : req.params.memberId
+        try {
+            const member = await users.findById(memberId)
+            if (!member) return res.status(400).json({ message: 'member not found' })
+            req.member = member
+            req.members = [member._id.toString(), req.user._id.toString()]
+            next()
+        } catch (error) {
+            console.log(error)
+            res.status(400).json(error)
+        }
+    }
+    //conversation
+
 }
 
 export default new middlewareController()

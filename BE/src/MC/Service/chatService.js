@@ -1,15 +1,14 @@
 class chatSevice {
     connection(socket) {
-        console.log('cnt')
         socket.on('disconnect', () => {
             console.log(`User disconnect id is ${socket.id}`);
         })
-        socket.on('join-convention', (conventionId) => {
-            socket.join(conventionId)
+        socket.on('join-post', (postId) => {
+            socket.join(postId)
         })
-        socket.on('leave-convention', (conventionId) => {
-            socket.leave(conventionId)
-            console.log('leave')
+        socket.on('leave-post', (postId) => {
+            socket.leave(postId)
+            // console.log('leave')
         })
 
         // event on here

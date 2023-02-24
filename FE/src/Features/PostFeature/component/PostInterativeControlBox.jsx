@@ -17,7 +17,7 @@ function LikeBox() {
     })
 }
 
-function PostInterativeControlBox({ postId, isLikePost, handleReact }) {
+function PostInterativeControlBox({ postId, isLikePost, handleReact, ownerPost }) {
     const [isShowComment, setisShowComment] = useState(false);
     const spanStyle = 'text-[15px] font-[600] ml-[10px]'
     const likeColor = 'text-[#2078f4]'
@@ -33,7 +33,7 @@ function PostInterativeControlBox({ postId, isLikePost, handleReact }) {
         }
     }
     const onCommentClick = () => {
-        setisShowComment(true)
+        setisShowComment(state => !state)
     }
     return (
         <>
@@ -49,7 +49,7 @@ function PostInterativeControlBox({ postId, isLikePost, handleReact }) {
                     </div>
                 </div>
             </div>
-            {isShowComment && <CommentBox postId={postId} />}
+            {isShowComment && <CommentBox postId={postId} ownerPost={ownerPost} />}
         </>
     );
 }

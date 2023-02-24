@@ -7,6 +7,7 @@ import { IoMdNotifications } from 'react-icons/io';
 import { RiMessengerFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ConversationsBox from '../../Features/ChatFeature/component/ConversationsBox';
 import FriendBox from '../../Features/FriendFeature/component/FriendBox';
 import Dialog from '../Dialog';
 import SettingBox from '../SettingBox';
@@ -35,8 +36,12 @@ function Header() {
     const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
     const handleFriendDialogRef = useRef({})
     const handleSettingDialogRef = useRef({})
+    const handleConversationRef = useRef({})
     const openSettingDialog = () => {
         handleSettingDialogRef.current.openModal()
+    }
+    const openConversations = () => {
+        handleConversationRef.current.openModal()
     }
     return (
         <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
@@ -54,12 +59,13 @@ function Header() {
                     <span className='text-[15px] text-[#050505] font-bold'>{displayNameLink}</span>
                 </Link>
                 <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
-                <IconBox IconComponent={RiMessengerFill} />
+                <IconBox onClick={openConversations} IconComponent={RiMessengerFill} />
                 <IconBox IconComponent={IoMdNotifications} />
                 <IconBox onClick={openSettingDialog} IconComponent={BsFillCaretDownFill} />
             </div>
             <Dialog Component={FriendBox} componentProps={{ listFriendRequest: user.friendRequest }} ref={handleFriendDialogRef} />
             <Dialog Component={SettingBox} ref={handleSettingDialogRef} />
+            <Dialog Component={ConversationsBox} ref={handleConversationRef} />
         </header>
     );
 }

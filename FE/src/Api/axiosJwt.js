@@ -40,7 +40,6 @@ axiosJwt.interceptors.request.use(async function (config) {
     config.headers.accesstoken = 'Bearer ' + data.accessToken
     return config
 }, function (error) {
-    console.log(error)
     // Do something with request error
     return Promise.reject(error);
 });

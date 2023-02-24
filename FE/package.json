@@ -9,13 +9,14 @@
     "newft": "cd src && cd features && mkdir ft && cd ft && touch index.jsx && mkdir page component && cd .. && mv ft",
     "port": "start chrome http://localhost:3000/",
     "dev2": "vite",
-    "be": "cd ../BE && npm run start"
+    "be": "cd ../BE && code ."
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
     "@reduxjs/toolkit": "^1.7.2",
     "axios": "^0.26.0",
     "clsx": "^1.1.1",
+    "dayjs": "^1.11.7",
     "jwt-decode": "^3.1.2",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.8.1",

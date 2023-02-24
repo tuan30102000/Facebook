@@ -14,9 +14,9 @@ postRouter.get('/getall', postController.getAllPost)
 
 postRouter.post('/:postId/comment/create', middlewareController.verifyToken, middlewareController.verifyPost, commentController.createComment)
 postRouter.get('/:postId/comment', middlewareController.verifyToken, middlewareController.verifyPost, commentController.getCommentInPost)
-postRouter.delete('/:postId/comment/delete/:commentId', middlewareController.verifyToken, middlewareController.verifyPost,middlewareController.verifyComment, middlewareController.verifyRoleDeleteComment, commentController.removeComment,)
+postRouter.delete('/:postId/comment/delete/:commentId', middlewareController.verifyToken, middlewareController.verifyPost, middlewareController.verifyComment, middlewareController.verifyRoleDeleteComment, commentController.removeComment,)
+postRouter.patch('/:postId/comment/edit/:commentId', middlewareController.verifyToken, middlewareController.verifyPost, middlewareController.verifyComment,middlewareController.verifyRoleEditComment,commentController.editComment)
 // postRouter.delete('/:postId/comment/deleteall', middlewareController.verifyToken, middlewareController.verifyPost, middlewareController.isOwmerPost, )
-// postRouter.path('/:postId/comment/edit/:commentId', middlewareController.verifyToken, middlewareController.verifyPost, middlewareController.isOwmerPost, )
 
 
 export default postRouter

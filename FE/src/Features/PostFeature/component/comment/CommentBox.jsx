@@ -6,11 +6,14 @@ import { useEffect } from 'react'
 import postApi from '../../../../Api/postApi'
 import Comments from './Comments'
 import { useState } from 'react'
-import UserInfoMini from '../../../../Components/UserInfoMini'
+import { useSelector } from 'react-redux'
 
 
-function CommentBox({ postId, owner }) {
+
+function CommentBox({ postId, ownerPost }) {
     const [comments, setcomments] = useState([])
+    const userCurrent = useSelector(state => state.user)
+    const socket = userCurrent.socket
     useEffect(() => {
         (async () => {
             const data = await postApi.getCommentInPost(postId)
@@ -18,6 +21,32 @@ function CommentBox({ postId, owner }) {
         })()
 
         return () => {
+        }
+    }, [])
+    useEffect(() => {
+        if (!socket) return
+        socket.emit('join-post', postId)
+        socket.on('create-comment', (newCmt) => {
+            // const newCommentList = [...comments, newCmt]
+            setcomments(state => [...state, newCmt])
+        })
+        socket.on('delete-comment', (cmtId) => {
+            setcomments(state => state.filter(item => item._id != cmtId))
+        })
+        socket.on('edit-comment', (cmtEdited) => {
+            // console.log(cmtEdited)
+            setcomments(state => {
+                const newState = [...state]
+                const index = newState.findIndex(item => item._id == cmtEdited._id)
+                newState[index] = { ...cmtEdited }
+                return newState
+            })
+        })
+        return () => {
+            socket.removeListener('create-comment');
+            socket.removeListener('delete-comment');
+            socket.removeListener('edit-comment');
+            socket.emit('leave-post', postId)
         }
     }, [])
 
@@ -31,7 +60,7 @@ function CommentBox({ postId, owner }) {
     }
     return (
         <div className='px-4 py-3' >
-            <Comments postId={postId} comments={comments} />
+            <Comments ownerPost={ownerPost} postId={postId} user={userCurrent.current.data} comments={comments} />
             <div className="flex">
                 <UserCurrentInfoMini isShowName={false} />
                 <CommentForm submit={submit} postId={postId} /></div>

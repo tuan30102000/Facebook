@@ -64,7 +64,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, likeList = [
                         </div>
                     ))}
                 </div>}
-            <PostInterativeControlBox isLikePost={likeListState.includes(user._id)} postId={postId} handleReact={handleReact} />
+            <PostInterativeControlBox isLikePost={likeListState.includes(user._id)} postId={postId} ownerPost={ownerId} handleReact={handleReact} />
         </div>
     );
 }

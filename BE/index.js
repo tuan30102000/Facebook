@@ -26,6 +26,7 @@ app.use(cookieParser())
 
 //
 app.use(express.static('public'));
+
 //
 db.connect()
 app.use(morgan('combined'))
@@ -38,6 +39,7 @@ export const io = new Server(httpServer, {
 
     }
 });
+
 io.use(middlewareController.socketMiddleware)
 io.on("connection", chatService.connection);
 httpServer.listen(PORT, () => console.log('run' + PORT))

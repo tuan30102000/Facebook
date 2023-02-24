@@ -5,12 +5,14 @@ const commentSchema = new Mongoose.Schema({
     post: { type: Mongoose.Schema.Types.ObjectId, ref: 'post' },
     content: {
         type: String,
-        default: '',
+        required: true,
+        trim: true
     },
     active: {
         type: Boolean,
         default: true
-    }
+    },
+    create: { type: Number, default: Number(Date.now()) }
 },
     { timestamps: true })
 

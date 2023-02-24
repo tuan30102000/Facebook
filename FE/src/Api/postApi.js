@@ -45,8 +45,12 @@ const postApi = {
         return axiosJwt.get(url)
     },
     removeComment(postId, commentId) {
-        const url=`post/${postId}/comment/delete/${commentId}`
+        const url = `post/${postId}/comment/delete/${commentId}`
         return axiosJwt.delete(url)
+    },
+    editComment(postId, commentId, comment = '') {
+        const url = `post/${postId}/comment/edit/${commentId}`
+        return axiosJwt.patch(url, { comment: comment })
     }
 }
 

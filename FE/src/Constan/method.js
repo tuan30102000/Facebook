@@ -8,6 +8,10 @@ const method = {
         }
         return arr
     },
+    limitText(string, length = 9, subString = '') {
+        return string.slice(0, length) + (string.length > length ? subString : '')
+    }
+    ,
     getAccessToken() {
         return localStorage.getItem(StorageKey.accessToken)
     },
