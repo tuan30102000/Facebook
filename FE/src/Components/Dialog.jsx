@@ -24,7 +24,7 @@ function Dialog({ Component, componentProps = {}, position = 'top-[calc(100%-6px
         <>
             {
                 isShow &&
-                <div className={clsx("absolute min-w-[360px] py-5 bg-white shadow-[10px_10px_20px_3px_rgba(0,0,0,0.3)]  rounded-lg", position)}>
+                <div className={clsx("absolute min-w-[360px] py-5 bg-white shadow-[10px_10px_20px_3px_rgba(0,0,0,0.3)] h-max rounded-lg", position)}>
                     <Component {...componentProps} closeModal={closeModal} />
                 </div>
             }

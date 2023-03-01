@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import JWT from "jsonwebtoken"
 import listDefalult from '../../constan/listDefault.js'
 import user from "../Model/users.js"
-function generateAccessToken(data = {}, time = '30s') {
+function generateAccessToken(data = {}, time = '10m') {
     return JWT.sign({ _id: data._id, isAdmin: data.isAdmin }, process.env.SECRET_ACCESS_KEY, { expiresIn: time })
 }
 function generateRefreshToken(data = {}, time = '365d') {
@@ -79,9 +79,7 @@ class authController {
     }
 
 
-    async logout(req, res) {
-        res.cookie.clear('refreshToken')
-    }
+  
     async deleteUser(req, res) {
         await user.deleteMany({})
         res.send('delete success')

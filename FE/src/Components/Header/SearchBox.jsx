@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { AiOutlineSearch } from 'react-icons/ai';
-import useInput from '../../hook/useInput';
-import SearchSuggestion from './SearchSuggestion';
-import userAuth from '../../Api/userAuthApi';
-import useThrotle from '../../hook/useThrotle';
-import { BiArrowBack } from 'react-icons/bi'
 import clsx from 'clsx';
 import throttle from 'lodash.throttle';
+import { stringify } from 'query-string';
+import React, { useEffect, useState } from 'react';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { BiArrowBack } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
+import userAuth from '../../Api/userAuthApi';
+import useInput from '../../hook/useInput';
+import SearchSuggestion from './SearchSuggestion';
 function SearchBox() {
     const searchBoxId = 'search-box'
+    const navigate = useNavigate()
     const [isLoadingSuggest, setisLoadingSuggest] = useState(true)
     const callBack = (fn, value) => {
         setisLoadingSuggest(true)
@@ -18,6 +20,7 @@ function SearchBox() {
     var [suggestList, setsuggestList] = useState([])
     const { onChange, value, setvalue } = useInput(callBack)
     const [isShowSuggetion, setisShowSuggetion] = useState(false);
+    const closeSuggest = () => { setisShowSuggetion(false) }
 
     useEffect(() => {
         const onKeyUp = (e) => {
@@ -72,16 +75,19 @@ function SearchBox() {
 
 
     useEffect(throtleSuggest, [value, isLoadingSuggest])
-
+    // useEffect(() => {
+    //     document.addEventListener('click', closeSuggest)
+    // }, [])
 
     const onsubmit = (e) => {
-        console.log(value)
-    }
-    const closeSuggest = () => { setisShowSuggetion(false) }
+        e.preventDefault()
+        if (!value) return
+        navigate('/search?' + stringify({ q: value }))
 
+    }
     return (
         <form onSubmit={onsubmit} className={clsx('h-full flex items-center bg-white relative p-4 duration-500', { '': !isShowSuggetion, 'translate-x-[-63px] shadow': isShowSuggetion })} >
-            {isShowSuggetion && <BiArrowBack onClick={closeSuggest} className='mr-2 text-[25px] animate-show-opacity'/>}
+            {isShowSuggetion && <BiArrowBack onClick={closeSuggest} className='mr-2 text-[25px] animate-show-opacity' />}
             <label htmlFor={searchBoxId} className='bg-[#f0f2f5] h-10 flex w-max items-center rounded-[50px] pr-2 pl-4'>
                 <AiOutlineSearch className='text-[20px]' />
                 <input autoComplete='off' value={value || ''} onChange={onChange} onFocus={() => setisShowSuggetion(true)}

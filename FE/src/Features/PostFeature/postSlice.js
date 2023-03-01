@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import postApi from "../../Api/postApi";
-import method from "../../Constan/method";
 
 export const loadPost = createAsyncThunk('loadPost', async () => {
 

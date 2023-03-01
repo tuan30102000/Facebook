@@ -8,6 +8,10 @@ const method = {
         }
         return arr
     },
+    limitText(string, length = 9, subString = '') {
+        return string.slice(0, length) + (string.length > length ? subString : '')
+    }
+    ,
     getAccessToken() {
         return localStorage.getItem(StorageKey.accessToken)
     },
@@ -22,6 +26,9 @@ const method = {
         this.setAccessToken(access)
         this.setRefreshToken(refresh)
     },
+    removeAccessToken() {
+        localStorage.removeItem(StorageKey.accessToken)
+    },
     createSet(arr = [], key) {
         const set = new Set()
         if (!key) {
@@ -29,7 +36,7 @@ const method = {
         }
         arr.forEach(item => set.add(item[key]))
         return set
-    }
+    },
 }
 
 export default method

@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userApi from "../../Api/userApi";
+import userAuth from "../../Api/userAuthApi";
+import initGlobalState from "../../Constan/initGlobalState";
 import method from "../../Constan/method";
+import socket from "../../Constan/socket";
 import createToast from "../ToastFeature/createToast";
 export const registerThunk = createAsyncThunk('user/register', async (data) => {
     const result = await userApi.register(data)
@@ -16,27 +19,25 @@ export const loginWithRefeshToken = createAsyncThunk('user/logintoken', async ()
     const token = await userApi.refresh()
     return token
 })
+export const logout = createAsyncThunk('user/logout', async () => {
+    await userAuth.logout()
+    return
+})
 
-const initialState = {
-    current: {},
-    login: false,
-    loginPending: false,
-    loginError: false,
-    setting: {}
-}
-
+const nameSlice = 'user'
 const userSlice = createSlice({
-    name: 'user',
-    initialState: initialState
+    name: nameSlice,
+    initialState: initGlobalState[nameSlice]
     ,
     reducers: {
-        logout(state) {
-            state = initialState
-            localStorage.clear()
-            return state
-        }
-        , updateUser(state, action) {
+        updateUser(state, action) {
             state.current.data = action.payload
+        },
+        addSocket(state, action) {
+            state.socket = action.payload
+        },
+        removeSocket(state) {
+            state.socket = null
         }
 
     },
@@ -46,6 +47,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, }
+            state.socket = socket()
             createToast('Đăng kí thành công')
         },
         [registerThunk.pending]: (state) => {
@@ -56,7 +58,7 @@ const userSlice = createSlice({
             state.loginError = true
             state.loginPending = false
             console.log('Error ở extraReducer.reject:', action)
-            createToast('Đăng nhập thất bại', 'error')
+            createToast('Đăng ki thất bại', 'error')
             // throw new Error('Required')
         }
         ,
@@ -66,6 +68,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, }
+            state.socket = socket()
             createToast('Đăng nhập thành công')
         },
         [login.rejected]: (state,) => {
@@ -82,17 +85,22 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
-            createToast('Dang nhap thanh cong')
+            state.socket = socket()
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false
             state.login = false
             createToast('Đăng nhập thất bại', 'error')
-        }
+        },
+        [logout.fulfilled]: (state, action) => {
+            method.removeAccessToken()
+            state = initGlobalState[nameSlice]
+            return state
+        },
     }
 })
 
 
 const { reducer, actions } = userSlice
-export const { logout, updateUser } = actions
+export const { updateUser, addSocket, removeSocket } = actions
 export default reducer

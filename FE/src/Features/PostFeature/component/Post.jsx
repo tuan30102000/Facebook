@@ -51,10 +51,10 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, likeList = [
         <div className='w-[550px] bg-white rounded-[5px] shadow mb-3 mx-auto'>
             <div className="px-4 pt-3">
                 <div className="flex justify-between mb-3">
-                    <UserInfoMini avartUrl={avatarUrl} userId={ownerId} displayName={displayName} />
+                    <UserInfoMini avatarUrl={avatarUrl} userId={ownerId} displayName={displayName} />
                     {isOwnerPost && <Option Component={OptionPost} componentProp={{ postId, urlList, content, deletePost, updatePost }} />}
                 </div>
-                <div className="pt-1 pb-4">{arrayOfContent.map((item, i) => <div key={i} className='select-text leading-5' >{item}</div>)}</div>
+                <div className="pt-1 pb-2">{arrayOfContent.map((item, i) => <div key={i} className='select-text leading-5' >{item}</div>)}</div>
             </div>
             {urlList[0] &&
                 <div className="flex w-full">
@@ -64,7 +64,7 @@ function Post({ content = '', urlList = [], avatarUrl, displayName, likeList = [
                         </div>
                     ))}
                 </div>}
-            <PostInterativeControlBox isLikePost={likeListState.includes(user._id)} postId={postId} handleReact={handleReact} />
+            <PostInterativeControlBox isLikePost={likeListState.includes(user._id)} postId={postId} ownerPost={ownerId} handleReact={handleReact} />
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import cloudinary from "../../cloudinary/cloudinary.js"
 import method from "../../constan/method.js"
-import post from "../Model/post.js"
+import post from "../Model/posts.js"
 import Mongoose from "mongoose"
 const { ObjectId } = Mongoose.Types
 const populateData = { path: 'owner', select: 'displayName avatarUrl' }
@@ -15,7 +15,7 @@ class postController {
         try {
             const resultClould = await Promise.all(pathFileList)
             const listUrl = resultClould.map(item => item.url)
-            const newPost = new post({
+            const newPost = new post({  
                 owner: req.user._id,
                 content,
                 imgUrl: listUrl

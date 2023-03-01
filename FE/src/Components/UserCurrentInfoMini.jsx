@@ -7,7 +7,7 @@ function UserCurrentInfoMini({ isShowName = true }) {
     const user = useSelector(state => state.user.current.data)
     return (
         <>
-            <UserInfoMini avartUrl={user.avatarUrl} userId={user._id} displayName={isShowName ? user.displayName : ''} />
+            <UserInfoMini avatarUrl={user.avatarUrl} userId={user._id} displayName={isShowName ? user.displayName : ''} />
         </>
     );
 }

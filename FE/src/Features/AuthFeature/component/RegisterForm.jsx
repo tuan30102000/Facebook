@@ -48,7 +48,7 @@ const schema = yup.object().shape({
 })
 
 function RegisterForm() {
-    const dispath = useDispatch()
+    const dispatch = useDispatch()
     ///form handle
     const form = useForm({
         defaultValues: {
@@ -89,7 +89,7 @@ function RegisterForm() {
             delete newData.passwordConfirm
             //dispath store
             const action = await registerThunk(newData)
-            const resultAction = dispath(action)
+            const resultAction = dispatch(action)
             const userData = unwrapResult(resultAction)
             //
             console.log(userData)

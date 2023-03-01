@@ -9,12 +9,11 @@ FriendCard.propTypes = {
     avatarUrl: PropTypes.string.isRequired,
     currentId: PropTypes.string,
     friendSet: PropTypes.object.isRequired,
-    friendRequestSet: PropTypes.object.isRequireSd,
-    myRequestFriendSet: PropTypes.object.isRequired,
+    // friendRequestSet: PropTypes.fun.isRequireSd,
+    myFriendRequestSet: PropTypes.object.isRequired,
 };
 
-function FriendCard({ _id, displayName, avatarUrl, ownerId, friendSet, friendRequestSet, myRequestFriendSet }) {
-console.log(_id)
+function FriendCard({ _id, displayName, avatarUrl, ownerId, friendSet, friendRequestSet, myFriendRequestSet }) {
     return (
         <div className="flex flex-[0_0_50%] justify-between items-center p-4 rounded-lg shadow-[0px_0px_10px_1px_rgba(0,0,0,0.1)]">
             <Link className='flex' to={'/profile/' + _id} >
@@ -23,7 +22,7 @@ console.log(_id)
                 </div>
                 <p className='self-center text-[#050505] font-[600]'>{displayName}</p>
             </Link>
-            <HandleRelationshipBtn {...{ _id, ownerId, friendSet, friendRequestSet, myRequestFriendSet }} />
+            <HandleRelationshipBtn {...{ _id, ownerId, friendSet, friendRequestSet, myFriendRequestSet }} />
         </div>
     )
 }

@@ -1,4 +1,6 @@
 import authRouter from "./authRouter.js";
+import conversationRouter from "./conversationRouter.js";
+import messageRouter from "./messageRouter.js";
 import postRouter from "./postRouter.js";
 import userRouter from "./userRouter.js";
 
@@ -12,5 +14,7 @@ export default function (app) {
     app.use('/auth', authRouter)
     app.use('/post', postRouter)
     app.use('/user', userRouter)
+    app.use('/conversation', conversationRouter)
+    app.use('/message', messageRouter)
 
 }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import React, { useEffect, useMemo, useState } from 'react';
-import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import postApi from '../../../Api/postApi';
 import FriendListMini from '../../../Components/FriendListMini';
 import Avatar from './Avatar';
@@ -20,6 +20,7 @@ UserProfile.propTypes = {
 function UserProfile({ isOwner = false, user }) {
     const location = useLocation()
     const navigate = useNavigate()
+    const params = useParams()
     // navigate({ search: `?${createSearchParams({ sk: 'friend' })}` })
     const [posts, setPosts] = useState([])
     const searchParams = useMemo(() => {
@@ -62,6 +63,9 @@ function UserProfile({ isOwner = false, user }) {
                             <FriendListMini friendList={user.friend} />
                             {/* <Link to={'/profile/62581c15de652906e05650ed?sk='} >aa</Link> */}
                         </div>
+                        {!isOwner && <div className="ml-auto">
+                            <Link to={'/chat/' + params.userId} >Nhan tin</Link>
+                        </div>}
                     </div>
                     <ButtonList onClick={changeQuerryParams} searchParams={searchParams} />
                 </div>

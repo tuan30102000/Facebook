@@ -29,7 +29,6 @@ function OptionPost({ onClose, isShowOption, postId, urlList, content, deletePos
 
     return (
         <>
-
             <OptionBtn btnData={dataBtn} isShowOption={isShowOption} onClose={onClose} />
             <Modal ref={openDeleteModalRef} Component={CofirmBox} componentProps={{
                 highlightMessage: 'Are you sure?',

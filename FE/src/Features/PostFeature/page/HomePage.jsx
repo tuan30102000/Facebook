@@ -9,6 +9,8 @@ HomePage.propTypes = {
 
 function HomePage() {
     const [postData, setpostData] = useState([])
+  
+
     useEffect(() => {
 
         // 
@@ -25,7 +27,7 @@ function HomePage() {
             // 
         }
     }, []);
-  
+
     return (
         <>
             <Header />
