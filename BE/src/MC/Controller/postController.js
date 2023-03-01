@@ -15,7 +15,7 @@ class postController {
         try {
             const resultClould = await Promise.all(pathFileList)
             const listUrl = resultClould.map(item => item.url)
-            const newPost = new post({
+            const newPost = new post({  
                 owner: req.user._id,
                 content,
                 imgUrl: listUrl

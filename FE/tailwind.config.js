@@ -53,7 +53,8 @@ module.exports = {
       colors: {
         'bg-all': '#F0F2F5',
         'bg-over': '#F3F3F4',
-        'primary':'#050505',
+        'primary': '#050505',
+        'higlight': '#1877F2'
       },
       borderRadius: {
         'crical': '50%',

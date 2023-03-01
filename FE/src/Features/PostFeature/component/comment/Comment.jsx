@@ -12,7 +12,7 @@ Comment.propTypes = {
 };
 
 function Comment({ _id, content, owner, postId, isOwnerComment, isOwnerPost, createdAt, updatedAt }) {
-    console.log(new Date(createdAt), dayjs(updatedAt).fromNow())
+    // console.log(new Date(createdAt), dayjs(updatedAt).fromNow())
     const [isEdit, setisEdit] = useState(false)
     const editClick = () => setisEdit(true)
     const closeEdit = () => setisEdit(false)

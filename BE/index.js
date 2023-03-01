@@ -8,7 +8,7 @@ import morgan from "morgan";
 import db from "./src/config/db/db.js";
 import { Server } from "socket.io";
 import routes from "./src/routes/index.js";
-import chatService from './src/MC/Service/chatService.js';
+import socketService from './src/MC/Service/socketService.js';
 import middlewareController from './src/MC/Controller/middlewareController.js';
 dotenv.config()
 const app = express()
@@ -41,5 +41,5 @@ export const io = new Server(httpServer, {
 });
 
 io.use(middlewareController.socketMiddleware)
-io.on("connection", chatService.connection);
+io.on("connection", socketService.connection);
 httpServer.listen(PORT, () => console.log('run' + PORT))

@@ -14,6 +14,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Story from './Features/StoryFeature';
 import ChatPage from './Features/ChatFeature/ChatPage';
+import { addConversation } from './Features/ChatFeature/chatSlice';
 dayjs.extend(relativeTime)
 function App() {
   const dispatch = useDispatch()
@@ -34,8 +35,11 @@ function App() {
     socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
     });
+    socket.on('new-message', conversation => dispatch(addConversation(conversation)))
+    socket.on('seen-message',cv=>console.log(cv))
     return () => {
       socket.removeListener('connect_error');
+
     }
   }, [socket])
 
@@ -62,8 +66,6 @@ function App() {
         <Route path='/*' element={<ControlPage Component={HomePage} />} >
         </Route>
       </Routes>
-
-
     </div>
   )
 }

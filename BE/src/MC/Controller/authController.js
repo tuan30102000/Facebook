@@ -79,9 +79,7 @@ class authController {
     }
 
 
-    async logout(req, res) {
-        res.cookie.clear('refreshToken')
-    }
+  
     async deleteUser(req, res) {
         await user.deleteMany({})
         res.send('delete success')

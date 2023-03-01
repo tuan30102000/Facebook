@@ -1,5 +1,8 @@
+import { io } from '../../../index.js'
+import manageUserRealtime from '../../constan/manageUserRealtime.js'
 import conversation from '../Model/conversations.js'
 import messages from '../Model/messages.js'
+const { push, remove, get, getSocketId, getMany } = manageUserRealtime
 const populateData = { path: 'members', select: 'displayName avatarUrl' }
 class conversationController {
     async createConverSation(req, res) {
@@ -17,17 +20,28 @@ class conversationController {
             res.status(400).json(error)
         }
     }
-    async getConverSation(req, res) {
-        const { memberId } = req.body
-        const member = [req.user._id.toString(), memberId]
+    // async getConverSation(req, res) {
+    //     const { memberId } = req.body
+    //     const member = [req.user._id.toString(), memberId]
 
+    //     try {
+    //         const currentConversation = await conversation.findOne({ members: { $tag: member }, active: true }).populate(populateData)
+    //         if (currentConversation) return res.status(400).json({ message: 'conversation Not found' })
+    //         return res.status(400).json(currentConversation)
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.status(400).json(error)
+    //     }
+    // }
+    async seenConversation(req, res) {
         try {
-            const currentConversation = await conversation.findOne({ members: { $tag: member }, active: true }).populate(populateData)
-            if (currentConversation) return res.status(400).json({ message: 'conversation Not found' })
-            return res.status(400).json(currentConversation)
+            const cv = await conversation.findOneAndUpdate({ _id: req.params.conversationId, members: { $all: req.user._id, } }, { seen: true, seenTime: Number(Date.now()) }, { new: true })
+            if (!cv) return res.status(400)
+            io.to(getMany(cv.members)).emit('seen-message', cv)
+            io.in(cv._id).emit('conversation-change', cv)
+            res.status(200)
         } catch (error) {
-            console.log(error)
-            res.status(400).json(error)
+
         }
     }
     async getConverSationsForUser(req, res) {

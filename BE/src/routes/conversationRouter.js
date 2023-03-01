@@ -7,6 +7,7 @@ const conversationRouter = Router()
 conversationRouter.get('/get', middlewareController.verifyToken, conversationController.getConverSationsForUser)
 conversationRouter.post('/create', middlewareController.verifyToken, middlewareController.verifyMember, conversationController.createConverSation)
 conversationRouter.get('/check/:memberId', middlewareController.verifyToken, middlewareController.verifyMember, conversationController.checkConverSation)
+conversationRouter.post('/seen/:conversationId', middlewareController.verifyToken, conversationController.seenConversation)
 
 // conversationRouter.get('/message', middlewareController.verifyToken, conversationController.getConverSationsForUser)
 

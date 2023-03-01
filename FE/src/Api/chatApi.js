@@ -1,12 +1,13 @@
 import axiosJwt from "./axiosJwt"
+import queryString from 'query-string'
 
 const chatApi = {
     checkConversation(memberId) {
         const url = 'conversation/check/' + memberId
         return axiosJwt.get(url)
     },
-    getConversations() {
-        const url = 'conversation/get'
+    getConversations(paginationData = { page: 1, limit: 5 }) {
+        const url = 'conversation/get?' + queryString.stringify(paginationData)
         return axiosJwt.get(url)
     },
     async createConversationAndMessage(memberId, message) {
@@ -18,9 +19,13 @@ const chatApi = {
         const url = 'message/create/' + conversationId
         return axiosJwt.post(url, { message })
     },
-    getMessage(conversationId) {
-        const url = 'message/get/' + conversationId
+    getMessage(conversationId, paginationData = { page: 1, limit: 15 }) {
+        const url = 'message/get/' + conversationId + '?' + queryString.stringify(paginationData)
         return axiosJwt.get(url)
+    },
+    seenConversation(conversationId) {
+        const url = 'conversation/seen/' + conversationId
+        return axiosJwt.post(url)
     }
 }
 

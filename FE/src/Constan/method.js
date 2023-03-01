@@ -26,6 +26,9 @@ const method = {
         this.setAccessToken(access)
         this.setRefreshToken(refresh)
     },
+    removeAccessToken() {
+        localStorage.removeItem(StorageKey.accessToken)
+    },
     createSet(arr = [], key) {
         const set = new Set()
         if (!key) {
@@ -33,7 +36,7 @@ const method = {
         }
         arr.forEach(item => set.add(item[key]))
         return set
-    }
+    },
 }
 
 export default method

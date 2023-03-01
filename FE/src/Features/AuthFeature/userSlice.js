@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userApi from "../../Api/userApi";
+import userAuth from "../../Api/userAuthApi";
+import initGlobalState from "../../Constan/initGlobalState";
 import method from "../../Constan/method";
 import socket from "../../Constan/socket";
 import createToast from "../ToastFeature/createToast";
@@ -17,27 +19,18 @@ export const loginWithRefeshToken = createAsyncThunk('user/logintoken', async ()
     const token = await userApi.refresh()
     return token
 })
+export const logout = createAsyncThunk('user/logout', async () => {
+    await userAuth.logout()
+    return
+})
 
-const initialState = {
-    current: {},
-    login: false,
-    loginPending: false,
-    loginError: false,
-    setting: {},
-    socket: null
-}
-
+const nameSlice = 'user'
 const userSlice = createSlice({
-    name: 'user',
-    initialState: initialState
+    name: nameSlice,
+    initialState: initGlobalState[nameSlice]
     ,
     reducers: {
-        logout(state) {
-            state = initialState
-            localStorage.clear()
-            return state
-        }
-        , updateUser(state, action) {
+        updateUser(state, action) {
             state.current.data = action.payload
         },
         addSocket(state, action) {
@@ -54,7 +47,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, }
-            state.socket=socket()
+            state.socket = socket()
             createToast('Đăng kí thành công')
         },
         [registerThunk.pending]: (state) => {
@@ -75,7 +68,7 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, }
-            state.socket=socket()
+            state.socket = socket()
             createToast('Đăng nhập thành công')
         },
         [login.rejected]: (state,) => {
@@ -92,17 +85,22 @@ const userSlice = createSlice({
             state.loginPending = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
-            state.socket=socket()
+            state.socket = socket()
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false
             state.login = false
             createToast('Đăng nhập thất bại', 'error')
-        }
+        },
+        [logout.fulfilled]: (state, action) => {
+            method.removeAccessToken()
+            state = initGlobalState[nameSlice]
+            return state
+        },
     }
 })
 
 
 const { reducer, actions } = userSlice
-export const { logout, updateUser, addSocket, removeSocket } = actions
+export const { updateUser, addSocket, removeSocket } = actions
 export default reducer

@@ -9,9 +9,9 @@ SettingBox.propTypes = {
 
 function SettingBox(props) {
     const dispatch = useDispatch()
-    const onClick = () => {
-        const action = logout()
-        dispatch(action)
+    const onClick = async () => {
+        const action = await logout()
+        const resultAction = dispatch(action)
     }
     return (
         <div onClick={onClick} >

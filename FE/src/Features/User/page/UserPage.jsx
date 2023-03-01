@@ -23,10 +23,8 @@ function UserPage() {
             if (!isOwner) {
                 try {
                     const userData = await userAuth.getUserById(userId)
-                    console.log(userData)
                     setuser(userData)
                 } catch (error) {
-                    console.log(error)
                     setisExistUser(false)
                 }
             }

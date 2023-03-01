@@ -8,7 +8,6 @@ UserCard.propTypes = {
 
 function UserCard({ avatarUrl, displayName, _id, about, friendRequestSet, myFriendRequestSet, friendSet, ownerId }) {
 
-    console.log(friendRequestSet, myFriendRequestSet, friendSet,)
     return (
         <div className='flex px-4 w-[600px] h-[92px] shadow rounded-md bg-white mt-2 mx-auto items-center'>
             <UserInfoMini avatarUrl={avatarUrl} userId={_id} avtSize='w-[60px] h-[60px]' />

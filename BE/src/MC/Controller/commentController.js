@@ -12,7 +12,7 @@ class commentController {
                 content: req.body.comment
             })
             await newCm.save()
-            io.emit('create-comment', { ...newCm._doc, owner: { _id: req.user._id, displayName: req.user.displayName, avatarUrl: req.user.avatarUrl } })
+            io.in(req.postCurrent._id.toString()).emit('create-comment', { ...newCm._doc, owner: { _id: req.user._id, displayName: req.user.displayName, avatarUrl: req.user.avatarUrl } })
             res.status(200).json(newCm)
         } catch (error) {
             console.log(error)
@@ -20,7 +20,7 @@ class commentController {
         }
 
 
-    
+
 
     }
     async getCommentInPost(req, res) {
@@ -36,7 +36,7 @@ class commentController {
     async removeComment(req, res) {
         try {
             await comment.updateOne({ _id: req.commentCurrent._id }, { $set: { active: false } })
-            io.emit('delete-comment', req.commentCurrent._id)
+            io.in(req.postCurrent._id.toString).emit('delete-comment', req.commentCurrent._id)
             res.status(200).json({ message: 'success' })
         } catch (error) {
             res.status(400).json(error)
@@ -46,7 +46,7 @@ class commentController {
         if (!req.body.comment) return res.status(404).json({ message: 'no have content' })
         try {
             const newCmt = await comment.findOneAndUpdate({ _id: req.commentCurrent._id }, { $set: { content: req.body.comment } }, { new: true }).populate(populateData)
-            io.emit('edit-comment', newCmt)
+            io.in(req.postCurrent._id.toString()).emit('edit-comment', newCmt)
             res.status(200).json({ message: 'success' })
 
         } catch (error) {

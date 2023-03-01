@@ -52,6 +52,10 @@ const userAuth = {
     search(query) {
         const url = 'user/search' + query
         return axiosJwt.get(url)
+    },
+    logout() {
+        const url = 'user/logout'
+        return axiosJwt.post(url)
     }
 }
 export default userAuth

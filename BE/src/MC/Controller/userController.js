@@ -72,7 +72,7 @@ class userController {
         const friend = req.friend
         const requestId = req.user._id
         try {
-            if (action == 'request') {  
+            if (action == 'request') {
                 if (friend.friendRequest.includes(requestId)) return res.status(400).json({ message: 'request is Exist' })
                 if (friend.friend.includes(requestId)) return res.status(400).json({ message: 'have made friends' })
                 if (req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'Please accept friend' })
@@ -150,6 +150,9 @@ class userController {
     }
     updateSelfIntroduce(req, res) {
 
+    }
+    logout(req, res) {
+        res.clearCookie('refreshToken').json('sss')
     }
     async suggestionsUserAutocomplete(req, res) {
         let q = req.query.suggest ? req.query.suggest : '';

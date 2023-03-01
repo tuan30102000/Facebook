@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import method from '../../../Constan/method';
+import { friendRequestSetSelector, friendSetSelector, myFriendRequestSetSelector } from '../../AuthFeature/selectors';
 import FriendCard from '../../FriendFeature/component/FriendCard';
 
 UserFriendTab.propTypes = {
@@ -13,9 +14,9 @@ UserFriendTab.propTypes = {
 
 function UserFriendTab({ friendList = [] }) {
     const user = useSelector(state => state.user.current.data)
-    const friendSet = method.createSet(user.friend, '_id')
-    const friendRequestSet = method.createSet(user.friendRequest, '_id')
-    const myFriendRequestSet = method.createSet(user.myRequestFriends)
+    const friendSet = useSelector(friendSetSelector)
+    const friendRequestSet = useSelector(friendRequestSetSelector)
+    const myFriendRequestSet = useSelector(myFriendRequestSetSelector)
     return (
         <div className='flex justify-center h-max mt-4' >
             <div className="basis-[1024px] px-8 justify-between gap-4">
