@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -6,16 +8,19 @@ import AuthFeature from "./Features/AuthFeature";
 import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
 import { loginWithRefeshToken } from './Features/AuthFeature/userSlice';
+import ChatPage from './Features/ChatFeature/ChatPage';
+import { addConversation, seenConversation } from './Features/ChatFeature/chatSlice';
 import HomePage from './Features/PostFeature/page/HomePage';
 import SearchPage from './Features/SearchFeature/SearchPage';
 import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import Story from './Features/StoryFeature';
-import ChatPage from './Features/ChatFeature/ChatPage';
-import { addConversation } from './Features/ChatFeature/chatSlice';
-dayjs.extend(relativeTime)
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import vi from 'dayjs/locale/vi';
+
+// Thêm plugin localizedFormat và locale vi vào dayjs
+dayjs.extend(localizedFormat);
+dayjs.locale(vi);
+dayjs.extend(relativeTime, { abbr: true })
 function App() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
@@ -35,8 +40,10 @@ function App() {
     socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
     });
-    socket.on('new-message', conversation => dispatch(addConversation(conversation)))
-    socket.on('seen-message',cv=>console.log(cv))
+    socket.on('new-message', conversation => {
+      dispatch(addConversation(conversation))
+    })
+    socket.on('seen-message', cv => dispatch(seenConversation(cv)))
     return () => {
       socket.removeListener('connect_error');
 

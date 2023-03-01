@@ -13,19 +13,26 @@ const chatSlice = createSlice({
     initialState: initGlobalState[nameSlice],
     reducers: {
         addConversation(state, action) {
-            state.conversations = [action.payload, ...state.conversations.filter(item => item._id != action.payload._id)]
+            state.conversations = [action.payload, ...state.conversations
+                .filter(item => item._id != action.payload._id)]
+        },
+        seenConversation(state, action) {
+            const newState = [...state.conversations]
+            const index = newState.findIndex(item => item._id == action.payload._id)
+            newState[index].seen = true
+            newState.conversations = newState
         }
     },
     extraReducers: {
         [loadConversations.fulfilled]: (state, action) => {
-            state.conversations = [...action.payload]
+            state.conversations = [...action.payload,]
         }
     }
 })
 
 const { actions, reducer } = chatSlice
 
-export const { addConversation } = actions
+export const { addConversation, seenConversation } = actions
 
 
 export default reducer

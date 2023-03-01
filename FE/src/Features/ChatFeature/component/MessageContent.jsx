@@ -10,7 +10,7 @@ MessageContent.propTypes = {
 function MessageContent({ content, isUser = false }) {
     return (
         <p className={clsx('w-min max-w-450 break-words text-[15px] px-3 py-2 rounded-[18px] my-3', {
-            'bg-[#0084ff] ml-auto text-white right-0': isUser,
+            'bg-[#0084ff] ml-auto text-white': isUser,
             'bg-[#E4E6EB] text-primary': !isUser
         })} >
             {content}

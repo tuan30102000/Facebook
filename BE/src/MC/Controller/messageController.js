@@ -6,7 +6,13 @@ class messageController {
     async getMessage(req, res) {
         const cursor = req.query.cursor
         try {
-            const paginations = pagination(() => messages.find({ conversation: req.currentConversation._id, createTime: { $lt: cursor } }).sort({ createTime: -1 }), req.query)
+            const paginations = pagination(() => messages
+                .find({
+                    conversation: req.currentConversation._id,
+                    createTime: { $lt: cursor }
+                })
+                .sort({ createTime: -1 }),
+                req.query)
             const messageList = await paginations
             res.status(200).json(messageList)
         } catch (error) {
@@ -16,9 +22,15 @@ class messageController {
     }
     async createMessage(req, res) {
         try {
-            const newMessage = new messages({ conversation: req.currentConversation._id, sender: req.user._id, content: req.body.message, createTime: Number(Date.now()) })
+            const newMessage = new messages({
+                conversation: req.currentConversation._id, sender: req.user._id,
+                content: req.body.message,
+                createTime: Number(Date.now())
+            })
             await newMessage.save()
-            io.in(req.currentConversation._id.toString()).emit('create-message', newMessage._doc)
+            io
+                .in(req.currentConversation._id.toString())
+                .emit('create-message', newMessage._doc)
             res.status(200).json(newMessage)
         } catch (error) {
             console.log(error)

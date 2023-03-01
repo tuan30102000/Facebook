@@ -13,7 +13,6 @@ export default (function () {
         socketMap.delete(userId)
     }
     function getMany(items = []) {
-        console.log(!items._id)
         if (!items[0]._id) return items.map(item => socketMap.get(item.toString()))
         return items.map(item => socketMap.get(item._id.toString()))
     }

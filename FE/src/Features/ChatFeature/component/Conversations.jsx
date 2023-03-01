@@ -14,6 +14,7 @@ function Conversations({ }) {
     const dispatch = useDispatch()
     useEffect(() => {
         if (conversations.length == 0) {
+            console.log(2)
             const action = loadConversations()
             dispatch(action)
         }
@@ -22,7 +23,12 @@ function Conversations({ }) {
     }, [conversations.length])
     return (
         <div>
-            {conversations.map((item) => <Conversation  {...item} userId={user._id} key={item._id} />)}
+            {conversations.map((item) =>
+                <Conversation
+                    {...item}
+                    userId={user._id}
+                    key={item._id}
+                />)}
         </div>
     );
 }

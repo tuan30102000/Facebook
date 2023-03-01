@@ -12,6 +12,7 @@ Message.propTypes = {
 function Message({ content = '', observer, sender = {}, currentMember = {}, isLoad = false }) {
     const elmRef = useRef(null)
     const isUser = !(sender == currentMember._id)
+    console.log(2)
     useEffect(() => {
         if (isLoad) {
             observer.observe(elmRef.current)

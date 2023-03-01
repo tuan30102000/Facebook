@@ -9,8 +9,7 @@ export default async function (callback, queryObj) {
         const arr = [callback().skip(skip).limit(limit), /* callback().count() */]
         const list = await Promise.all(arr)
         // const total = createTotalCount(list[1], queryObj)
-
-        return { result: list[0], total:null }
+        return { result: list[0], total: null }
     } catch (error) {
         throw new Error(error)
     }

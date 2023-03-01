@@ -1,12 +1,15 @@
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
+import { useEffect } from 'react';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaFacebook, FaUserFriends } from 'react-icons/fa';
 import { IoMdNotifications } from 'react-icons/io';
 import { RiMessengerFill } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { countMessageNotSeen } from '../../Features/ChatFeature/chatSelector';
+import { loadConversations } from '../../Features/ChatFeature/chatSlice';
 import ConversationsBox from '../../Features/ChatFeature/component/ConversationsBox';
 import FriendBox from '../../Features/FriendFeature/component/FriendBox';
 import Dialog from '../Dialog';
@@ -32,7 +35,21 @@ function IconBox({ onClick = () => { }, IconComponent, count = 0 }) {
 }
 
 function Header() {
-    const user = useSelector(state => state.user.current.data)
+    const state = useSelector(state => state)
+    const user = state.user.current.data
+    const conversations = state.chat.conversations
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (conversations.length == 0) {
+            console.log(2)
+            const action = loadConversations()
+            dispatch(action)
+        }
+        return () => {
+        }
+    }, [conversations.length])
+    const conversationSeenCount = useSelector(countMessageNotSeen)
+
     const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
     const handleFriendDialogRef = useRef({})
     const handleSettingDialogRef = useRef({})
@@ -59,7 +76,7 @@ function Header() {
                     <span className='text-[15px] text-[#050505] font-bold'>{displayNameLink}</span>
                 </Link>
                 <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
-                <IconBox onClick={openConversations} IconComponent={RiMessengerFill} />
+                <IconBox onClick={openConversations} count={conversationSeenCount} IconComponent={RiMessengerFill} />
                 <IconBox IconComponent={IoMdNotifications} />
                 <IconBox onClick={openSettingDialog} IconComponent={BsFillCaretDownFill} />
             </div>
