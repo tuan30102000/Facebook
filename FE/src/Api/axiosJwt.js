@@ -11,12 +11,11 @@ const axiosJwt = axios.create({
     headers: {
         'content-Type': 'application/json',
         // 'content-type': 'application/x-www-form-urlencoded'
-        'Access-Control-Allow-Origin':ApiUrl.baseURL,
+        'Access-Control-Allow-Origin': ApiUrl.baseURL,
 
 
     }
 })
-
 // axiosJwt.interceptors.request.use(function (config) {
 //     // Do something before request is sent
 //     return config;

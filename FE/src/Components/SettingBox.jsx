@@ -14,7 +14,7 @@ function SettingBox(props) {
         const resultAction = dispatch(action)
     }
     return (
-        <div onClick={onClick} >
+        <div onClick={onClick}>
             Log out
         </div>
     );

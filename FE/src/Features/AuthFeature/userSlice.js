@@ -90,11 +90,11 @@ const userSlice = createSlice({
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
             state.socket = socket()
+            
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false
             state.login = false
-            createToast('Đăng nhập thất bại', 'error')
         },
         [logout.fulfilled]: (state, action) => {
             method.removeAccessToken()
