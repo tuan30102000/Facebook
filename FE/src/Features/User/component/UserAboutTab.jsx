@@ -18,9 +18,7 @@ UserAboutTab.propTypes = {
 
 const regexWhiteSpace = /^\S+$/
 const schema = yup.object().shape({
-    displayName: yup.string()
-        .trim()
-        .matches(!regexWhiteSpace, 'Nhập cả họ và tên')
+    displayName: yup.string().required('vuilong nhap ten').test('check name', 'vui long nhap ho ten day du', (value) => value.split(' ').length >= 2)
     ,
 })
 const data = [

@@ -1,24 +1,20 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import ButtonHandleFriend from './ButtonHandleFriend';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../AuthFeature/userSlice';
+import React from 'react';
 import userAuth from '../../../Api/userAuthApi';
+import ButtonHandleFriend from './ButtonHandleFriend';
 
 AddFriendBtn.propTypes = {
-
+    friendId: PropTypes.string.isRequired
 };
 
-function AddFriendBtn({friendId}) {
-    const dispatch = useDispatch()
+function AddFriendBtn({ friendId }) {
     const onClick = async (e) => {
         e.stopPropagation()
         try {
             const userNewest = await userAuth.addFriend(friendId)
-            const action = updateUser(userNewest)
-            dispatch(action)
-        } catch (error) {
 
+        } catch (error) {
+            console.log(error)
         }
     }
     return (

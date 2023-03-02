@@ -7,7 +7,7 @@ import ControlPage from './Components/ControlPage';
 import AuthFeature from "./Features/AuthFeature";
 import LoginPage from './Features/AuthFeature/page/LoginPage';
 import RegisterPage from './Features/AuthFeature/page/RegisterPage';
-import { loginWithRefeshToken } from './Features/AuthFeature/userSlice';
+import { loginWithRefeshToken, updateUser, updateUserInfo } from './Features/AuthFeature/userSlice';
 import ChatPage from './Features/ChatFeature/ChatPage';
 import { addConversation, seenConversation } from './Features/ChatFeature/chatSlice';
 import HomePage from './Features/PostFeature/page/HomePage';
@@ -44,9 +44,9 @@ function App() {
       dispatch(addConversation(conversation))
     })
     socket.on('seen-message', cv => dispatch(seenConversation(cv)))
+    socket.on('update-user', userInfor => dispatch(updateUser(userInfor)))
     return () => {
       socket.removeListener('connect_error');
-
     }
   }, [socket])
 

@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createSearchParams, Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import postApi from '../../../Api/postApi';
 import FriendListMini from '../../../Components/FriendListMini';
+import { friendRequestSetSelector, friendSetSelector, myFriendRequestSetSelector } from '../../AuthFeature/selectors';
+import HandleRelationshipBtn from '../../FriendFeature/component/HandleRelationshipBtn';
 import Avatar from './Avatar';
 import ButtonList from './ButtonList';
 import CoverAvatar from './CoverAvatar';
@@ -21,6 +24,9 @@ function UserProfile({ isOwner = false, user }) {
     const location = useLocation()
     const navigate = useNavigate()
     const params = useParams()
+    const friendSet = useSelector(friendSetSelector)
+    const friendRequestSet = useSelector(friendRequestSetSelector)
+    const myFriendRequestSet = useSelector(myFriendRequestSetSelector)
     // navigate({ search: `?${createSearchParams({ sk: 'friend' })}` })
     const [posts, setPosts] = useState([])
     const searchParams = useMemo(() => {
@@ -63,9 +69,12 @@ function UserProfile({ isOwner = false, user }) {
                             <FriendListMini friendList={user.friend} />
                             {/* <Link to={'/profile/62581c15de652906e05650ed?sk='} >aa</Link> */}
                         </div>
-                        {!isOwner && <div className="ml-auto">
-                            <Link to={'/chat/' + params.userId} className={'h-9 items-center rounded-[6px] bg-primary-btn-bg px-3 flex'} ><span className='text-white'>Nhắn tin</span></Link>
-                        </div>}
+                        {!isOwner && <>
+                            <div className="ml-auto flex">
+                                <HandleRelationshipBtn _id={user._id} isOwner={isOwner} {...{ friendSet, friendRequestSet, myFriendRequestSet }} />
+                                <Link to={'/chat/' + params.userId} className={'ml-3 h-10 items-center rounded-[6px] bg-[#E4E6EB] px-3 flex'} ><span className='text-[#050505]'>Nhắn tin</span></Link>
+                            </div>
+                        </>}
                     </div>
                     <ButtonList onClick={changeQuerryParams} searchParams={searchParams} />
                 </div>
@@ -77,7 +86,7 @@ function UserProfile({ isOwner = false, user }) {
                 <UserAboutTab about={user.about} displayName={user.displayName} birthDay={user.birthDay} isOwner={isOwner} />
             }
             {queryString.parse(location.search).sk == 'friends' &&
-                <UserFriendTab friendList={user.friend} isOwner={isOwner} />
+                <UserFriendTab {...{ friendSet, friendRequestSet, myFriendRequestSet }} friendList={user.friend} isOwner={isOwner} />
             }
         </>
     );

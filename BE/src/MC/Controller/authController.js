@@ -61,7 +61,10 @@ class authController {
         if (!username) return res.status(403).json({ message: 'not have username' })
         if (!password) return res.status(403).json({ message: 'not have password' })
         try {
-            const userData = await user.findOne({ username }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).populate({ path: 'friend', select: 'avatarUrl displayName' }).select('+password')
+            const userData = await user.findOne({ username })
+                .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
+                .populate({ path: 'friend', select: 'avatarUrl displayName' })
+                .select('+password')
             //
             if (!userData) return res.status(403).json({ message: 'user not Exist' })
             //

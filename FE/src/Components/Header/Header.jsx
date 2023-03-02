@@ -37,17 +37,17 @@ function IconBox({ onClick = () => { }, IconComponent, count = 0 }) {
 function Header() {
     const state = useSelector(state => state)
     const user = state.user.current.data
-    const conversations = state.chat.conversations
+    const isLoadConversations = state.chat.isLoadConversations
     const dispatch = useDispatch()
     useEffect(() => {
-        if (conversations.length == 0) {
-            console.log(2)
+        if (isLoadConversations) {
+            console.log(isLoadConversations)
             const action = loadConversations()
             dispatch(action)
         }
         return () => {
         }
-    }, [conversations.length])
+    }, [isLoadConversations])
     const conversationSeenCount = useSelector(countMessageNotSeen)
 
     const displayNameLink = user.displayName.split(' ')?.[user.displayName.split(' ').length - 1] || user.displayName

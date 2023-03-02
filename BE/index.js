@@ -37,8 +37,8 @@ const httpServer = http.createServer(app)
 export const io = new Server(httpServer, {
     cors: {
         origin: process.env.URL_FE,
+        // origin: 'http://localhost:3000',
         credentials: true
-
     }
 });
 

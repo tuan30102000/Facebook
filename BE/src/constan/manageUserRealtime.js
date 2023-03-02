@@ -4,7 +4,7 @@ export default (function () {
         return socketMap
     }
     function getSocketId(userId) {
-        return socketMap.get(userId)
+        return socketMap.get(userId.toString())
     }
     function push(userId, socketId) {
         socketMap.set(userId, socketId)

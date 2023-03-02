@@ -4,6 +4,7 @@ import commentPost from "./commentPost.js";
 const { push, remove, get, getSocketId } = manageUserRealtime
 class socketService {
     connection(socket) {
+        console.log(socket.id)
         push(socket.user._id, socket.id)
         socket.on('disconnect', () => {
             remove(socket.user._id)

@@ -18,7 +18,6 @@ function CoverAvatar({ coverAvatar, isOwner = false }) {
     const onHandleSubmit = async (file) => {
         try {
             const data = await userAuth.editCoverAvatar(file)
-            console.log(data)
             dispatch(updateUserInfo({ key: 'coverAvatar', data: data.coverAvatar }))
         } catch (error) {
             console.log(error)

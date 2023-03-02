@@ -100,7 +100,7 @@ function ChatBox(props) {
     }
     const handleSeen = async (value) => {
         //checkSeen conversation
-        if (!currentConversation.id) return
+        if (!currentConversation._id) return
         if (currentConversation.seen) return
         //check is current user
         if (currentConversation.newMessage?.sender === currentUser._id) return
@@ -115,7 +115,7 @@ function ChatBox(props) {
         <div className='flex-[1] flex flex-col  h-[calc(100vh-59px)] relative' >
             <NavbarChat member={currentMember} />
             {!currentConversation?._id && <NotExistConversation member={currentMember} />}
-            {<Messages loadMoreMessage={loadMoreMessage} observer={observer} messages={messageList} />}
+            {<Messages loadMoreMessage={loadMoreMessage} observer={observer} currentMember={currentMember} messages={messageList} />}
             <MessageForm onFocus={handleSeen} onSubmit={onsubmitForm} />
         </div>
     );

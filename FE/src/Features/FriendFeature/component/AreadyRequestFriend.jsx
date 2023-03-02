@@ -1,24 +1,19 @@
-import React, { } from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import userAuth from '../../../Api/userAuthApi';
 import Option from '../../../Components/Option';
 import OptionBtn from '../../../Components/OptionBtn';
 import ButtonHandleFriend from './ButtonHandleFriend';
-import userAuth from '../../../Api/userAuthApi';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../AuthFeature/userSlice';
 
 AreadyRequestFriend.propTypes = {
-
+    friendId: PropTypes.string.isRequired
 };
 
 function AreadyRequestFriend({ friendId }) {
-    const dispatch = useDispatch()
     const cancelRequest = async (e) => {
         e.stopPropagation()
         try {
             const userNewest = await userAuth.cancelRequest(friendId)
-            const action = updateUser(userNewest)
-            dispatch(action)
         } catch (error) {
 
         }

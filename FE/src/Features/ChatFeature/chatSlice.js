@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import initGlobalState from "../../Constan/initGlobalState";
 import chatApi from '../../Api/chatApi';
+import { logout } from "../AuthFeature/userSlice";
 
 export const loadConversations = createAsyncThunk('chat/loadConversation', async () => {
     const data = await chatApi.getConversations()
@@ -22,10 +23,16 @@ const chatSlice = createSlice({
             newState[index].seen = true
             newState.conversations = newState
         }
+
     },
     extraReducers: {
         [loadConversations.fulfilled]: (state, action) => {
             state.conversations = [...action.payload,]
+            state.isLoadConversations = false
+        },
+        [logout.fulfilled]: (state) => {
+            state = initGlobalState[nameSlice]
+            return state
         }
     }
 })

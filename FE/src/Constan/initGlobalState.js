@@ -9,5 +9,6 @@ export default {
     }, chat: {
         conversations: [],
         currentChat: [],
+        isLoadConversations: true,
     },
 }

@@ -10,17 +10,18 @@ Conversations.propTypes = {
 function Conversations({ }) {
     const state = useSelector(state => state)
     const user = state.user.current.data
-    const conversations = state.chat.conversations
+    const chat = state.chat
+    const { conversations, isLoadConversations } = chat
     const dispatch = useDispatch()
     useEffect(() => {
-        if (conversations.length == 0) {
-            console.log(2)
+        if (isLoadConversations) {
+            console.log(isLoadConversations)
             const action = loadConversations()
             dispatch(action)
         }
         return () => {
         }
-    }, [conversations.length])
+    }, [isLoadConversations])
     return (
         <div>
             {conversations.map((item) =>
