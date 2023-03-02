@@ -72,7 +72,7 @@ class authController {
             // delete userData.password
             // console.log(userData.password)
             userData.password = undefined
-            return res.status(200).cookie('refreshToken', refreshToken, { httpsOnly: true }).json({ data: userData, accessToken, })
+            return res.status(200).cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'none', secure: true }).json({ data: userData, accessToken, })
         } catch (error) {
             res.status(403).json(error)
         }
