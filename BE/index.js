@@ -11,9 +11,10 @@ import routes from "./src/routes/index.js";
 import socketService from './src/MC/Service/socketService.js';
 import middlewareController from './src/MC/Controller/middlewareController.js';
 dotenv.config()
+const feUrl = process.env.URL_FE || 'http://127.0.0.1:5173'
 const app = express()
 const PORT = process.env.PORT || 3000
-app.use(cors({ credentials: true, origin: /* " */['http://127.0.0.1:5173', 'http://localhost:3000'] }))
+app.use(cors({ credentials: true, origin: /* " */[feUrl, 'http://localhost:3000'] }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
