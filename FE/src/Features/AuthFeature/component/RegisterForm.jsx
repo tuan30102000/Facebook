@@ -22,11 +22,17 @@ const schema = yup.object().shape({
         .matches(regexUsername, 'Không sử dụng kí tự đặc biệt'),
     email: yup.string()
         .required('Vui long điên email')
-        .email('Trường này phải là email'),
+        .email('Trường này phải là email')
+        .trim(),
+    displayName: yup.string()
+        .trim()
+        .matches(!regexWhiteSpace, 'Nhập cả họ và tên')
+    ,
     password: yup.string()
         .required('Vui lòng điền mat khau')
         .min(7, 'mật khẩu phải có 7 kí tự')
-        .matches(regexWhiteSpace, 'không được chứa khoảng trăng'),
+        .matches(regexWhiteSpace, 'không được chứa khoảng trăng')
+        .trim(),
     passwordConfirm: yup.string()
         .required('vui long xac nhan mat khau')
         .oneOf([yup.ref('password')], 'mat khau khong chinh xác')
@@ -56,6 +62,7 @@ function RegisterForm() {
             email: '',
             password: '',
             passwordConfirm: '',
+            displayName: '',
             sex: '',
             day: dateNow.getDate(),
             month: dateNow.getMonth(),
@@ -113,6 +120,12 @@ function RegisterForm() {
                 register={register}
                 name="email"
                 placeholder='Email'
+            />
+            <TextField
+                errors={errors}
+                register={register}
+                name="displayName"
+                placeholder='Họ và Tên'
             />
             <PasswordField
                 errors={errors}

@@ -54,7 +54,7 @@ function UserProfile({ isOwner = false, user }) {
         <>
             <div className='flex justify-center bg-white shadow'>
                 <div className="basis-[1024px]">
-                    <CoverAvatar coverAvatar={user.coverAvatar} />
+                    <CoverAvatar isOwner={isOwner} coverAvatar={user.coverAvatar} />
                     <div className="relative flex mx-10  pt-8 pb-8  border-solid border-b border-[#ccced2]">
                         <Avatar isOwner={isOwner} avatarUrl={user.avatarUrl} />
                         <div className="self-center ml-[180px]">
@@ -64,7 +64,7 @@ function UserProfile({ isOwner = false, user }) {
                             {/* <Link to={'/profile/62581c15de652906e05650ed?sk='} >aa</Link> */}
                         </div>
                         {!isOwner && <div className="ml-auto">
-                            <Link to={'/chat/' + params.userId} >Nhan tin</Link>
+                            <Link to={'/chat/' + params.userId} className={'h-9 items-center rounded-[6px] bg-primary-btn-bg px-3 flex'} ><span className='text-white'>Nhắn tin</span></Link>
                         </div>}
                     </div>
                     <ButtonList onClick={changeQuerryParams} searchParams={searchParams} />
@@ -74,7 +74,7 @@ function UserProfile({ isOwner = false, user }) {
                 <UserPostsTab setPosts={setPosts} posts={posts} friends={user.friend} />
             }
             {queryString.parse(location.search).sk == 'about' &&
-                <UserAboutTab about={user.about} />
+                <UserAboutTab about={user.about} displayName={user.displayName} birthDay={user.birthDay} isOwner={isOwner} />
             }
             {queryString.parse(location.search).sk == 'friends' &&
                 <UserFriendTab friendList={user.friend} isOwner={isOwner} />

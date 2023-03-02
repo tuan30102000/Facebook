@@ -34,7 +34,7 @@ function UserPage() {
 
         return () => {
         }
-    }, [userId])
+    }, [userId, userCurrent])
 
     return (
         <>
