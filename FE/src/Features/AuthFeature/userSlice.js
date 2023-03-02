@@ -33,6 +33,10 @@ const userSlice = createSlice({
         updateUser(state, action) {
             state.current.data = action.payload
         },
+        updateUserInfo(state, action) {
+            console.log(action.payload)
+            state.current.data[action.payload.key] = action.payload.data
+        },
         addSocket(state, action) {
             state.socket = action.payload
         },
@@ -102,5 +106,5 @@ const userSlice = createSlice({
 
 
 const { reducer, actions } = userSlice
-export const { updateUser, addSocket, removeSocket } = actions
+export const { updateUser, updateUserInfo, addSocket, removeSocket } = actions
 export default reducer

@@ -50,7 +50,7 @@ function Header() {
     }, [conversations.length])
     const conversationSeenCount = useSelector(countMessageNotSeen)
 
-    const displayNameLink = user.displayName.split(' ')?.[1] || user.displayName
+    const displayNameLink = user.displayName.split(' ')?.[user.displayName.split(' ').length - 1] || user.displayName
     const handleFriendDialogRef = useRef({})
     const handleSettingDialogRef = useRef({})
     const handleConversationRef = useRef({})
@@ -77,7 +77,7 @@ function Header() {
                 </Link>
                 <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
                 <IconBox onClick={openConversations} count={conversationSeenCount} IconComponent={RiMessengerFill} />
-                <IconBox IconComponent={IoMdNotifications} />
+                {/* <IconBox IconComponent={IoMdNotifications} /> */}
                 <IconBox onClick={openSettingDialog} IconComponent={BsFillCaretDownFill} />
             </div>
             <Dialog Component={FriendBox} componentProps={{ listFriendRequest: user.friendRequest }} ref={handleFriendDialogRef} />

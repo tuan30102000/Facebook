@@ -4,17 +4,17 @@ import useImgFile from '../../../hook/useImgFIle';
 import userAuth from '../../../Api/userAuthApi';
 
 EditAvatarBox.propTypes = {
-    avatarUrl: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
 };
 
-function EditAvatarBox({ avatarUrl }) {
+function EditAvatarBox({ url, submit, closeModal }) {
     const fileInputRef = useRef({})
-    const { onChange, imgPreview, file, isChange } = useImgFile(avatarUrl)
+    const { onChange, imgPreview, file, isChange } = useImgFile(url)
     const onSend = async () => {
         try {
             if (!isChange) return
-            const data = await userAuth.editAvatar(file)
-            console.log(data)
+            await submit(file)
+            closeModal()
         } catch (error) {
 
         }
@@ -26,10 +26,10 @@ function EditAvatarBox({ avatarUrl }) {
             </div>
             <div className="">
                 <input onChange={onChange} type='file' accept='image/*' className='w-0 h-0' ref={fileInputRef} />
-                <button onClick={() => fileInputRef.current.click()}>
-                    openFile
+                <button className='mt-10 rounded-[6px] h-9 bg-primary-btn-bg text-white' onClick={() => fileInputRef.current.click()}>
+                    Chọn ảnh
                 </button>
-                <div className="" onClick={onSend}>Send</div>
+                <button className="mt-10 block w-full rounded-[6px] h-9 bg-primary-btn-bg text-white" onClick={onSend}>Gửi</button>
             </div>
         </div>
     )

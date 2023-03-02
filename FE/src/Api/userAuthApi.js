@@ -8,6 +8,12 @@ const userAuth = {
         form.append('avatar', file)
         return axiosJwt.patch(url, form, { headers: { 'content-Type': 'multipart/form-data' } })
     },
+    editCoverAvatar(file) {
+        const url = 'user/coverAvatar'
+        const form = new FormData()
+        form.append('coverAvatar', file)
+        return axiosJwt.patch(url, form, { headers: { 'content-Type': 'multipart/form-data' } })
+    },
     editInfor(data) {
         const url = 'user/infor'
         return axiosJwt.patch(url, data)

@@ -9,7 +9,7 @@ function DisplayName({ displayName }) {
     return (
 
         <div className="flex items-center">
-            <p className='text-[#1c1e21] text-[32px] font-[700] leading-[32px]' >{displayName}</p>
+            <p className='text-[#1c1e21] text-[32px] font-[700] leading-[32px] capitalize' >{displayName}</p>
         </div>
     );
 }

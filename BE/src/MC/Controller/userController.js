@@ -7,13 +7,13 @@ const { ObjectId } = Mongoose.Types
 const populateUser = { path: 'friend', select: 'avatarUrl displayName' }
 class userController {
     async updateUserInfor(req, res) {
-        if (!req.body) return res.status(403).json({ message: 'displayName is emty' })
+        if (!req.body) return res.status(403).json({ message: 'data is emty' })
         try {
             await users.updateOne({ _id: req.user._id, }, {
                 displayName: req.body.displayName,
                 about: req.body.about,
             })
-            res.status(200).json({ message: 'updateDisplayname complete' })
+            res.status(200).json({ displayName: req.body.displayName, about: req.body.about })
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: ' something wrong' })
@@ -35,16 +35,30 @@ class userController {
             res.status(403).json({ message: ' something wrong' })
         }
     }
+    // async updateCoverAvt(req, res) {
+    //     const file = req.file
+    //     if (!file) return res.status(403).json({ message: 'file is emty' })
+    //     try {
+    //         const user = req.user
+    //         if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
+    //         const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/coverCollection' })
+    //         await users.updateOne({ _id: req.user._id }, { avatarUrl: resultClould.url })
+    //         res.status(200).json({ avatarUrl: resultClould.url })
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.status(403).json({ message: ' something wrong' })
+    //     }
+    // }
 
     async updateCoverAvt(req, res) {
         const file = req.file
         if (!file) return res.status(403).json({ message: 'file is emty' })
         try {
-            const user = req.user
+            // const user = req.user
             // if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
-            const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/avatarCollection' })
-            await users.updateOne({ _id: req.user._id }, { avatarUrl: resultClould.url })
-            res.status(200).json({ avatarUrl: resultClould.url })
+            const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/coverCollection' })
+            await users.updateOne({ _id: req.user._id }, { coverAvatar: resultClould.url })
+            res.status(200).json({ coverAvatar: resultClould.url })
         } catch (error) {
             console.log(error)
             res.status(403).json({ message: ' something wrong' })

@@ -16,7 +16,7 @@ class authController {
 
     async register(req, res, next) {
 
-        const { username, password, email, sex, birthDay } = req.body
+        const { username, password, email, sex, birthDay, displayName } = req.body
         if (!username) return res.status(403).json({ message: 'username not exit' })
         if (!email) return res.status(403).json({ message: 'email not exit' })
         if (!password) return res.status(403).json({ message: 'password not exit' })
@@ -32,7 +32,7 @@ class authController {
             const hashed = await bcrypt.hash(password, salt);
             // save user
             const newUser = new user({
-                username, email, password: hashed, sex, birthDay
+                username, email, password: hashed, sex, birthDay, displayName
             })
             await newUser.save()
             next()
@@ -79,7 +79,7 @@ class authController {
     }
 
 
-  
+
     async deleteUser(req, res) {
         await user.deleteMany({})
         res.send('delete success')

@@ -17,7 +17,7 @@ function MessageForm({ onSubmit, onFocus }) {
     }
     return (
         <div>
-            <form className='w-full flex py-3' onSubmit={handleSubmit(onsubmitForm)}>
+            <form className='w-full shadow px-3 flex py-3' onSubmit={handleSubmit(onsubmitForm)}>
                 <div className='outline-none bg-[#F0F2F5] h-9 rounded-[16px] w-full px-2 py-[2px]'>
                     <input onFocus={onFocus} {...register('message', { required: true })}
                         type="text"
