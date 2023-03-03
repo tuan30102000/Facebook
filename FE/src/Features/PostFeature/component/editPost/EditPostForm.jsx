@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PostForm from '../PostForm';
 import postApi from '../../../../Api/postApi';
+import userApi from '../../../../Api/userApi';
+import useCallApi from '../../../../hook/useCallApi';
 EditPostForm.propTypes = {
 
 };
 
 function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, closeModal }) {
+    const { isLoading, callApi } = useCallApi(postApi.updatePost)
     const [file, setfile] = useState([])
     const [currentListImg, setcurrentListImg] = useState([...imgPreviewInit])
     const [listBlob, setlistBlob] = useState([])
     const [textValue, settextValue] = useState(textValueInit)
-    const isDisableBtn = !((file[0] || currentListImg[0] || textValue) && (file.length + currentListImg.length <= 3))
+    const isReadyToSend = !((file[0] || currentListImg[0] || textValue) && (file.length + currentListImg.length <= 3))
+    const isDisableBtn = isLoading || isReadyToSend
     const onUpload = async () => {
         if (file.length + currentListImg > 3) return
         if (isDisableBtn) return
@@ -19,10 +23,9 @@ function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, 
             content: textValue, imgFile: file, photos: currentListImg
         }
         try {
-            const result = await postApi.updatePost(postId, data)
+            const result = await callApi([postId, data])
             closeModal()
             updatePost(result)
-            console.log(result)
         } catch (error) {
             console.log(error)
         }
@@ -68,10 +71,11 @@ function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, 
                 onFileChange={onFileChange}
                 deleteFile={deleteFile}
                 title='Sửa bài viết'
-                btnText='UP'
+                btnText='Sửa'
                 isDisableBtn={isDisableBtn}
                 textValue={textValue}
                 closeModal={closeModal}
+                isLoading={isLoading}
             />
         </>
     );

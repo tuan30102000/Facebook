@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import usePagination from '../../../hook/usePagination';
 import NotExistConversation from './NotExistConversation';
 import NavbarChat from './NavbarChat';
+import useCallApi from '../../../hook/useCallApi';
 
 ChatBox.propTypes = {
 
@@ -27,6 +28,7 @@ function ChatBox(props) {
     const [cursor, setcursor] = useState({})
     const { observer, page, setpage, } = usePagination()
     const [loadMoreMessage, setloadMoreMessage] = useState([])
+    const { isLoading, callApi } = useCallApi(chatApi.getMessage)
     useEffect(() => {
         //reset State 
         setmessageList([]);
@@ -52,9 +54,9 @@ function ChatBox(props) {
     useEffect(() => {
         ; (async function getMessage() {
             if (!currentConversation._id) return
-            const messagesList = await chatApi.getMessage(currentConversation._id, { page: page, limit: 15, cursor: cursor.time })
+            const messagesList = await callApi([currentConversation._id, { page: page, limit: 10, cursor: cursor.time }])
             //first load
-            if (page == 1) setmessageList(messages => [...messages, ...messagesList.result])
+            if (page == 1) setmessageList(messages => [...messagesList.result])
             //load more
             if (page > 1) setloadMoreMessage(messages => [...messages, ...messagesList.result])
         })()
@@ -115,7 +117,7 @@ function ChatBox(props) {
         <div className='flex-[1] flex flex-col  h-[calc(100vh-59px)] relative' >
             <NavbarChat member={currentMember} />
             {!currentConversation?._id && <NotExistConversation member={currentMember} />}
-            {<Messages loadMoreMessage={loadMoreMessage} observer={observer} currentMember={currentMember} messages={messageList} />}
+            {<Messages isLoading={isLoading} loadMoreMessage={loadMoreMessage} observer={observer} currentMember={currentMember} messages={messageList} />}
             <MessageForm onFocus={handleSeen} onSubmit={onsubmitForm} />
         </div>
     );

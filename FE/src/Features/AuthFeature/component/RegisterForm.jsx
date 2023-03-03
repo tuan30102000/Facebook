@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { unwrapResult } from '@reduxjs/toolkit';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from "yup";
 import method from '../../../Constan/method';
 import { registerThunk } from '../userSlice';
@@ -25,7 +25,7 @@ const schema = yup.object().shape({
         .email('Trường này phải là email')
         .trim(),
     displayName: yup.string().required('vuilong nhap ten').test('check name', 'vui long nhap ho ten day du', (value) => value.split(' ').length >= 2)
-        
+
     ,
     password: yup.string()
         .required('Vui lòng điền mat khau')
@@ -53,6 +53,7 @@ const schema = yup.object().shape({
 })
 
 function RegisterForm() {
+    const isLoginPending = useSelector(state => state.user.loginPending)
     const dispatch = useDispatch()
     ///form handle
     const form = useForm({
@@ -79,6 +80,7 @@ function RegisterForm() {
     const yearArr = method.renderList(100, i => dateNow.getFullYear() - i)
 
     const onSubmit = async (data) => {
+        if (isLoginPending) return
         const nowDate = new Date()
         const birthDay = new Date(data.year, data.month - 1, data.day + 1)
         if (nowDate < birthDay) {
@@ -185,8 +187,9 @@ function RegisterForm() {
 
             </div>
             <button
+                disabled={isLoginPending}
                 className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline'>
-                SEND
+                Đăng kí
             </button>
         </form>
 

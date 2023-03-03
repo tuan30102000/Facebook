@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
-function ButtonOption({ text = '', onClick = () => undefined }) {
+import { LoadIcon } from './IconCustom/IconCustom';
+function ButtonOption({ text = '', isLoading = false, onClick = () => undefined }) {
     return (
-        <button onClick={onClick} className="py-1 px-2 w-full text-left hover:bg-[#0000000d]">{text}</button>
+        <button onClick={onClick} disabled={isLoading} className="py-1 px-2 w-full text-left hover:bg-[#0000000d]">
+            {!isLoading && <>{text}</>}
+            {isLoading && <LoadIcon isLoading={isLoading} />}
+        </button>
     )
 }
 

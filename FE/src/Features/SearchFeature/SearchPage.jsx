@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import userAuth from '../../Api/userAuthApi';
 import Header from '../../Components/Header/Header';
+import Loading from '../../Components/Loading';
+import useCallApi from '../../hook/useCallApi';
 import { friendRequestSetSelector, friendSetSelector, myFriendRequestSetSelector } from '../AuthFeature/selectors';
 import UserCard from './UserCard';
 
@@ -17,11 +19,12 @@ function SearchPage(props) {
     const friendSet = useSelector(friendSetSelector)
     const friendRequestSet = useSelector(friendRequestSetSelector)
     const myFriendRequestSet = useSelector(myFriendRequestSetSelector)
+    const { isLoading, callApi } = useCallApi(userAuth.search)
     useEffect(() => {
         if (!location.search) return
         (async () => {
             try {
-                const userListSearch = await userAuth.search(location.search)
+                const userListSearch = await callApi([location.search])
                 setlistUser(userListSearch)
             } catch (err) {
                 console.log(err)
@@ -34,6 +37,8 @@ function SearchPage(props) {
             <div className='flex justify-center'>
                 <div className="basis-[1024px]">
                     {!location.search && <p>This page not exit</p>}
+                    <Loading isLoading={isLoading} />
+                    {/* {!location.search && <p>This page not exit</p>} */}
                     {location.search &&
                         <div className="">
                             {listUser.map((item) => <UserCard {...{ friendRequestSet, myFriendRequestSet, friendSet, ownerId: user._id }} key={item._id} {...item} />)}

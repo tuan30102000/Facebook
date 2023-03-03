@@ -18,7 +18,14 @@ function UserFriendTab({ friendList = [], friendSet, friendRequestSet, myFriendR
                 <div className="p-4 rounded-lg bg-white shadow">
                     <p className='text-[#050505] font-[600] text-[20px] mb-8' >Bạn bè</p>
                     <div className="flex flex-wrap">
-                        {friendList.map(item => <FriendCard friendSet={friendSet} friendRequestSet={friendRequestSet} myFriendRequestSet={myFriendRequestSet} {...item} ownerId={user._id} key={item._id} />)}
+                        {friendList.map(item =>
+                            <FriendCard
+                                friendSet={friendSet}
+                                friendRequestSet={friendRequestSet}
+                                myFriendRequestSet={myFriendRequestSet} {...item}
+                                ownerId={user._id}
+                                key={item._id}
+                            />)}
                     </div>
                 </div>
             </div>

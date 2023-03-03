@@ -4,23 +4,25 @@ import Option from '../../../Components/Option';
 import OptionBtn from '../../../Components/OptionBtn';
 import ButtonHandleFriend from './ButtonHandleFriend';
 import userAuth from '../../../Api/userAuthApi';
+import useCallApi from '../../../hook/useCallApi';
 
 AreadyFriendBtn.propTypes = {
 
 };
 
 function AreadyFriendBtn({ friendId }) {
-    const removeFriend = async () => {
+    const { isLoading, callApi } = useCallApi(userAuth.removeFriend)
+    const removeFriend = async (e) => {
+        e.stopPropagation()
         try {
-            await userAuth.removeFriend(friendId)
+            await callApi([friendId])
         } catch (error) {
-
+            console.log(error)
         }
     }
-
     const btnData = [{
         onClick: removeFriend,
-        text: 'Hủy kết bạn'
+        text: 'Hủy kết bạn', isLoading: isLoading
     }]
     return (
         <Option Component={OptionBtn} BtnComponent={ButtonHandleFriend} componentProp={{ btnData }} btnComponentProp={{ text: 'Bạn bè' }} />

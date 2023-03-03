@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRef } from 'react';
 import { memo } from 'react';
 import { useEffect } from 'react';
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 import mapReverse from '../../../Constan/mapReverse';
 import Message from './Message';
 
@@ -9,7 +10,7 @@ Messages.propTypes = {
 
 };
 
-function Messages({ messages = [], currentMember = {}, loadMoreMessage = [], observer, }) {
+function Messages({ messages = [], isLoading = false, currentMember = {}, loadMoreMessage = [], observer, }) {
     const messageRef = useRef(null)
     const messageBoxRef = useRef(null)
 
@@ -27,7 +28,8 @@ function Messages({ messages = [], currentMember = {}, loadMoreMessage = [], obs
 
     return (
         <div ref={messageBoxRef} className='flex-1 overflow-y-scroll'>
-            <div ref={messageRef} className="">
+            <LoadIcon isLoading={isLoading} />
+            <div ref={messageRef} className="px-2">
                 {mapReverse(allMessages, (item, i, arr) => <Message {...item} observer={observer} isLoad={i == arr.length - 1} currentMember={currentMember} key={item._id} />)}
             </div>
         </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import userAuth from '../../../Api/userAuthApi';
 import Option from '../../../Components/Option';
 import OptionBtn from '../../../Components/OptionBtn';
+import useCallApi from '../../../hook/useCallApi';
 import ButtonHandleFriend from './ButtonHandleFriend';
 
 AreadyRequestFriend.propTypes = {
@@ -10,19 +11,21 @@ AreadyRequestFriend.propTypes = {
 };
 
 function AreadyRequestFriend({ friendId }) {
+    const { isLoading, callApi } = useCallApi(userAuth.cancelRequest)
     const cancelRequest = async (e) => {
         e.stopPropagation()
         try {
-            const userNewest = await userAuth.cancelRequest(friendId)
+            const userNewest = await callApi([friendId])
         } catch (error) {
-
+            console.log(error)
         }
     }
 
     const btnData = [
         {
             onClick: cancelRequest,
-            text: 'Hủy lời mời'
+            text: 'Hủy lời mời',
+            isLoading:isLoading
         },
         ,
     ]

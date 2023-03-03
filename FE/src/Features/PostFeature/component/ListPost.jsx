@@ -11,7 +11,6 @@ function ListPost({ listPost = [], setPostData }) {
     const deletePost = (postId) => {
         const clonePost = [...listPost]
         const newPostData = clonePost.filter(item => item._id != postId)
-        console.log(newPostData, postId)
         setPostData(newPostData)
     }
     const updatePost = (post) => {

@@ -5,6 +5,7 @@ import instance from '../../../Constan/instance';
 import { Link } from 'react-router-dom';
 import CreatePostLayout from '../../PostFeature/component/createPost/CreatePostLayout';
 import clsx from 'clsx';
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 
 UserPostsTab.propTypes = {
     posts: PropTypes.array,
@@ -28,7 +29,7 @@ function FriendsInPostTab({ friends = [] }) {
             {friends.length &&
                 <div className="flex flex-wrap h-max">
                     {sliceFriend.map((item, i) =>
-                        <Link key={item._id + i} to={'/profile/' + item._id} className={clsx("flex-[0_0_33.3333%]  pb-[30px] px-1", )}>
+                        <Link key={item._id + i} to={'/profile/' + item._id} className={clsx("flex-[0_0_33.3333%]  pb-[30px] px-1",)}>
                             <div className="w-full"> <img src={item.avatarUrl} className='w-full h-full rounded-lg' /></div>
                             <p className='text-[13px] font-[600] text-[#050505] hover:underline leading-4 mt-[6px]'>{item.displayName} </p>
                         </Link>)}
@@ -42,14 +43,16 @@ function FriendsInPostTab({ friends = [] }) {
 }
 
 
-function UserPostsTab({ posts = [], setPosts, friends }) {
+function UserPostsTab({ posts = [], setPosts, friends, isOwner = false, isLoading = false }) {
     return (
         <div className='flex justify-center h-max mt-4' >
 
             <div className="flex basis-[1024px] px-8 justify-between gap-4">
                 <FriendsInPostTab friends={friends} />
                 <div className="w-max">
-                    <CreatePostLayout setPosts={setPosts} />
+                    {(posts.length == 0 && !isLoading) && <p className='text-center w-[550px]'> Không có bài viết nào</p>}
+                    {isOwner && <CreatePostLayout setPosts={setPosts} />}
+                    <LoadIcon isLoading={isLoading} />
                     <ListPost listPost={posts} setPostData={setPosts} />
                 </div>
             </div>

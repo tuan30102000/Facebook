@@ -11,7 +11,7 @@ class postController {
         if (!(content || fileList[0])) return res.status(403).json({ message: 'content emty', })
         if (fileList.length > 3) return res.status(403).json({ message: '3 files limit' })
         // if(req.files.length>3) return res.status(403).json({message:'3 files limit'})
-        const pathFileList = fileList[0] ? fileList.map(item => cloudinary.uploader.upload(item.path, { resource_type: 'image', folder: 'FacebookCollection/postCollections' })) : []
+        const pathFileList = fileList[0] ? fileList.map(item => cloudinary.uploader.upload(item.path, { resource_type: 'image', folder: 'FacebookCollection/postCollections', })) : []
         try {
             const resultClould = await Promise.all(pathFileList)
             const listUrl = resultClould.map(item => item.url)
@@ -72,7 +72,7 @@ class postController {
     }
     async getPost(req, res) {
         try {
-            const postData = await post.findById(req.params.postId).populate(populateData)
+            const postData = await post.findById(req.params.postId).sort({ updatedAt: -1 }).populate(populateData)
             res.status(200).json(postData)
         } catch (error) {
             res.status(403).json({ message: 'something wrong' })
@@ -80,7 +80,7 @@ class postController {
     }
     async getAllPost(req, res) {
         try {
-            const allPost = await post.find({}).populate(populateData).exec()
+            const allPost = await post.find({}).sort({ updatedAt: -1 }).populate(populateData).exec()
             res.status(200).json(allPost)
         } catch (error) {
             console.log(error)
@@ -90,7 +90,7 @@ class postController {
     }
     async getPostUser(req, res) {
         try {
-            const postOfUser = await post.find({ owner: req.params.userId }).populate(populateData)
+            const postOfUser = await post.find({ owner: req.params.userId }).sort({ updatedAt: -1 }).populate(populateData)
             res.status(200).json(postOfUser)
         } catch (error) {
             console.log(error)

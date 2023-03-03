@@ -4,7 +4,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createSearchParams, Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import postApi from '../../../Api/postApi';
+import userAuth from '../../../Api/userAuthApi';
 import FriendListMini from '../../../Components/FriendListMini';
+import useCallApi from '../../../hook/useCallApi';
 import { friendRequestSetSelector, friendSetSelector, myFriendRequestSetSelector } from '../../AuthFeature/selectors';
 import HandleRelationshipBtn from '../../FriendFeature/component/HandleRelationshipBtn';
 import Avatar from './Avatar';
@@ -27,6 +29,7 @@ function UserProfile({ isOwner = false, user }) {
     const friendSet = useSelector(friendSetSelector)
     const friendRequestSet = useSelector(friendRequestSetSelector)
     const myFriendRequestSet = useSelector(myFriendRequestSetSelector)
+    const { isLoading, callApi } = useCallApi(postApi.getPostUser)
     // navigate({ search: `?${createSearchParams({ sk: 'friend' })}` })
     const [posts, setPosts] = useState([])
     const searchParams = useMemo(() => {
@@ -41,7 +44,7 @@ function UserProfile({ isOwner = false, user }) {
 
     useEffect(() => {
         (async () => {
-            const postUsers = await postApi.getPostUser(user._id)
+            const postUsers = await callApi([user._id])
             setPosts(postUsers)
         })()
         return () => {
@@ -80,10 +83,10 @@ function UserProfile({ isOwner = false, user }) {
                 </div>
             </div>
             {!queryString.parse(location.search).sk &&
-                <UserPostsTab setPosts={setPosts} posts={posts} friends={user.friend} />
+                <UserPostsTab setPosts={setPosts} isOwner={isOwner} isLoading={isLoading} posts={posts} friends={user.friend} />
             }
             {queryString.parse(location.search).sk == 'about' &&
-                <UserAboutTab about={user.about} displayName={user.displayName} birthDay={user.birthDay} isOwner={isOwner} />
+                <UserAboutTab about={user.about} displayName={user.displayName} birthDay={user.birthDay} sex={user.sex} isOwner={isOwner} />
             }
             {queryString.parse(location.search).sk == 'friends' &&
                 <UserFriendTab {...{ friendSet, friendRequestSet, myFriendRequestSet }} friendList={user.friend} isOwner={isOwner} />

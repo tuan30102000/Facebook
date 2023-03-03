@@ -30,7 +30,13 @@ class userController {
         try {
             const user = req.user
             if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
-            const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/avatarCollection' })
+            const resultClould = await cloudinary.uploader.upload(file.path, {
+                resource_type: 'image',
+                folder: 'FacebookCollection/avatarCollection',
+                transformation: [
+                    { width: 600, height: 600, crop: 'fill' }
+                ]
+            })
             await users.updateOne({ _id: req.user._id }, { avatarUrl: resultClould.url })
             res.status(200).json({ avatarUrl: resultClould.url })
         } catch (error) {
@@ -59,7 +65,13 @@ class userController {
         try {
             // const user = req.user
             // if (!listDefalult.listUrlAvtDefault.includes(user.avatarUrl)) await cloudinary.uploader.destroy(method.getClouldDinary(user.avatarUrl))
-            const resultClould = await cloudinary.uploader.upload(file.path, { resource_type: 'image', folder: 'FacebookCollection/coverCollection' })
+            const resultClould = await cloudinary.uploader.upload(file.path, {
+                resource_type: 'image',
+                folder: 'FacebookCollection/coverCollection',
+                transformation: [
+                    { width: 800, height: 400, crop: 'fill' }
+                ]
+            })
             await users.updateOne({ _id: req.user._id }, { coverAvatar: resultClould.url })
             res.status(200).json({ coverAvatar: resultClould.url })
         } catch (error) {

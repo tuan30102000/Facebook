@@ -7,6 +7,8 @@ import postApi from '../../../../Api/postApi'
 import Comments from './Comments'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import useCallApi from '../../../../hook/useCallApi'
+import { LoadIcon } from '../../../../Components/IconCustom/IconCustom'
 
 
 
@@ -14,9 +16,10 @@ function CommentBox({ postId, ownerPost }) {
     const [comments, setcomments] = useState([])
     const userCurrent = useSelector(state => state.user)
     const socket = userCurrent.socket
+    const { isLoading, callApi } = useCallApi(postApi.getCommentInPost)
     useEffect(() => {
         (async () => {
-            const data = await postApi.getCommentInPost(postId)
+            const data = await callApi([postId])
             setcomments(data)
         })()
 
@@ -27,6 +30,7 @@ function CommentBox({ postId, ownerPost }) {
         if (!socket) return
         socket.emit('join-post', postId)
         socket.on('create-comment', (newCmt) => {
+            if (newCmt.post != postId) return
             // const newCommentList = [...comments, newCmt]
             setcomments(state => [...state, newCmt])
         })
@@ -50,17 +54,18 @@ function CommentBox({ postId, ownerPost }) {
         }
     }, [])
 
-    const submit = async (value, callback) => {
+    const submit = async (value) => {
+        console.log(value)
         try {
             const newCm = await postApi.createComment(postId, value.comment)
-            callback()
         } catch (error) {
-
+            throw new Error(error)
         }
     }
     return (
-        <div className='px-4 py-3' >
+        <div className='px-4 py-3'>
             <Comments ownerPost={ownerPost} postId={postId} user={userCurrent.current.data} comments={comments} />
+            <LoadIcon className={'my-3 text-[20px]'} isLoading={isLoading} />
             <div className="flex">
                 <UserCurrentInfoMini isShowName={false} />
                 <CommentForm submit={submit} postId={postId} /></div>

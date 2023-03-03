@@ -8,6 +8,7 @@ function CreatePostForm({ closeModal, addToStartPost }) {
     const [imgPreview, setimgPreview] = useState([])
     const [file, setfile] = useState([])
     const [textValue, settextValue] = useState('')
+    const [isLoading, setisLoading] = useState(false)
     useEffect(() => {
         const listUrl = file.map(item => URL.createObjectURL(item))
         setimgPreview(listUrl)
@@ -15,7 +16,8 @@ function CreatePostForm({ closeModal, addToStartPost }) {
             listUrl.map(item => URL.revokeObjectURL(item))
         }
     }, [file])
-
+    const notRedytoSend = !((file[0] || textValue) && (file.length <= 3))
+    const isDisableBtn = isLoading || notRedytoSend
     const onFileChange = (e) => {
         const fileList = Array.from(e.target.files)
         const newFileList = [...file, ...fileList,]
@@ -32,13 +34,16 @@ function CreatePostForm({ closeModal, addToStartPost }) {
         setfile(newFileList)
     }
     const sendPost = async () => {
-        if (file.length > 3) return
+        if (isDisableBtn) return
+        setisLoading(true)
         try {
             const data = await postApi.createPost({ photo: file, content: textValue })
             addToStartPost(data)
             closeModal()
+            setisLoading(false)
         } catch (error) {
             console.log(error)
+            setisLoading(false)
         }
     }
     return (
@@ -51,9 +56,10 @@ function CreatePostForm({ closeModal, addToStartPost }) {
                 deleteFile={deleteFile}
                 title='Tạo bài viết'
                 btnText='Đăng'
-                isDisableBtn={!((file[0] || textValue) && (file.length <= 3))}
+                isDisableBtn={isDisableBtn}
                 textValue={textValue}
                 closeModal={closeModal}
+                isLoading={isLoading}
             />
         </>
     );

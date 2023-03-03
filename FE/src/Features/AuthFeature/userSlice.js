@@ -90,7 +90,10 @@ const userSlice = createSlice({
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
             state.socket = socket()
-            
+
+        },
+        [loginWithRefeshToken.pending]: (state, action) => {
+            state.loginPending = true
         },
         [loginWithRefeshToken.rejected]: (state) => {
             state.loginPending = false

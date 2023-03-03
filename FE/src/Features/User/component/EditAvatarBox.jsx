@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import useImgFile from '../../../hook/useImgFIle';
 import userAuth from '../../../Api/userAuthApi';
+import useCallApi from '../../../hook/useCallApi';
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 
 EditAvatarBox.propTypes = {
     url: PropTypes.string.isRequired,
@@ -9,11 +11,12 @@ EditAvatarBox.propTypes = {
 
 function EditAvatarBox({ url, submit, closeModal }) {
     const fileInputRef = useRef({})
+    const { isLoading, callApi } = useCallApi(submit)
     const { onChange, imgPreview, file, isChange } = useImgFile(url)
     const onSend = async () => {
         try {
             if (!isChange) return
-            await submit(file)
+            await callApi([file])
             closeModal()
         } catch (error) {
 
@@ -27,9 +30,9 @@ function EditAvatarBox({ url, submit, closeModal }) {
             <div className="">
                 <input onChange={onChange} type='file' accept='image/*' className='w-0 h-0' ref={fileInputRef} />
                 <button className='mt-10 rounded-[6px] h-9 bg-primary-btn-bg text-white' onClick={() => fileInputRef.current.click()}>
-                    Chọn ảnh
+                   Chọn ảnh
                 </button>
-                <button className="mt-10 block w-full rounded-[6px] h-9 bg-primary-btn-bg text-white" onClick={onSend}>Gửi</button>
+                <button disabled={isLoading}  className="mt-10 block w-full rounded-[6px] h-9 bg-primary-btn-bg text-white" onClick={onSend}> {isLoading ? <LoadIcon isLoading={isLoading} /> : 'Gửi'}</button>
             </div>
         </div>
     )

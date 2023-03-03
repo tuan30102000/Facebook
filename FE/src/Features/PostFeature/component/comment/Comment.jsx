@@ -23,11 +23,13 @@ function Comment({ _id, content, owner, postId, isOwnerComment, isOwnerPost, cre
             console.log(error)
         }
     }
-    const editComment = async (value) => {
+    const editComment = async (value,callback,setisLoading) => {
         try {
+            setisLoading(true)
             await postApi.editComment(postId, _id, value.comment)
             closeEdit()
         } catch (error) {
+            setisLoading(false)
             console.log(error)
         }
     }

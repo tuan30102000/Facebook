@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { BsCardImage } from 'react-icons/bs'
 import UserCurrentInfoMini from '../../../Components/UserCurrentInfoMini';
 import { FaTimesCircle } from 'react-icons/fa'
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { GrClose } from 'react-icons/gr'
 PostForm.propTypes = {
     imgPreview: PropTypes.array.isRequired,
@@ -16,7 +17,7 @@ PostForm.propTypes = {
     deleteFile: PropTypes.func.isRequired,
 };
 
-function PostForm({ imgPreview, textValue, onUpload, closeModal, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
+function PostForm({ imgPreview, textValue, onUpload, closeModal, isLoading = false, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
     const fileRef = useRef({})
     const textRef = useRef({})
     useEffect(() => {
@@ -51,7 +52,8 @@ function PostForm({ imgPreview, textValue, onUpload, closeModal, title = '', btn
                     <BsCardImage className='h-[24px]' />
                 </div>
                 <button disabled={isDisableBtn} className='mt-5 disabled:opacity-75 w-full bg-blue-500 py-2 text-white font-[500] rounded' onClick={onUpload}>
-                    {btnText}
+                    {!isLoading && btnText}
+                    {isLoading && <AiOutlineLoading3Quarters className='mx-auto animate-spin' />}
                 </button>
             </div>
         </div>

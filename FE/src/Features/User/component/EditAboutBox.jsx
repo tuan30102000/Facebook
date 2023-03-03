@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import userAuth from '../../../Api/userAuthApi';
 import InputField from '../../../Components/InputField';
+import useCallApi from '../../../hook/useCallApi';
 
 EditAboutBox.propTypes = {
 
@@ -14,7 +15,7 @@ function EditAboutBox({ aboutInit }) {
             about: aboutInit
         }
     })
-
+    useCallApi(userAuth.editInfor)
     const { register, handleSubmit } = form
     const onSubmit = async (data) => {
         try {

@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { BiSend } from "react-icons/bi"
-function CommentForm({ submit = () => { },defaultValues='' }) {
+import { LoadIcon } from '../../../../Components/IconCustom/IconCustom'
+import useCallApi from '../../../../hook/useCallApi'
+function CommentForm({ submit, defaultValues = '' }) {
     const form = useForm({
         defaultValues: {
             comment: defaultValues
         }
     })
-
+    const { isLoading, callApi } = useCallApi(submit)
     const { register, handleSubmit, formState, reset } = form
-    const { isSubmitting, errors, } = formState
     const resetCm = () => reset({ comment: '' })
-    function onSubmit(value) {
-        submit(value, resetCm)
+    async function onSubmit(value) {
+        try {
+            await callApi([value])
+            resetCm()
+        } catch (error) {
+            console.log(error)
+            resetCm()
+        }
     }
     return (
         <form className='w-full flex' onSubmit={handleSubmit(onSubmit)} >
@@ -23,8 +31,9 @@ function CommentForm({ submit = () => { },defaultValues='' }) {
                     className='outline-none w-full bg-[#F0F2F5] h-full'
                     placeholder='Enter your comment here' />
             </div>
-            <button>
-                <BiSend className='' />
+            <button disabled={isLoading} >
+                {!isLoading && <BiSend className='' />}
+                <LoadIcon isLoading={isLoading} />
             </button>
         </form>
     )

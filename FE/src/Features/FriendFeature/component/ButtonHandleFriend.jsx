@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 
 ButtonHandleFriend.propTypes = {
     text: PropTypes.string.isRequired,
@@ -8,14 +9,15 @@ ButtonHandleFriend.propTypes = {
     primaryBg: PropTypes.bool,
 };
 
-function ButtonHandleFriend({ text, onClick, primaryBg = true }) {
+function ButtonHandleFriend({ text, onClick, primaryBg = true, isLoading = false }) {
     return (
-        <button onClick={onClick} className={clsx('rounded-[6px] px-3 cursor-pointer h-[40px]',
+        <button disabled={isLoading} onClick={onClick} className={clsx('rounded-[6px] px-3 cursor-pointer h-[40px]',
             {
                 ['btn-blue']: primaryBg,
                 ['btn-white']: !primaryBg,
             })}>
-            {text}
+            {!isLoading && <> {text}</>}
+            {isLoading && <LoadIcon isLoading={isLoading} />}
         </button>
     );
 }

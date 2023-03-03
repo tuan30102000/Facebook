@@ -3,6 +3,7 @@ import postApi from '../../../../Api/postApi';
 import CofirmBox from '../../../../Components/CofirmBox';
 import Modal from '../../../../Components/Modal';
 import OptionBtn from '../../../../Components/OptionBtn';
+import useCallApi from '../../../../hook/useCallApi';
 import EditPostForm from './EditPostForm';
 OptionPost.propTypes = {
 
@@ -12,9 +13,10 @@ OptionPost.propTypes = {
 function OptionPost({ onClose, isShowOption, postId, urlList, content, deletePost, updatePost }) {
     const openDeleteModalRef = useRef({})
     const openEditModalRef = useRef({})
+    const {isLoading,callApi}=useCallApi(postApi.deletePost)
     const deleteItem = async () => {
         try {
-            await postApi.deletePost(postId)
+            await callApi([postId])
             openDeleteModalRef.current.closeModal()
             deletePost(postId)
         } catch (error) {
@@ -35,7 +37,7 @@ function OptionPost({ onClose, isShowOption, postId, urlList, content, deletePos
                 message: 'Do you really want to delete these records? This process cannot be undone.',
                 confirmText: 'Delete',
                 onConfirm: deleteItem,
-                deletePost
+                deletePost,isLoading:isLoading
             }} />
             <Modal Component={EditPostForm} ref={openEditModalRef} componentProps={{
                 imgPreviewInit: urlList, textValueInit: content, postId, updatePost, closeModal: openEditModalRef.current.closeModal

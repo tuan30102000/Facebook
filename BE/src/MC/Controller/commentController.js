@@ -36,7 +36,7 @@ class commentController {
     async removeComment(req, res) {
         try {
             await comment.updateOne({ _id: req.commentCurrent._id }, { $set: { active: false } })
-            io.in(req.postCurrent._id.toString).emit('delete-comment', req.commentCurrent._id)
+            io.in(req.postCurrent._id.toString()).emit('delete-comment', req.commentCurrent._id)
             res.status(200).json({ message: 'success' })
         } catch (error) {
             res.status(400).json(error)

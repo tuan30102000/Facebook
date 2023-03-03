@@ -11,7 +11,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from "clsx";
 import { updateUserInfo } from "../../AuthFeature/userSlice";
 import { useDispatch } from "react-redux";
-
+import useCallApi from "../../../hook/useCallApi";
+import { LoadIcon } from "../../../Components/IconCustom/IconCustom";
+import { FaMale, FaFemale } from 'react-icons/fa'
 UserAboutTab.propTypes = {
 
 };
@@ -33,19 +35,18 @@ const data = [
 ]
 
 function EditInforBox({ initValue, name, isTextarea = false, label, submit, closeModal, schema }) {
-    console.log(name)
     const form = useForm({
         defaultValues: {
             [name]: initValue,
             resolver: yupResolver(schema)
         },
     })
-
+    const { isLoading, callApi } = useCallApi(submit)
     const { register, handleSubmit, formState } = form
     const { errors } = formState
     const onSubmit = async (data) => {
         try {
-            const result = await submit(data, name)
+            const result = await callApi([data, name])
             closeModal()
         } catch (error) {
             console.log(error)
@@ -54,7 +55,10 @@ function EditInforBox({ initValue, name, isTextarea = false, label, submit, clos
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
             <InputField label={label} register={register} errors={errors} placeholder={initValue} isTextarea={isTextarea} name={name} />
-            <button className="h-8 bg-primary-btn-bg rounded-[6px]  text-white px-3" >Gửi</button>
+            <button disabled={isLoading} className="h-8 disabled:opacity-60 bg-primary-btn-bg rounded-[6px]  text-white px-3" >
+                {!isLoading && 'Gửi'}
+                <LoadIcon isLoading={isLoading} />
+            </button>
         </form>
     )
 }
@@ -93,7 +97,7 @@ function AboutLine({ Icon = AiOutlineUser, content, isEdit, field, onEdit, isNam
     )
 }
 
-function UserAboutTab({ about, displayName, birthDay, isOwner }) {
+function UserAboutTab({ about, displayName, birthDay, isOwner, sex }) {
     const handleDisplayNameModalRef = useRef(null)
     const handleAboutModalRef = useRef(null)
     const openDisplayNameModal = () => handleDisplayNameModalRef.current.openModal()
@@ -108,13 +112,14 @@ function UserAboutTab({ about, displayName, birthDay, isOwner }) {
             console.log(error)
         }
     }
-
     return (
         <div className='flex justify-center h-max mt-3' >
+
             <div className="basis-[1024px] px-8 h-[500px] bg-white rounded-md shadow p-3">
                 <AboutLine onEdit={openDisplayNameModal} isName={true} content={displayName} isEdit={isOwner} field={'Họ và Tên'} />
                 <AboutLine onEdit={openAboutModal} content={about} isEdit={isOwner} field={'Giới thiệu'} />
                 <AboutLine Icon={FaBirthdayCake} isEdit={false} content={dayjs(birthDay).format('DD/MM/YYYY')} field={'Sinh nhật'} />
+                <AboutLine Icon={sex == 'male' ? FaMale : FaFemale} isEdit={false} content={sex == 'male' ? 'Nam' : 'Nữ'} field={'Giới tính'} />
                 {/* <p>Ngày sinh: <span>{dayjs(birthDay).format('DD/MM/YYYY')}</span></p> */}
                 {isOwner && <>
                     <Modal ref={handleAboutModalRef} Component={EditInforBox} componentProps={{

@@ -6,6 +6,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { BiArrowBack } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import userAuth from '../../Api/userAuthApi';
+import useCallApi from '../../hook/useCallApi';
 import useInput from '../../hook/useInput';
 import SearchSuggestion from './SearchSuggestion';
 function SearchBox() {
@@ -16,6 +17,7 @@ function SearchBox() {
         setisLoadingSuggest(true)
         fn()
     }
+    const {isLoading,callApi} = useCallApi(userAuth.searchSuggest)
     const [indexTarget, setindexTarget] = useState(-1)
     var [suggestList, setsuggestList] = useState([])
     const { onChange, value, setvalue } = useInput(callBack)
@@ -61,9 +63,8 @@ function SearchBox() {
     const handleSuggets = () => {
         // console.log(value)
         if (value && isLoadingSuggest) {
-            console.log(value)
                 ; (async () => {
-                    const data = await userAuth.searchSuggest(value)
+                    const data = await callApi([value])
                     const set = new Set([...data])
                     setsuggestList([...set])
                 })()
@@ -93,7 +94,7 @@ function SearchBox() {
                 <input autoComplete='off' value={value || ''} onChange={onChange} onFocus={() => setisShowSuggetion(true)}
                     onBlur={closeSuggest} type="text" id={searchBoxId} placeholder='Tìm kiếm' className='bg-transparent outline-none ml-2 font-[300]' />
             </label>
-            {isShowSuggetion && <SearchSuggestion {...{ setvalue, suggestList, indexTarget, value }} />}
+            {isShowSuggetion && <SearchSuggestion {...{ setvalue, isLoading,suggestList, indexTarget, value }} />}
         </form>
     );
 }

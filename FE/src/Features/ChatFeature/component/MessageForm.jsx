@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { BiSend } from "react-icons/bi"
-import { SendIcon } from '../../../Components/IconCustom/IconCustom';
+import { LoadIcon, SendIcon } from '../../../Components/IconCustom/IconCustom';
+import useCallApi from '../../../hook/useCallApi';
 
 MessageForm.propTypes = {
 
@@ -11,9 +11,14 @@ MessageForm.propTypes = {
 function MessageForm({ onSubmit, onFocus }) {
     const form = useForm({ defaultValues: { message: '' } })
     const { handleSubmit, register, reset } = form
+    const { isLoading, callApi } = useCallApi(onSubmit)
+
     const onsubmitForm = async (value) => {
-        await onSubmit(value)
-        reset()
+        try {
+            await callApi([value])
+            reset()
+        } catch (error) {
+        }
     }
     return (
         <div>
@@ -25,8 +30,9 @@ function MessageForm({ onSubmit, onFocus }) {
                         className='outline-none w-full bg-[#F0F2F5] h-full'
                         placeholder='Aa' />
                 </div>
-                <button>
-                    <SendIcon />
+                <button className='ml-2' disabled={isLoading} >
+                    {!isLoading && <SendIcon />}
+                    <LoadIcon isLoading={isLoading} />
                 </button>
             </form>
         </div>

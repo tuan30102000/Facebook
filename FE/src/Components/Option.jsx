@@ -7,6 +7,7 @@ Option.propTypes = {
 
 function Option({ BtnComponent = null, btnComponentProp, Component, componentProp }) {
     const [isShowOption, setisShowOption] = useState(false)
+
     const open = () => {
         setisShowOption(true)
     }

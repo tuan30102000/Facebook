@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import userAuth from '../../../Api/userAuthApi';
+import useCallApi from '../../../hook/useCallApi';
 import ButtonHandleFriend from './ButtonHandleFriend';
 
 AddFriendBtn.propTypes = {
@@ -8,18 +9,17 @@ AddFriendBtn.propTypes = {
 };
 
 function AddFriendBtn({ friendId }) {
+   const {isLoading,callApi} = useCallApi(userAuth.addFriend)
     const onClick = async (e) => {
         e.stopPropagation()
         try {
-            const userNewest = await userAuth.addFriend(friendId)
+            const userNewest = await callApi([friendId])
 
         } catch (error) {
-            console.log(error)
         }
     }
     return (
-        <ButtonHandleFriend text='Thêm bạn bè' onClick={onClick} />
-
+        <ButtonHandleFriend isLoading={isLoading} text='Thêm bạn bè' onClick={onClick} />
     );
 }
 
