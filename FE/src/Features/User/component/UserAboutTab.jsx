@@ -53,7 +53,7 @@ function EditInforBox({ initValue, name, isTextarea = false, label, submit, clos
         }
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-white">
             <InputField label={label} register={register} errors={errors} placeholder={initValue} isTextarea={isTextarea} name={name} />
             <button disabled={isLoading} className="h-8 disabled:opacity-60 bg-primary-btn-bg rounded-[6px]  text-white px-3" >
                 {!isLoading && 'Gửi'}

@@ -9,7 +9,7 @@ const axiosClient = axios.create({
   headers: {
     'content-Type': 'application/json',
     // 'content-type': 'application/x-www-form-urlencoded'
-    'Access-Control-Allow-Origin':ApiUrl.baseURL
+    'Access-Control-Allow-Origin': ApiUrl.baseURL
 
   }
 })
@@ -30,6 +30,6 @@ axiosClient.interceptors.response.use(function (response) {
 }, function (error) {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
-  return Promise.reject(error);
+  return Promise.reject(error.response.data)
 });
 export default axiosClient

@@ -47,7 +47,7 @@ class authController {
         const { refreshToken } = req.cookies
         //not Exist rft
         if (!refreshToken) return res.status(401).json({ message: 'You\'re not authenticated', })
-        const userData = await JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
+        const userData = JWT.verify(refreshToken, process.env.SECRET_REFRESH_KEY)
         if (!userData) return res.status(403).json({ message: 'token not valid' })
         const newAccessToken = generateAccessToken(userData)
         const userDataCurrent = await user.findById(userData._id)

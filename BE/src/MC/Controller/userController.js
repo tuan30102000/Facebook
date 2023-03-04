@@ -3,6 +3,7 @@ import listDefalult from "../../constan/listDefault.js"
 import method from "../../constan/method.js"
 import users from "../Model/users.js"
 import Mongoose from "mongoose"
+import bcrypt from 'bcrypt'
 import { io } from "../../../index.js"
 import manageUserRealtime from "../../constan/manageUserRealtime.js"
 const { getSocketId } = manageUserRealtime
@@ -23,7 +24,20 @@ class userController {
 
         }
     }
-
+    async changePassword(req, res) {
+        try {
+            const userData = await users.findOne({ _id: req.user._id }).select('+password')
+            const isCorrectPassword = await bcrypt.compare(req.body.oldPassword, userData.password)
+            if (!isCorrectPassword) return res.status(403).json({ message: 'wrong password' })
+            const salt = await bcrypt.genSalt(10);
+            const hashed = await bcrypt.hash(req.body.newPassword, salt);
+            await users.updateOne({ _id: req.user._id }, { password: hashed })
+            res.status(200).json({ message:'Đổi mật khẩu thành công'})
+        } catch (error) {
+            console.log(error)
+            res.status(400).json(error)
+        }
+    }
     async updateAvt(req, res) {
         const file = req.file
         if (!file) return res.status(403).json({ message: 'file is emty' })

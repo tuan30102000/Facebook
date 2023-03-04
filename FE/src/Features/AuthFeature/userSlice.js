@@ -61,8 +61,8 @@ const userSlice = createSlice({
         [registerThunk.rejected]: (state, action) => {
             state.loginError = true
             state.loginPending = false
-            console.log('Error ở extraReducer.reject:', action)
-            createToast('Đăng ki thất bại', 'error')
+            createToast(action.error.message, 'error')
+
             // throw new Error('Required')
         }
         ,
@@ -74,11 +74,12 @@ const userSlice = createSlice({
             state.current = { ...action.payload, }
             state.socket = socket()
             createToast('Đăng nhập thành công')
+
         },
-        [login.rejected]: (state,) => {
+        [login.rejected]: (state, action) => {
             state.loginError = true
             state.loginPending = false
-            createToast('Đăng nhập thất bại', 'error')
+            createToast(action.error.message, 'error')
 
         },
         [login.pending]: (state,) => {
@@ -86,17 +87,17 @@ const userSlice = createSlice({
         },
         [loginWithRefeshToken.fulfilled]: (state, action) => {
             method.setAccessToken(action.payload.accessToken)
-            state.loginPending = false
+            state.isFirstLoad = false
             state.login = true
             state.current = { ...action.payload, refreshToken: undefined }
             state.socket = socket()
 
         },
         [loginWithRefeshToken.pending]: (state, action) => {
-            state.loginPending = true
+            state.isFirstLoad = true
         },
-        [loginWithRefeshToken.rejected]: (state) => {
-            state.loginPending = false
+        [loginWithRefeshToken.rejected]: (state, action) => {
+            state.isFirstLoad = false
             state.login = false
         },
         [logout.fulfilled]: (state, action) => {

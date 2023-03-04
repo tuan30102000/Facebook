@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from "yup";
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 import { login } from '../userSlice';
 import PasswordField from './PasswordField';
 import TextField from './TextField';
@@ -65,7 +66,9 @@ function LoginForm() {
             <TextField errors={errors} register={register} name="username" placeholder='Username' />
             <PasswordField errors={errors} register={register} name='password' placeholder='Password' />
             {/*sex  */}
-            <button disabled={isLoginPending} className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none disabled:opacity-70 focus:shadow-outline'>Đăng nhập</button>
+            <button disabled={isLoginPending} className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none disabled:opacity-70 focus:shadow-outline'>
+                {isLoginPending ? <LoadIcon isLoading={isLoginPending} /> : <>Đăng nhập</>}
+            </button>
         </form>
 
 

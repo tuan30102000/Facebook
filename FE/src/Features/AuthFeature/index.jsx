@@ -15,7 +15,7 @@ function AuthFeature(props) {
             {!user.login &&
                 <div className="flex w-full justify-center items-center h-screen bg-bg-all">
                     <div className='w-full max-w-sm bg-white shadow-md rounded px-12 pt-4 pb-8 mb-4'>
-                        {user.loginPending && <Loading isLoading={user.loginPending}/>}
+                        {user.isFirstLoad && <Loading isLoading={user.isFirstLoad} />}
                         <Outlet />
                     </div>
                 </div>

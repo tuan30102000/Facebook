@@ -5,7 +5,8 @@ export default {
         loginPending: false,
         loginError: false,
         setting: {},
-        socket: null
+        socket: null,
+        isFirstLoad: false
     }, chat: {
         conversations: [],
         currentChat: [],

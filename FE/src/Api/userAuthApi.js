@@ -59,6 +59,10 @@ const userAuth = {
         const url = 'user/search' + query
         return axiosJwt.get(url)
     },
+    changePassword(data) {
+        const url = 'user/password'
+        return axiosJwt.patch(url, { oldPassword: data.oldPassword, newPassword: data.newPassword })
+    },
     logout() {
         const url = 'user/logout'
         return axiosJwt.post(url)

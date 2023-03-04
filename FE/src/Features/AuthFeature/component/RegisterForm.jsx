@@ -4,6 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from "yup";
+import { LoadIcon } from '../../../Components/IconCustom/IconCustom';
 import method from '../../../Constan/method';
 import { registerThunk } from '../userSlice';
 import PasswordField from './PasswordField';
@@ -63,7 +64,7 @@ function RegisterForm() {
             password: '',
             passwordConfirm: '',
             displayName: '',
-            sex: '',
+            sex: 'male',
             day: dateNow.getDate(),
             month: dateNow.getMonth(),
             year: dateNow.getFullYear(),
@@ -79,7 +80,7 @@ function RegisterForm() {
     const daytArr = method.renderList(31, i => i + 1)
     const yearArr = method.renderList(100, i => dateNow.getFullYear() - i)
 
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         if (isLoginPending) return
         const nowDate = new Date()
         const birthDay = new Date(data.year, data.month - 1, data.day + 1)
@@ -96,7 +97,7 @@ function RegisterForm() {
             delete newData.year
             delete newData.passwordConfirm
             //dispath store
-            const action = await registerThunk(newData)
+            const action = registerThunk(newData)
             const resultAction = dispatch(action)
             const userData = unwrapResult(resultAction)
             //
@@ -189,7 +190,7 @@ function RegisterForm() {
             <button
                 disabled={isLoginPending}
                 className='mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline'>
-                Đăng kí
+                {isLoginPending ? <LoadIcon isLoading={isLoginPending} /> : <>Đăng kí</>}
             </button>
         </form>
 

@@ -3,7 +3,7 @@ import { useState } from "react"
 
 export default function (apiFnc, valueFalse) {
     const [isLoading, setisLoading] = useState(false)
-    async function callApi(data=[]) {
+    async function callApi(data = []) {
         if (isLoading) return
         try {
             setisLoading(true)
@@ -13,7 +13,7 @@ export default function (apiFnc, valueFalse) {
         } catch (error) {
             setisLoading(false)
             console.log(error)
-            throw Error(error)
+            throw Error(error.message)
         }
         // return valueFalse
     }

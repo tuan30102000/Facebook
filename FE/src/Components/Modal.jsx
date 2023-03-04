@@ -20,8 +20,8 @@ function Modal({ Component, componentProps, zIndex = 'z-10', isHaveCloseBtn = tr
                 <>
                     <div className={clsx('fixed flex justify-center items-center w-screen h-screen top-0 left-0', zIndex)}>
                         <div onClick={closeModal} className="absolute z-1 w-full h-full bg-bg-over" ></div>
-                        <div className={clsx('relative z-20 rounded-[8px] overflow-hidden shadow pb-5 w-max h-max',)}>
-                            {isHaveCloseBtn && <GrClose className='absolute cursor-pointer top-2 right-2 hover:bg-gray-400  rounded-crical' onClick={closeModal} />}
+                        <div className={clsx('relative z-20 rounded-[8px] overflow-hidden pb-5 w-max h-max',)}>
+                            {isHaveCloseBtn && <GrClose className='absolute z-20 cursor-pointer top-2 right-2 hover:bg-gray-400  rounded-crical' onClick={closeModal} />}
                             <Component {...componentProps} closeModal={closeModal} />
                         </div>
                     </div>
