@@ -7,6 +7,7 @@ const notifyRouter = Router()
 
 // notifyRouter.get('/all', notifyController)
 notifyRouter.get('/', middlewareController.verifyToken, notifyController.getNotifyNotRead)
-notifyRouter.patch('/:notifyId', middlewareController.verifyToken, notifyController.readNotify)
+notifyRouter.patch('/read/all', middlewareController.verifyToken, notifyController.readAllNotify)
+notifyRouter.patch('/read/:notifyId', middlewareController.verifyToken, notifyController.readNotify)
 
 export default notifyRouter
