@@ -27,9 +27,9 @@ function Messages({ messages = [], isLoading = false, currentMember = {}, loadMo
     }, [messages])
 
     return (
-        <div ref={messageBoxRef} className='flex-1 overflow-y-scroll'>
+        <div ref={messageBoxRef} className='flex-1 flex items-end overflow-y-scroll'>
             <LoadIcon isLoading={isLoading} />
-            <div ref={messageRef} className="px-2">
+            <div ref={messageRef} className="px-2  w-full">
                 {mapReverse(allMessages, (item, i, arr) => <Message {...item} observer={observer} isLoad={i == arr.length - 1} currentMember={currentMember} key={item._id} />)}
             </div>
         </div>

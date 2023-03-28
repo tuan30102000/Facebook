@@ -16,6 +16,8 @@ import UserControl from './Features/User';
 import UserPage from './Features/User/page/UserPage';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import vi from 'dayjs/locale/vi';
+import PostPage from './Features/PostFeature/page/PostPage';
+import { addNotify } from './Features/NotifyFeature/notifySlice';
 
 // Thêm plugin localizedFormat và locale vi vào dayjs
 dayjs.extend(localizedFormat);
@@ -44,12 +46,22 @@ function App() {
       dispatch(addConversation(conversation))
     })
     socket.on('seen-message', cv => dispatch(seenConversation(cv)))
-    socket.on('update-user', userInfor => dispatch(updateUser(userInfor)))
+    socket.on('update-user', ({ userInfor, type }) => {
+      dispatch(updateUser({ userInfor, type }))
+      // type.forEach(item => dispatch(updateUserInfo({ key: item, data: userInfor[item] })))
+    })
+    socket.on('new-notify', (doc) => {
+      dispatch(addNotify(doc))
+
+      // dispatch(updateUser({ userInfor, type }))
+      // type.forEach(item => dispatch(updateUserInfo({ key: item, data: userInfor[item] })))
+    })
+    // 
     return () => {
-      socket.removeListener('connect_error');
+      socket.removeListener('connect_error'); 
     }
   }, [socket])
-
+  
 
   return (
     <div className="app w-full min-h-screen h-max bg-[#F0F2F5] pt-[62px]">
@@ -67,6 +79,10 @@ function App() {
           </Route>
           <Route path='/chat' element={<ControlPage Component={UserControl} />} >
             <Route path=':memberId' element={<ChatPage />} />
+            <Route index element={<Navigate to={'/'} replace />} />
+          </Route>
+          <Route path='/post' element={<ControlPage Component={UserControl} />} >
+            <Route path=':postId' element={<PostPage />} />
             <Route index element={<Navigate to={'/'} replace />} />
           </Route>
         </Route>

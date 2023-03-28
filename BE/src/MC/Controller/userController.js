@@ -6,9 +6,9 @@ import Mongoose from "mongoose"
 import bcrypt from 'bcrypt'
 import { io } from "../../../index.js"
 import manageUserRealtime from "../../constan/manageUserRealtime.js"
+import notifyController from "./notifyController.js"
 const { getSocketId } = manageUserRealtime
 const { ObjectId } = Mongoose.Types
-const populateUser = { path: 'friend', select: 'avatarUrl displayName', }
 class userController {
     async updateUserInfor(req, res) {
         if (!req.body) return res.status(403).json({ message: 'data is emty' })
@@ -32,7 +32,7 @@ class userController {
             const salt = await bcrypt.genSalt(10);
             const hashed = await bcrypt.hash(req.body.newPassword, salt);
             await users.updateOne({ _id: req.user._id }, { password: hashed })
-            res.status(200).json({ message:'Đổi mật khẩu thành công'})
+            res.status(200).json({ message: 'Đổi mật khẩu thành công' })
         } catch (error) {
             console.log(error)
             res.status(400).json(error)
@@ -95,7 +95,7 @@ class userController {
     }
     async getUserAll(req, res) {
         try {
-            const user = await users.find({ _id: { $nin: [...req.user.friend, req.user._id, ...req.user.friendRequest, ...req.user.myRequestFriends] } }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).limit(9).select('avatarUrl displayName')
+            const user = await users.find({ _id: { $nin: [...req.user.friend, req.user._id, ...req.user.friendRequest, ...req.user.myRequestFriends] } }).sort({ createdAt: -1 }).populate({ path: 'friendRequest', select: 'avatarUrl displayName' }).limit(9).select('avatarUrl displayName')
             res.json(user)
         } catch (error) {
 
@@ -107,57 +107,62 @@ class userController {
             const user = await users.findById({ _id: userId })
                 .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                 .populate({ path: 'friend', select: 'avatarUrl displayName' })
+            if (!user) return res.status(500).json({ message: 'user not found' })
             res.status(200).json(user)
+
         } catch (error) {
-            res.status(500).json('user not found')
+            res.status(500).json(error)
         }
     }
     async handleFriend(req, res) {
         const { friendId, action } = req.body
         const friend = req.friend
         const requestId = req.user._id
-        let userNewest = {}
-        let friendNew = {}
+        const updateType = ['friend', 'friendRequest', 'myRequestFriends']
+        const listPromises = []
         try {
             if (action == 'request') {
                 if (friend.friendRequest.includes(requestId)) return res.status(400).json({ message: 'request is Exist' })
                 if (friend.friend.includes(requestId)) return res.status(400).json({ message: 'have made friends' })
                 if (req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'Please accept friend' })
 
-                userNewest = await users.findByIdAndUpdate({ _id: requestId, }, { $addToSet: { myRequestFriends: ObjectId(friendId) } }, { new: true })
+                listPromises[0] = users.findByIdAndUpdate({ _id: requestId, }, { $addToSet: { myRequestFriends: ObjectId(friendId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
-
-                friendNew = await users.findByIdAndUpdate({ _id: friendId, }, { $addToSet: { friendRequest: ObjectId(requestId) } }, { new: true })
+                listPromises[1] = users.findByIdAndUpdate({ _id: friendId, }, { $addToSet: { friendRequest: ObjectId(requestId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
+                const newNotify = notifyController.createNotify(req, 'addFriend')
+                listPromises[2] = newNotify
             }
-
             if (action == 'accept') {
                 if (!req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'not friend request' })
 
-                userNewest = await users.findByIdAndUpdate({ _id: requestId }, {
+                listPromises[0] = users.findByIdAndUpdate({ _id: requestId }, {
                     $pull: { friendRequest: ObjectId(friendId), },
                     $addToSet: { friend: ObjectId(friendId) }
                 }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
 
-                friendNew = await users.findByIdAndUpdate({ _id: friendId }, {
+                listPromises[1] = users.findByIdAndUpdate({ _id: friendId }, {
                     $addToSet: { friend: ObjectId(requestId,) },
                     $pull: { myRequestFriends: ObjectId(requestId) }
+
                 }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
+                const newNotify = notifyController.createNotify(req, 'acceptFriend')
+                listPromises[2] = newNotify
             }
             if (action == 'reject') {
                 if (!req.user.friendRequest.includes(friendId)) return res.status(400).json({ message: 'friendRequest it no longer exists' })
 
-                userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { friendRequest: ObjectId(friendId) } }, { new: true })
+                listPromises[0] = users.findByIdAndUpdate({ _id: requestId }, { $pull: { friendRequest: ObjectId(friendId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
 
-                friendNew = await users.findByIdAndUpdate({ _id: friendId }, {
+                listPromises[1] = users.findByIdAndUpdate({ _id: friendId }, {
                     $pull: { myRequestFriends: ObjectId(requestId) }
                 }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
@@ -168,28 +173,29 @@ class userController {
                 console.log(req.user.friend, friendId)
                 if (!req.user.friend.includes(friendId)) return res.status(400).json({ message: 'friend it no longer exists' })
 
-                userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { friend: ObjectId(friendId) }, }, { new: true })
+                listPromises[0] = users.findByIdAndUpdate({ _id: requestId }, { $pull: { friend: ObjectId(friendId) }, }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
-
-                friendNew = await users.findByIdAndUpdate({ _id: friendId }, { $pull: { friend: ObjectId(requestId) } }, { new: true })
+                listPromises[1] = users.findByIdAndUpdate({ _id: friendId }, { $pull: { friend: ObjectId(requestId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
             }
             if (action == 'cancel') {
                 if (!req.user.myRequestFriends.includes(friendId)) return res.status(400).json({ message: 'friend it no longer exists' })
-                userNewest = await users.findByIdAndUpdate({ _id: requestId }, { $pull: { myRequestFriends: ObjectId(friendId) } }, { new: true })
+                listPromises[0] = users.findByIdAndUpdate({ _id: requestId }, { $pull: { myRequestFriends: ObjectId(friendId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
+                    .populate({ path: 'myRequestFriends', select: 'avatarUrl displayName' })
 
-                friendNew = await users.findByIdAndUpdate({ _id: friendId }, { $pull: { friendRequest: ObjectId(requestId) } }, { new: true })
+                listPromises[1] = users.findByIdAndUpdate({ _id: friendId }, { $pull: { friendRequest: ObjectId(requestId) } }, { new: true })
                     .populate({ path: 'friendRequest', select: 'avatarUrl displayName' })
                     .populate({ path: 'friend', select: 'avatarUrl displayName' })
             }
-
-            io.to(getSocketId(userNewest._id)).emit('update-user', userNewest)
-            io.to(getSocketId(friendNew._id)).emit('update-user', friendNew)
-            return res.status(200).json(userNewest)
+            const listResults = await Promise.all(listPromises)
+            const [userNewest, friendNew] = listResults
+            io.to(getSocketId(userNewest._id)).emit('update-user', { type: updateType, userInfor: userNewest })
+            io.to(getSocketId(friendNew._id)).emit('update-user', { type: updateType, userInfor: friendNew })
+            return res.status(200).json({ message: 'success' })
         } catch (error) {
             console.log(error)
             return res.status(403).json({ message: 'something wrong' })

@@ -83,7 +83,7 @@ function RegisterForm() {
     const onSubmit = (data) => {
         if (isLoginPending) return
         const nowDate = new Date()
-        const birthDay = new Date(data.year, data.month - 1, data.day + 1)
+        const birthDay = new Date(data.year, data.month - 1, data.day )
         if (nowDate < birthDay) {
             setError('year', { type: 'valid date', message: 'Ngày tháng năm sinh không hợp lệ' }, { shouldFocus: true })
             return

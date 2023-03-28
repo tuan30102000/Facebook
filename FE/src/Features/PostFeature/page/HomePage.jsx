@@ -14,15 +14,12 @@ function HomePage() {
 
     const { isLoading, callApi } = useCallApi(postApi.getAllPost)
     useEffect(() => {
-
         // 
         (async () => {
-
             try {
                 const data = await callApi()
                 setpostData(data)
             } catch (error) {
-
             }
         })()
         return () => {
@@ -33,7 +30,7 @@ function HomePage() {
     return (
         <>
             <Header />
-            <div className='flex justify-center'>
+            <div className='w-full flex justify-center'>
                 <div className="basis-[1024px]">
                     <CreatePostLayout setPosts={setpostData} />
                     <LoadIcon isLoading={isLoading} />

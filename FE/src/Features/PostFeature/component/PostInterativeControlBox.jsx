@@ -18,8 +18,8 @@ function LikeBox() {
     })
 }
 
-function PostInterativeControlBox({ postId, isLikePost, handleReact, ownerPost }) {
-    const [isShowComment, setisShowComment] = useState(false);
+function PostInterativeControlBox({ postId, isLikePost, handleReact, ownerPost, initIsShowComment = false }) {
+    const [isShowComment, setisShowComment] = useState(initIsShowComment);
     const spanStyle = 'text-[15px] font-[600] ml-[10px]'
     const likeColor = 'text-[#2078f4]'
     const parrentStyle = "flex flex-1 items-center justify-center leading-[15px] cursor-pointer"
@@ -27,8 +27,8 @@ function PostInterativeControlBox({ postId, isLikePost, handleReact, ownerPost }
     const { isLoading, callApi } = useCallApi(postApi.reactPost)
     const onLikeClick = async () => {
         try {
-            const message = await callApi([action, postId])
-            handleReact(action)
+            await callApi([action, postId])
+            handleReact()
         } catch (error) {
             console.log(error)
         }
@@ -45,9 +45,9 @@ function PostInterativeControlBox({ postId, isLikePost, handleReact, ownerPost }
                         <span className={clsx(spanStyle, { [likeColor]: isLikePost })}>Thích</span>
                     </div>
                     <div onClick={onCommentClick} className={clsx(parrentStyle)}>
-                        <BiComment className={clsx('text-[18px]', { 
-                            [likeColor]: isShowComment ,
-                            })} />
+                        <BiComment className={clsx('text-[18px]', {
+                            [likeColor]: isShowComment,
+                        })} />
                         <span className={clsx(spanStyle, { [likeColor]: isShowComment })} >Bình Luận</span>
                     </div>
                 </div>

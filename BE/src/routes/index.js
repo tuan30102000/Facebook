@@ -1,6 +1,7 @@
 import authRouter from "./authRouter.js";
 import conversationRouter from "./conversationRouter.js";
 import messageRouter from "./messageRouter.js";
+import notifyRouter from "./notifyRouter.js";
 import postRouter from "./postRouter.js";
 import userRouter from "./userRouter.js";
 
@@ -16,5 +17,6 @@ export default function (app) {
     app.use('/user', userRouter)
     app.use('/conversation', conversationRouter)
     app.use('/message', messageRouter)
+    app.use('/notify', notifyRouter)
 
 }

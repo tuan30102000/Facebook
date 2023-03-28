@@ -12,7 +12,15 @@ function MessageForm({ onSubmit, onFocus }) {
     const form = useForm({ defaultValues: { message: '' } })
     const { handleSubmit, register, reset } = form
     const { isLoading, callApi } = useCallApi(onSubmit)
-
+    const handleForcus = useCallApi(onFocus)
+    // const onFocusForm = async () => {
+    //     try {
+    //         await handleForcus.callApi()
+    //         console.log(handleForcus.isLoading)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
     const onsubmitForm = async (value) => {
         try {
             await callApi([value])
@@ -24,7 +32,8 @@ function MessageForm({ onSubmit, onFocus }) {
         <div>
             <form className='w-full shadow px-3 flex py-3' onSubmit={handleSubmit(onsubmitForm)}>
                 <div className='outline-none bg-[#F0F2F5] h-9 rounded-[16px] w-full px-2 py-[2px]'>
-                    <input onFocus={onFocus} {...register('message', { required: true })}
+                    <input onFocus={onFocus}
+                        {...register('message', { required: true })}
                         type="text"
                         autoComplete="off"
                         className='outline-none w-full bg-[#F0F2F5] h-full'

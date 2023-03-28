@@ -1,24 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import chatApi from '../../Api/chatApi';
-import { useState, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import userAuth from '../../Api/userAuthApi';
-import Messages from './component/Messages';
-import ConversationsBox from './component/ConversationsBox';
-import MessageForm from './component/MessageForm';
-import usePagination from '../../hook/usePagination';
-import { useSelector } from 'react-redux';
-import { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import ChatBox from './component/ChatBox';
+import ConversationsBox from './component/ConversationsBox';
 
 ChatPage.propTypes = {
 
 };
 
-function ChatPage(props) {
+function ChatPage() {
     useEffect(() => {
         document.body.scrollTop = 0
         document.body.style.overflow = 'hidden'
@@ -29,7 +17,7 @@ function ChatPage(props) {
     }, [])
     return (
         <div className="flex w-full bg-white">
-            <div className="w-[360px] bg-white border-[#0000001a] border-[1px]">
+            <div className="w-[360px] bg-white border-[#0000001a] border-t-0 border-[1px]">
                 <ConversationsBox />
             </div>
             <ChatBox />

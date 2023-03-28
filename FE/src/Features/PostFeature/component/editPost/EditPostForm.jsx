@@ -8,11 +8,12 @@ EditPostForm.propTypes = {
 
 };
 
-function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, closeModal }) {
+function EditPostForm({ imgPreviewInit = [], privateType, textValueInit, updatePost, _id, closeModal }) {
     const { isLoading, callApi } = useCallApi(postApi.updatePost)
     const [file, setfile] = useState([])
     const [currentListImg, setcurrentListImg] = useState([...imgPreviewInit])
     const [listBlob, setlistBlob] = useState([])
+    const [privateState, setprivateState] = useState(privateType)
     const [textValue, settextValue] = useState(textValueInit)
     const isReadyToSend = !((file[0] || currentListImg[0] || textValue) && (file.length + currentListImg.length <= 3))
     const isDisableBtn = isLoading || isReadyToSend
@@ -20,15 +21,18 @@ function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, 
         if (file.length + currentListImg > 3) return
         if (isDisableBtn) return
         const data = {
-            content: textValue, imgFile: file, photos: currentListImg
+            content: textValue, imgFile: file, photos: currentListImg, privateType: privateState
         }
         try {
-            const result = await callApi([postId, data])
+            const result = await callApi([_id, data])
             closeModal()
             updatePost(result)
         } catch (error) {
             console.log(error)
         }
+    }
+    const handlePrivateChange = (event) => {
+        setprivateState(event.target.value);
     }
     const onTextChange = (e) => {
         const value = e.target.value
@@ -76,6 +80,8 @@ function EditPostForm({ imgPreviewInit = [], textValueInit, updatePost, postId, 
                 textValue={textValue}
                 closeModal={closeModal}
                 isLoading={isLoading}
+                handlePrivateChange={handlePrivateChange}
+                privateType={privateState}
             />
         </>
     );

@@ -7,13 +7,14 @@ export const message = new Mongoose.Schema({
     sender: { type: Mongoose.Schema.Types.ObjectId, required: true, ref: 'user' },
     conversation: { type: Mongoose.Schema.Types.ObjectId, required: true, ref: 'conversation' },
     active: {
-        type: Boolean,
+                 type: Boolean,
         default: true
     },
     content: { type: String, required: true },
     deleteTime: { type: Number, required: false },
     createTime: {
-        type: Number, required: true
+        type: Number,
+        default: Date.now
     },
 
 

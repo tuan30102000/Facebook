@@ -7,7 +7,9 @@ const listDefalult = {
         'https://res.cloudinary.com/dmrx3zaby/image/upload/v1646299620/FacebookCollection/avatarCollection/130983009_1031736623975079_2231408246468061266_n_r6ep3t.jpg',
         'https://res.cloudinary.com/dmrx3zaby/image/upload/v1646299619/FacebookCollection/avatarCollection/130816952_1031736587308416_2618282202755916871_n_qo6me9.jpg',
         'https://res.cloudinary.com/dmrx3zaby/image/upload/v1646299617/FacebookCollection/avatarCollection/130488100_1031736570641751_5557173836285721425_n_bvppyg.jpg'
-    ]
+    ],
+    typePrivate: ['public', 'friend', 'private'],
+    typeActionNotify: ['post', 'addFriend', 'acceptFriend']
 }
 
 

@@ -50,8 +50,8 @@ function UserPostsTab({ posts = [], setPosts, friends, isOwner = false, isLoadin
             <div className="flex basis-[1024px] px-8 justify-between gap-4">
                 <FriendsInPostTab friends={friends} />
                 <div className="w-max">
-                    {(posts.length == 0 && !isLoading) && <p className='text-center w-[550px]'> Không có bài viết nào</p>}
                     {isOwner && <CreatePostLayout setPosts={setPosts} />}
+                    {(posts.length == 0 && !isLoading) && <p className='text-center w-[550px]'> Không có bài viết nào</p>}
                     <LoadIcon isLoading={isLoading} />
                     <ListPost listPost={posts} setPostData={setPosts} />
                 </div>

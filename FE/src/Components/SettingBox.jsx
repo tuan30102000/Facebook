@@ -21,7 +21,7 @@ function SettingBox({ }) {
         changePasswordFormRef.current.openModal()
     }
     return (
-        <div className="">
+        <div className="py-5">
             <button className='block' onClick={onLogoutClick}>
                 Log out
             </button>

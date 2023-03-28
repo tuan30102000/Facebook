@@ -6,12 +6,15 @@ export default async function (callback, queryObj) {
         const page = queryObj.page * 1 || 1
         const limit = queryObj.limit * 1 || 9
         const skip = (page - 1) * limit
-        const arr = [callback().skip(skip).limit(limit), /* callback().count() */]
+        const arr = []
+        arr.push(callback().skip(skip).limit(limit))
+        if (page == 1) arr.push(callback().count())
         const list = await Promise.all(arr)
-        // const total = createTotalCount(list[1], queryObj)
-        return { result: list[0], total: null }
+        let total = page === 1 ? createTotalCount(list[1], queryObj) : null
+
+        return { result: list[0], total: total }
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
-    return
 }

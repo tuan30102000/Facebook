@@ -31,10 +31,20 @@ const userSlice = createSlice({
     ,
     reducers: {
         updateUser(state, action) {
-            state.current.data = action.payload
+            state.current.data = action.payload.userInfor
+            // const data = action.payload.type.reduce((x, item,) => {
+            //     // newState.current.data[item] == action.payload.userInfor[item]
+            //     // console.log(action.payload.userInfor, newState.current.data)
+            //     x[item] = action.payload.userInfor[item]
+            //     return x
+            // }, {});
+
+            // state.current.data.friend = data.friend
+            // state.current.data.friendRequest = data.friendRequest
+            // state.current.data.myRequestFriends = data.myRequestFriends
+
         },
         updateUserInfo(state, action) {
-            console.log(action.payload)
             state.current.data[action.payload.key] = action.payload.data
         },
         addSocket(state, action) {
@@ -62,7 +72,6 @@ const userSlice = createSlice({
             state.loginError = true
             state.loginPending = false
             createToast(action.error.message, 'error')
-
             // throw new Error('Required')
         }
         ,

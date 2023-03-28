@@ -15,7 +15,7 @@ function Option({ BtnComponent = null, btnComponentProp, Component, componentPro
         setisShowOption(false)
     }
     return (
-        <div className='relative w-max h-max'>
+        <div className='relative w-max h-max ml-auto'>
             {
                 BtnComponent ? <BtnComponent {...btnComponentProp} onClick={open} /> : <BsThreeDots onClick={open} className='cursor-pointer' />
             }
