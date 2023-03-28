@@ -18,9 +18,16 @@ function ListPost({ listPost = [], setPostData }) {
         const newPostData = [post, ...clonePost.filter(item => item._id != post._id)]
         setPostData(newPostData)
     }
+    const updateFieldPost = (postId, pushItem, field, isAdd) => {
+        const clonePost = [...listPost]
+        const index = clonePost.findIndex(item => item._id == postId)
+        if (isAdd) clonePost[index][field].push(pushItem)
+        if (!isAdd) clonePost[index][field] = clonePost[index][field].filter(item => item != pushItem)
+        setPostData(clonePost)
+    }
     return (
         <div>
-            {listPost.map((item) => <Post key={item._id} likeList={item.like} {...{ deletePost, updatePost }} avatarUrl={item.owner.avatarUrl} content={item.content} urlList={item.imgUrl} displayName={item.owner.displayName} postId={item._id} ownerId={item.owner._id} />)}
+            {listPost.map((item) => <Post key={item._id} {...{ deletePost, updatePost, updateFieldPost }} {...item} />)}
         </div>
     );
 }

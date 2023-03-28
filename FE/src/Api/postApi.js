@@ -4,6 +4,7 @@ const postApi = {
     createPost(data) {
         const formData = new FormData()
         formData.content || formData.append('content', data.content)
+        formData.privateType || formData.append('privateType', data.privateType)
         data.photo.forEach(item => {
             formData.append('image', item)
         });
@@ -16,20 +17,26 @@ const postApi = {
         const formData = new FormData()
         formData.content || formData.append('content', data.content)
         formData.photos || formData.append('photos', data.photos)
+        formData.privateType || formData.append('privateType', data.privateType)
         data.imgFile.forEach(item => {
             formData.append('image', item)
         });
         return axiosJwt.patch('/post/update/' + postId, formData, { headers: { 'content-Type': 'multipart/form-data' } })
     },
+    handleNotify(hasNotify, postId) {
+        const url = `post/notify/${hasNotify ? 'pull' : 'add'}/${postId}`
+        return axiosJwt.patch(url)
+    },
     getPost(postId) {
-        return axiosClient.get('/post/get/' + postId)
+        console.log(postId)
+        return axiosJwt.get('/post/get/' + postId)
     },
     getAllPost() {
-        return axiosClient.get('/post/getall')
+        return axiosJwt.get('/post/getall')
     },
     getPostUser(userId) {
         const url = 'post/getpostuser/' + userId
-        return axiosClient.get(url)
+        return axiosJwt.get(url)
     },
     reactPost(action, postId) {
         const url = 'post/react/' + postId

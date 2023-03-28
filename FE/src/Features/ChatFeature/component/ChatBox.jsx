@@ -17,7 +17,7 @@ ChatBox.propTypes = {
 
 };
 
-function ChatBox(props) {
+function ChatBox() {
     const params = useParams()
     const user = useSelector(state => state.user)
     const socket = user.socket
@@ -26,12 +26,13 @@ function ChatBox(props) {
     const [messageList, setmessageList] = useState([])
     const [currentMember, setcurrentMember] = useState({})
     const [cursor, setcursor] = useState({})
-    const { observer, page, setpage, } = usePagination()
+    const { observer, page, setpage, } = usePagination(() => console.log(2222))
     const [loadMoreMessage, setloadMoreMessage] = useState([])
     const { isLoading, callApi } = useCallApi(chatApi.getMessage)
     useEffect(() => {
         //reset State 
         setmessageList([]);
+        setloadMoreMessage([])
         setcurrentConvertion({})
         setpage(1);
         setcurrentMember({});

@@ -21,29 +21,34 @@ function UserPage() {
     useEffect(() => {
         (async () => {
             if (isOwner) {
-                setuser(userCurrent)
+                setuser({})
                 setisExistUser(true)
             }
             if (!isOwner) {
                 try {
                     const userData = await callApi([userId])
                     setuser(userData)
+                    setisExistUser(true)
                 } catch (error) {
+                    setuser({})
                     setisExistUser(false)
                 }
             }
-            setisExistUser(true)
 
         })()
 
         return () => {
         }
-    }, [userId, userCurrent])
+    }, [userId])
 
     return (
         <>  <Loading isLoading={isLoading} />
-            {(isExistUser && user._id) && <UserProfile {...{ user, isOwner, isLoading }} />}
-            {!isExistUser && <div className="">User not found</div>}
+            {(isExistUser) &&
+                <>
+                    {user._id && <UserProfile {...{ isOwner, isLoading }} user={user} />}
+                    {(!user._id) && <UserProfile {...{ isOwner, isLoading }} user={userCurrent} />}
+                </>}
+            {!isExistUser && <div className="text-center mt-10 text-2xl ">User not found</div>}
         </>
     );
 }

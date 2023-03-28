@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import routes from "./src/routes/index.js";
 import socketService from './src/MC/Service/socketService.js';
 import middlewareController from './src/MC/Controller/middlewareController.js';
+import redisClient from './src/config/db/redisClient.js';
 dotenv.config()
 const feUrl = process.env.URL_FE || 'http://127.0.0.1:5173'
 

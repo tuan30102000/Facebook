@@ -11,5 +11,10 @@ export default {
         conversations: [],
         currentChat: [],
         isLoadConversations: true,
-    },
+    }, notify: {
+        notifies: [],
+        isLoadNotify: true,
+        nextPage: 1,
+        cusor: null,
+    }
 }

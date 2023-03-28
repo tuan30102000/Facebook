@@ -5,6 +5,7 @@ import UserCurrentInfoMini from '../../../Components/UserCurrentInfoMini';
 import { FaTimesCircle } from 'react-icons/fa'
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { GrClose } from 'react-icons/gr'
+import RadioPrivates from './RadioPrivates';
 PostForm.propTypes = {
     imgPreview: PropTypes.array.isRequired,
     textValue: PropTypes.string.isRequired,
@@ -17,7 +18,7 @@ PostForm.propTypes = {
     deleteFile: PropTypes.func.isRequired,
 };
 
-function PostForm({ imgPreview, textValue, onUpload, closeModal, isLoading = false, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
+function PostForm({ imgPreview, textValue, onUpload, closeModal, handlePrivateChange, privateType, isLoading = false, title = '', btnText = 'UP', onFileChange, onTextChange, isDisableBtn, deleteFile }) {
     const fileRef = useRef({})
     const textRef = useRef({})
     useEffect(() => {
@@ -27,18 +28,19 @@ function PostForm({ imgPreview, textValue, onUpload, closeModal, isLoading = fal
     }, [])
 
     return (
-        <div className='max-h-350 w-500'>
+        <div className='max-h-350 w-[550px] shadow-sm'>
             <div className="bg-white border-solid border-b border-[#f3f3f4] relative justify-center items-center">
                 <p className='flex text-[20px] items-center justify-center font-bold text-[#050505]  h-14' >{title}</p>
                 <div onClick={closeModal} className="absolute right-2 top-[50%] translate-y-[-50%] flex justify-center items-center w-[36px] h-[36px] rounded-crical bg-[#e4e6eb] cursor-pointer">
                     <GrClose />
                 </div>
             </div>
-            <div className='w-full h-full bg-white pl-4 pr-3 pt-5'>
+            <div className='w-full h-full bg-white pl-4 pr-3 pt-5 py-4'>
                 <UserCurrentInfoMini />
+                <RadioPrivates {...{ privateType, handlePrivateChange }} />
                 <div className="mt-5">
-                    <input ref={fileRef} className='w-0 overflow-hidden' onChange={onFileChange} multiple accept='image/*' type="file" />
-                    <textarea value={textValue} onChange={onTextChange} className='w-full resize-none min-h-200 outline-none text-2xl' placeholder='Enter your content' ref={textRef} type="text" />
+                    <input disabled={isLoading} ref={fileRef} className='w-0 overflow-hidden' onChange={onFileChange} multiple accept='image/*' type="file" />
+                    <textarea disabled={isLoading} value={textValue} onChange={onTextChange} className='w-full resize-none min-h-200 outline-none text-2xl' placeholder='Enter your content' ref={textRef} type="text" />
                 </div>
                 <div className="flex  flex-wrap gap-3 mt-8">
                     {imgPreview.map((item, i) => (

@@ -51,7 +51,7 @@ const userSchema = new Mongoose.Schema(
         },
         selfIntroduce: {
             type: [{ title: String, content: String }],
-            default:[]
+            default: []
         },
         isAdmin: {
             type: Boolean,
@@ -69,6 +69,7 @@ const userSchema = new Mongoose.Schema(
             type: Number,
             default: 0,
         },
+        postSave: { type: Array, default: [], ref: 'post' },
         friendRequest: { type: Array, default: [], ref: 'user' },
         friend: { type: Array, default: [], ref: 'user' },
         myRequestFriends: { type: Array, default: [], ref: 'user' },

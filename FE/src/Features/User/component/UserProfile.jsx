@@ -18,7 +18,7 @@ import UserFriendTab from './UserFriendTab';
 import UserPostsTab from './UserPostsTab';
 
 UserProfile.propTypes = {
-    isOwner: PropTypes.bool,
+    isOwner: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
 };
 
@@ -38,7 +38,6 @@ function UserProfile({ isOwner = false, user }) {
         const param = {
             ...seach,
         }
-        console.log(location.search)
         return param
     }, [location.search])
 

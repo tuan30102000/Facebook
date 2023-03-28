@@ -9,7 +9,7 @@ class messageController {
             const paginations = pagination(() => messages
                 .find({
                     conversation: req.currentConversation._id,
-                    createTime: { $lt: cursor }
+                    createTime: { $lt: cursor+1 }
                 })
                 .sort({ createTime: -1 }),
                 req.query)
@@ -25,7 +25,7 @@ class messageController {
             const newMessage = new messages({
                 conversation: req.currentConversation._id, sender: req.user._id,
                 content: req.body.message,
-                createTime: Number(Date.now())
+                // createTime: Number(Date.now())
             })
             await newMessage.save()
             io

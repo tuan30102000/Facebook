@@ -12,7 +12,8 @@ const commentSchema = new Mongoose.Schema({
         type: Boolean,
         default: true
     },
-    create: { type: Number, default: Number(Date.now()) }
+    like: [],
+    create: { type: Number, default: Date.now }
 },
     { timestamps: true })
 

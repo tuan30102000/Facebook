@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useEffect, useState } from "react";
 
-export default function (option) {
+export default function (callback) {
     const [page, setpage] = useState(1)
 
 
@@ -10,6 +10,7 @@ export default function (option) {
             (entries, observe) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
+                        callback()
                         setpage(page => page + 1)
                         observe.unobserve(entry.target)
                     }

@@ -55,7 +55,6 @@ function CommentBox({ postId, ownerPost }) {
     }, [])
 
     const submit = async (value) => {
-        console.log(value)
         try {
             const newCm = await postApi.createComment(postId, value.comment)
         } catch (error) {

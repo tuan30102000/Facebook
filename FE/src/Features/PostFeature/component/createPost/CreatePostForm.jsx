@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import postApi from '../../../../Api/postApi';
+import useCallApi from '../../../../hook/useCallApi';
 import PostForm from '../PostForm';
 CreatePostForm.propTypes = {
 
@@ -8,7 +9,11 @@ function CreatePostForm({ closeModal, addToStartPost }) {
     const [imgPreview, setimgPreview] = useState([])
     const [file, setfile] = useState([])
     const [textValue, settextValue] = useState('')
-    const [isLoading, setisLoading] = useState(false)
+    const [privateState, setprivateState] = useState('public')
+    const { isLoading, callApi } = useCallApi(postApi.createPost)
+    const handlePrivateChange = (event) => {
+        setprivateState(event.target.value);
+    }
     useEffect(() => {
         const listUrl = file.map(item => URL.createObjectURL(item))
         setimgPreview(listUrl)
@@ -24,7 +29,7 @@ function CreatePostForm({ closeModal, addToStartPost }) {
         setfile(newFileList)
 
     }
-    const onTextChange = (e) => {
+    const onTextChange = (e) => {           
         const value = e.target.value
         settextValue(value)
     }
@@ -35,15 +40,12 @@ function CreatePostForm({ closeModal, addToStartPost }) {
     }
     const sendPost = async () => {
         if (isDisableBtn) return
-        setisLoading(true)
         try {
-            const data = await postApi.createPost({ photo: file, content: textValue })
+            const data = await callApi([{ photo: file, content: textValue, privateType: privateState }])
             addToStartPost(data)
             closeModal()
-            setisLoading(false)
         } catch (error) {
             console.log(error)
-            setisLoading(false)
         }
     }
     return (
@@ -60,6 +62,8 @@ function CreatePostForm({ closeModal, addToStartPost }) {
                 textValue={textValue}
                 closeModal={closeModal}
                 isLoading={isLoading}
+                privateType={privateState}
+                handlePrivateChange={handlePrivateChange}
             />
         </>
     );

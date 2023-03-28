@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaFacebook, FaUserFriends } from 'react-icons/fa';
 import { IoMdNotifications } from 'react-icons/io';
@@ -12,6 +11,8 @@ import { countMessageNotSeen } from '../../Features/ChatFeature/chatSelector';
 import { loadConversations } from '../../Features/ChatFeature/chatSlice';
 import ConversationsBox from '../../Features/ChatFeature/component/ConversationsBox';
 import FriendBox from '../../Features/FriendFeature/component/FriendBox';
+import NotifycationBox from '../../Features/NotifyFeature/component/NotifycationBox';
+import NotifyInit from '../../Features/NotifyFeature/component/NotifyInit';
 import Dialog from '../Dialog';
 import SettingBox from '../SettingBox';
 import SearchBox from './SearchBox';
@@ -41,7 +42,6 @@ function Header() {
     const dispatch = useDispatch()
     useEffect(() => {
         if (isLoadConversations) {
-            console.log(isLoadConversations)
             const action = loadConversations()
             dispatch(action)
         }
@@ -54,11 +54,15 @@ function Header() {
     const handleFriendDialogRef = useRef({})
     const handleSettingDialogRef = useRef({})
     const handleConversationRef = useRef({})
+    const handleNotifyRef = useRef({})
     const openSettingDialog = () => {
         handleSettingDialogRef.current.openModal()
     }
     const openConversations = () => {
         handleConversationRef.current.openModal()
+    }
+    const openNotifyBox = () => {
+        handleNotifyRef.current.openModal()
     }
     return (
         <header className='fixed z-50 h-[60px] bg-white left-0 w-full top-0 shadow-sm px-4 flex items-center justify-between'>
@@ -77,12 +81,14 @@ function Header() {
                 </Link>
                 <IconBox onClick={() => { handleFriendDialogRef.current.openModal() }} count={user.friendRequest.length} IconComponent={FaUserFriends} />
                 <IconBox onClick={openConversations} count={conversationSeenCount} IconComponent={RiMessengerFill} />
-                {/* <IconBox IconComponent={IoMdNotifications} /> */}
+                <IconBox onClick={openNotifyBox} IconComponent={IoMdNotifications} />
                 <IconBox onClick={openSettingDialog} IconComponent={BsFillCaretDownFill} />
             </div>
             <Dialog Component={FriendBox} componentProps={{ listFriendRequest: user.friendRequest }} ref={handleFriendDialogRef} />
             <Dialog Component={SettingBox} ref={handleSettingDialogRef} />
             <Dialog Component={ConversationsBox} ref={handleConversationRef} />
+            <Dialog Component={NotifycationBox} ref={handleNotifyRef} />
+            <NotifyInit />
         </header>
     );
 }

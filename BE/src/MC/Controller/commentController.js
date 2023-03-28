@@ -1,5 +1,6 @@
 import comment from "../Model/comments.js"
 import { io } from '../../../index.js'
+import notifyController from "./notifyController.js"
 const populateData = { path: 'owner', select: 'displayName avatarUrl' }
 
 class commentController {
@@ -11,17 +12,16 @@ class commentController {
                 owner: req.user._id,
                 content: req.body.comment
             })
-            await newCm.save()
+            const saveComent = newCm.save()
+            const newNotify = notifyController.createNotify(req, 'post', 'bình luận')
+            const listPrm = [newNotify, saveComent]
+            await Promise.all(listPrm)
             io.in(req.postCurrent._id.toString()).emit('create-comment', { ...newCm._doc, owner: { _id: req.user._id, displayName: req.user.displayName, avatarUrl: req.user.avatarUrl } })
             res.status(200).json(newCm)
         } catch (error) {
             console.log(error)
             res.status(400).json(error)
         }
-
-
-
-
     }
     async getCommentInPost(req, res) {
         try {
@@ -53,7 +53,28 @@ class commentController {
             res.status(400).json(error)
         }
     }
+    async reactComment(req, res) {
+        const { action } = req.body
+        const { commentId } = req.params
+        const actionList = ['like', 'unlike']
+        if (!actionList.includes(action)) return res.status(403).json({ message: 'action not found' })
+        try {
+            if (action == 'like') {
+                await comment.updateOne({ _id: commentId }, { $addToSet: { like: ObjectId(req.user._id) } })
+                const newNotify = notifyController.createNotify(req, 'post', 'thích')
+                await newNotify
+                return res.status(200).json({ message: 'like done' })
+            }
+            if (action == 'unlike') {
+                await comment.updateOne({ _id: commentId }, { $pull: { like: ObjectId(req.user._id) } })
+                return res.status(200).json({ message: 'unlike done' })
+            }
 
+        } catch (error) {
+            console.log(error)
+            res.status(403).json(error)
+        }
+    }
 
 }
 

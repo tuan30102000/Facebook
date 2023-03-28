@@ -26,21 +26,20 @@ class middlewareController {
     //post
     async verifyPost(req, res, next) {
         try {
-            const postCurrent = await post.findById(req.params.postId)
+            const postCurrent = await post.findOne({ _id: req.params.postId, active: true }).populate({ path: 'owner', select: 'friend' })
             if (!postCurrent) return res.status(403).json({ message: 'post not found' })
             req.postCurrent = postCurrent
             next()
             // if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
         } catch (error) {
             console.log(error)
-            return res.status(403).json({ message: 'can connect Db' })
+            return res.status(403).json({ message: 'something wrong' })
         }
     }
 
     async verifyComment(req, res, next) {
         try {
             const commentCurrent = await comment.findOne({ _id: req.params.commentId, active: true })
-            console.log(commentCurrent.post.toString(), req.postCurrent._id.toString())
             if (!commentCurrent) return res.status(400).json({ message: 'comment not found' })
             if (commentCurrent.post.toString() != req.postCurrent._id.toString()) return res.status(403).json({ message: 'comment not in this post' })
             req.commentCurrent = commentCurrent
@@ -52,7 +51,7 @@ class middlewareController {
     }
     async isOwmerPost(req, res, next) {
         const { postCurrent } = req
-        if (req.user._id.toString() != postCurrent.owner.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
+        if (req.user._id.toString() != postCurrent.owner._id.toString()) return res.status(403).json({ message: 'not enough jurisdiction' })
         next()
     }
     verifyRoleDeleteComment(req, res, next) {
@@ -103,7 +102,7 @@ class middlewareController {
             // res.status(200)
             const currentConversation = await conversations.findOne({ members: { $all: req.user._id, }, _id: req.params.conversationId, active: true })
             if (!currentConversation) return res.status(400)
-            req.currentConversation=currentConversation
+            req.currentConversation = currentConversation
             next()
         } catch (error) {
             console.log(error)

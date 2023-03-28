@@ -21,7 +21,7 @@ const chatSlice = createSlice({
             const newState = [...state.conversations]
             const index = newState.findIndex(item => item._id == action.payload._id)
             newState[index].seen = true
-            newState.conversations = newState
+            state.conversations = newState
         }
 
     },

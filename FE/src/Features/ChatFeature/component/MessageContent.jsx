@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 MessageContent.propTypes = {
-
+    content: PropTypes.string.isRequired,
+    isUser: PropTypes.bool
 };
 // #E4E6EB
 // #050505
