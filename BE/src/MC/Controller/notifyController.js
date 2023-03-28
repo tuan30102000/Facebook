@@ -78,14 +78,14 @@ class notifyController {
         }
     }
 
-    async readNotify() {
+    async readNotify(req, res) {
         try {
-            const notifys = notifys
+           await notifys
                 .updateOne(
                     { _id: req.params.notifyId, receiver: { $all: [req.user._id] } },
                     { $addToSet: { reads: req.user._id } }
                 )
-            res.status(200).json(notifys)
+            res.status(200).json({ _id: req.params.notifyId })
         } catch (error) {
             console.log(error)
             res.status(400).json(error)

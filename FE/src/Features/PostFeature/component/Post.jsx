@@ -29,7 +29,7 @@ function PrivateIcon({ privateType }) {
     const Cpn = iconts[privateType]
     return <Cpn className='text-[14px] self-center ml-2 mb-1' />
 }
-function Post({ content = '', sendNotify, imgUrl = [], updateFieldPost, privateType, like = [], _id, owner, deletePost, updatePost }) {
+function Post({ content = '', initIsShowComment = false, sendNotify, imgUrl = [], updateFieldPost, privateType, like = [], _id, owner, deletePost, updatePost }) {
     const user = useSelector(state => state.user.current.data)
     const isOwnerPost = user._id == owner._id
     const arrayOfContent = content.split('\n')
@@ -56,7 +56,7 @@ function Post({ content = '', sendNotify, imgUrl = [], updateFieldPost, privateT
                         </div>
                     ))}
                 </div>}
-            <PostInterativeControlBox isLikePost={isLikePost} postId={_id} ownerPost={owner._id} handleReact={handleReact} />
+            <PostInterativeControlBox initIsShowComment={initIsShowComment} isLikePost={isLikePost} postId={_id} ownerPost={owner._id} handleReact={handleReact} />
         </div>
     );
 }

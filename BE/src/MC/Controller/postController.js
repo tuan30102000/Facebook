@@ -178,9 +178,17 @@ class postController {
         try {
             if (action == 'like') {
                 // if (req.postCurrent.like.includes(postId)) return res.status(403).json({ message: 'you liked' })
-                const updatePrm = post.updateOne({ _id: postId }, { $addToSet: { like: ObjectId(req.user._id) } })
+                const updatePrm = post.updateOne({ _id: postId },
+                    {
+                        $addToSet: { like: ObjectId(req.user._id), },
+                        $inc: {
+                            score: 1,
+                        }
+                    })
                 const newNotify = notifyController.createNotify(req, 'post', 'thích')
+
                 const listPrm = [updatePrm, newNotify]
+
                 await Promise.all(listPrm)
                 return res.status(200).json({ message: 'like done' })
             }

@@ -49,6 +49,7 @@ function PostPage() {
             <Loading isLoading={loading} />
             {post && <Post
                 key={post._id}
+                initIsShowComment={true}
                 {...post}
                 {...{ deletePost, updatePost, updateFieldPost }}
             />}

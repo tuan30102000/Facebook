@@ -8,9 +8,13 @@ export const loadNotify = createAsyncThunk('chat/loadNotify', async (data) => {
     return notifyData
 
 })
-export const readNotify = createAsyncThunk('chat/readNotify', async (data) => {
-    const notifyData = await notifyApi.getNotify({ page: 1, limit: 7 })
-    return notifyData
+export const readNotify = createAsyncThunk('chat/readNotify', async (data, { getState }) => {
+    const notifyData = await notifyApi.readNotify(data)
+    const state = getState()
+    const userId = state.user.current.data._id
+    return {
+        userId, notifyData
+    }
 
 })
 export const loadMoreNotify = createAsyncThunk('chat/loadNotifyFull', async (data, { getState }) => {
@@ -49,6 +53,10 @@ const notifySlice = createSlice({
 
         },
         [loadMoreNotify.rejected]: (state, action) => {
+        },
+        [readNotify.fulfilled]: (state, action) => {
+            const index = state.notifies.findIndex(item => item._id === action.payload.notifyData._id)
+            state.notifies[index].reads = [action.payload.userId]
         },
         [logout.fulfilled]: (state) => {
             state = initGlobalState[nameSlice]

@@ -23,9 +23,8 @@ function Comment({ _id, content, owner, postId, isOwnerComment, isOwnerPost, cre
             console.log(error)
         }
     }
-    const editComment = async (value,callback,setisLoading) => {
+    const editComment = async (value,) => {
         try {
-            setisLoading(true)
             await postApi.editComment(postId, _id, value.comment)
             closeEdit()
         } catch (error) {
@@ -34,23 +33,24 @@ function Comment({ _id, content, owner, postId, isOwnerComment, isOwnerPost, cre
         }
     }
     const btnData = [
-        { text: 'Chinh sua', onClick: editClick },
-        { text: 'Xoa', onClick: removeComment },
+        { text: 'Chỉnh sửa', onClick: editClick },
+        { text: 'Xóa', onClick: removeComment },
     ]
     const btnForOwnerPost = [{ text: 'Xoa', onClick: removeComment }]
 
 
 
     return (
-        <div className='flex items-center mb-4'>
+        <div className='flex items-center mb-4 relative'>
             <UserInfoMini avatarUrl={owner.avatarUrl} userId={owner._id} />
-            <div className={clsx("max-w-full bg-[#F0F2F5] px-3 py-2 rounded-[12px]", { 'max-w-full': !isEdit, 'w-full': isEdit })}>
+            <div className={clsx("bg-[#F0F2F5] px-3 py-2 rounded-[12px]", { 'max-w-full': !isEdit, 'w-full': isEdit })}>
                 <UserInfoMini displayName={owner.displayName} isMargin={false} userId={owner._id} />
-                {!isEdit && <p className='max-w-full break-all'>{content}</p>}
+                {!isEdit && <p className='break-all max-w-[400px]'>{content}</p>}
                 {isEdit && <CommentForm postId={_id} defaultValues={content} submit={editComment} />}
             </div>
             {isOwnerComment && <Option Component={OptionBtn} componentProp={{ btnData }} />}
             {(!isOwnerComment && isOwnerPost) && <Option Component={OptionBtn} componentProp={{ btnData: btnForOwnerPost }} />}
+            {isEdit && <p className='absolute top-[calc(100%-12px)] hover:underline cursor-pointer left-10' onClick={closeEdit}>Hủy</p>}
         </div>
     );
 }

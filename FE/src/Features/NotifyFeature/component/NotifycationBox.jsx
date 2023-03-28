@@ -19,12 +19,13 @@ function NotifycationBox() {
     }
     const { observer } = usePagination(loadMore)
     return (
-        <div className="">
-            <div className='px-2 max-h-[400px] overflow-y-auto py-5'>
+        <div className="px-2 py-5">
+            <div className=' max-h-[400px] overflow-y-auto '>
                 {
                     notifies.map((item, index) => <NotifyItem key={item._id} hasObserver={index == notifies.length - 1} {...item} observer={observer} />)
                 }
             </div>
+            {!notifies[0] && <p className='text-center'>Không có thông báo</p>}
             
         </div>
     );

@@ -1,6 +1,7 @@
 import comment from "../Model/comments.js"
 import { io } from '../../../index.js'
 import notifyController from "./notifyController.js"
+import posts from "../Model/posts.js"
 const populateData = { path: 'owner', select: 'displayName avatarUrl' }
 
 class commentController {
@@ -14,7 +15,14 @@ class commentController {
             })
             const saveComent = newCm.save()
             const newNotify = notifyController.createNotify(req, 'post', 'bình luận')
-            const listPrm = [newNotify, saveComent]
+            const updatePost = posts.updateOne(
+                { _id: req.postCurrent._id },
+                {
+                    $inc: {
+                        countComment: 1, score: 1
+                    }
+                })
+            const listPrm = [newNotify, saveComent, updatePost]
             await Promise.all(listPrm)
             io.in(req.postCurrent._id.toString()).emit('create-comment', { ...newCm._doc, owner: { _id: req.user._id, displayName: req.user.displayName, avatarUrl: req.user.avatarUrl } })
             res.status(200).json(newCm)
@@ -35,7 +43,16 @@ class commentController {
     }
     async removeComment(req, res) {
         try {
-            await comment.updateOne({ _id: req.commentCurrent._id }, { $set: { active: false } })
+            const removeComment = comment.updateOne({ _id: req.commentCurrent._id }, { $set: { active: false } })
+            const updatePost = posts.updateOne(
+                { _id: req.postCurrent._id },
+                {
+                    $inc: {
+                        countComment: -1,
+                    }
+                })
+            const listPrm = [removeComment, updatePost]
+            await Promise.all(listPrm)
             io.in(req.postCurrent._id.toString()).emit('delete-comment', req.commentCurrent._id)
             res.status(200).json({ message: 'success' })
         } catch (error) {

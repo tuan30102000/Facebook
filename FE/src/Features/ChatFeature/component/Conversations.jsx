@@ -15,7 +15,6 @@ function Conversations({ }) {
     const dispatch = useDispatch()
     useEffect(() => {
         if (isLoadConversations) {
-            console.log(isLoadConversations)
             const action = loadConversations()
             dispatch(action)
         }
