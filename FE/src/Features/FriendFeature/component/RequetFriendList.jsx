@@ -22,7 +22,7 @@ function RequetFriendList({ listFriendRequest = [] }) {
                 Lời mời kết bạn
             </p>
             {listFriendRequest.map(item => <RequetFriendItem key={item._id} friendId={item._id} avatarUrl={item.avatarUrl} displayName={item.displayName} />)}
-        </div>
+    </div>
     );
 }
 

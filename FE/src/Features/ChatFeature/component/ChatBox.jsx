@@ -19,7 +19,8 @@ ChatBox.propTypes = {
 
 function ChatBox() {
     const params = useParams()
-    const user = useSelector(state => state.user)
+    const state = useSelector(state => state)
+    const user = state.user
     const socket = user.socket
     const currentUser = user.current.data
     const [currentConversation, setcurrentConvertion] = useState({})
@@ -29,6 +30,21 @@ function ChatBox() {
     const { observer, page, setpage, } = usePagination(() => console.log(2222))
     const [loadMoreMessage, setloadMoreMessage] = useState([])
     const { isLoading, callApi } = useCallApi(chatApi.getMessage)
+    const loadConversationsData = async () => {
+        try {
+            //check conversation        
+            const data = await chatApi.checkConversation(params.memberId)
+            //getDataMember
+            const member = await userAuth.getUserById(params.memberId)
+            setcurrentMember(member)
+            setcurrentConvertion(data.conversation || {})
+            setcursor({ time: data.conversation?.newMessage?.createTime })
+            // console.log(data.conversation?.newMessage?.createTime)
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+    const loadConvertionApi = useCallApi(loadConversationsData)
     useEffect(() => {
         //reset State 
         setmessageList([]);
@@ -37,23 +53,14 @@ function ChatBox() {
         setpage(1);
         setcurrentMember({});
         (async () => {
-            try {
-                //check conversation        
-                const data = await chatApi.checkConversation(params.memberId)
-                //getDataMember
-                const member = await userAuth.getUserById(params.memberId)
-                setcurrentMember(member)
-                setcurrentConvertion(data.conversation || {})
-                setcursor({ time: data.conversation?.newMessage?.createTime })
-                // console.log(data.conversation?.newMessage?.createTime)
-            } catch (error) {
-            }
+            await loadConvertionApi.callApi()
         })()
         return () => {
         }
     }, [params.memberId])
     useEffect(() => {
         ; (async function getMessage() {
+            if (loadConvertionApi.isLoading) return
             if (!currentConversation._id) return
             const messagesList = await callApi([currentConversation._id, { page: page, limit: 10, cursor: cursor.time }])
             //first load
@@ -63,7 +70,7 @@ function ChatBox() {
         })()
         return () => {
         }
-    }, [cursor, page])
+    }, [cursor, page, loadConvertionApi.isLoading])
 
     useEffect(() => {
         if (!socket) return
@@ -91,6 +98,7 @@ function ChatBox() {
 
     const onsubmitForm = async (value) => {
         // if conversation not exist create end send message
+        if (loadConvertionApi.isLoading) return
         if (!currentConversation._id) {
             const data = await chatApi.createConversationAndMessage(params.memberId, value.message)
             setcurrentConvertion(data.conversation)
